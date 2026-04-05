@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { HeroAnimations } from '@/components/HeroAnimations'
 
 // Wrapper fuer spaetere GSAP Text-Reveal Animation
 function RevealLine({
@@ -99,7 +100,7 @@ export function Hero() {
             <span
               style={{
                 background:
-                  'linear-gradient(135deg, #6366F1 0%, #818CF8 50%, #A5B4FC 100%)',
+                  'linear-gradient(135deg, #4F46E5 0%, #6366F1 50%, #818CF8 100%)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text',
@@ -138,6 +139,27 @@ export function Hero() {
           Design-driven development for forward-thinking companies.
           We build fast, accessible and beautiful products.
         </p>
+
+        {/* CTAs */}
+        <div
+          className="flex items-center gap-6 mt-10"
+          data-reveal-element
+          data-reveal-delay="3"
+        >
+          <a
+            href="#work"
+            className="inline-flex items-center gap-2 font-semibold text-white bg-[var(--accent)] rounded-lg px-7 py-3.5 transition-all duration-200 hover:opacity-90 hover:scale-[0.98]"
+            style={{ boxShadow: 'var(--shadow-md)', fontFamily: 'var(--font-syne)' }}
+          >
+            See our work
+          </a>
+          <a
+            href="#contact"
+            className="text-[var(--text-secondary)] font-medium transition-colors duration-200 hover:text-[var(--text-primary)] underline underline-offset-4 decoration-[var(--border)] hover:decoration-[var(--accent)]"
+          >
+            Start a project &rarr;
+          </a>
+        </div>
       </div>
 
       {/* Scroll-Hint unten */}
@@ -162,15 +184,7 @@ export function Hero() {
         />
       </div>
 
-      {/* Scroll-Line Keyframe */}
-      <style>{`
-        @keyframes scrollLine {
-          0%   { transform: scaleY(0); transform-origin: top; }
-          50%  { transform: scaleY(1); transform-origin: top; }
-          51%  { transform: scaleY(1); transform-origin: bottom; }
-          100% { transform: scaleY(0); transform-origin: bottom; }
-        }
-      `}</style>
+      <HeroAnimations />
     </section>
   )
 }

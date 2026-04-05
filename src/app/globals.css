@@ -5,10 +5,10 @@
   --color-bg: #F5F5F7;
   --color-surface-1: #FFFFFF;
   --color-surface-2: #EBEBF0;
-  --color-accent: #6366F1;
-  --color-accent-light: #818CF8;
+  --color-accent: #4F46E5;
+  --color-accent-light: #6366F1;
   --color-text-primary: #0A0A0F;
-  --color-text-secondary: #6B6B7E;
+  --color-text-secondary: #5A5A6E;
   --color-border: rgba(0, 0, 0, 0.06);
 
   /* Fonts */
@@ -19,15 +19,20 @@
   --spacing: 0.25rem;
 }
 
-/* CSS Custom Properties */
+/*
+  CSS Custom Properties — Alias-Layer fuer var()-Referenzen in Komponenten.
+  Source of Truth: @theme Block oben.
+  Zusaetzlich hier: --accent-subtle, --shadow-* (kein Tailwind-Aequivalent).
+*/
 :root {
   --bg: #F5F5F7;
   --surface-1: #FFFFFF;
   --surface-2: #EBEBF0;
-  --accent: #6366F1;
-  --accent-light: #818CF8;
+  --accent: #4F46E5;
+  --accent-light: #6366F1;
+  --accent-subtle: rgba(79, 70, 229, 0.08);
   --text-primary: #0A0A0F;
-  --text-secondary: #6B6B7E;
+  --text-secondary: #5A5A6E;
   --border: rgba(0, 0, 0, 0.06);
 
   /* Shadows — subtil auf hellem Grund statt Border-Glows */
@@ -92,6 +97,31 @@ a {
   text-decoration: none;
 }
 
+/* Focus-visible — Accessibility */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* GSAP Animation — Initial states (verhindert Flash) */
+[data-reveal-text] {
+  transform: translateY(100%);
+}
+
+[data-reveal-element] {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+[data-animate] {
+  opacity: 0;
+  transform: translateY(40px);
+}
+
 /* Lenis smooth scroll */
 html.lenis,
 html.lenis body {
@@ -112,4 +142,11 @@ html.lenis body {
 
 .lenis.lenis-smooth iframe {
   pointer-events: none;
+}
+
+@keyframes scrollLine {
+  0%   { transform: scaleY(0); transform-origin: top; }
+  50%  { transform: scaleY(1); transform-origin: top; }
+  51%  { transform: scaleY(1); transform-origin: bottom; }
+  100% { transform: scaleY(0); transform-origin: bottom; }
 }

@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
 import Lenis from 'lenis'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 export function useLenis() {
   const lenisRef = useRef<Lenis | null>(null)
@@ -14,6 +15,9 @@ export function useLenis() {
 
     lenisRef.current = lenis
 
+    // ScrollTrigger mit Lenis-Virtual-Scroll synchronisieren
+    lenis.on('scroll', ScrollTrigger.update)
+
     let rafId: number
 
     function raf(time: number) {
@@ -24,6 +28,7 @@ export function useLenis() {
     rafId = requestAnimationFrame(raf)
 
     return () => {
+      lenis.off('scroll', ScrollTrigger.update)
       cancelAnimationFrame(rafId)
       lenis.destroy()
       lenisRef.current = null

@@ -8,15 +8,15 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 gsap.registerPlugin(ScrollTrigger)
 
 export function useGSAP(
-  callback: (context: gsap.Context) => void,
+  callback: () => void,
   deps: DependencyList = []
 ) {
   const containerRef = useRef<HTMLElement | null>(null)
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      callback(ctx)
-    }, containerRef)
+      callback()
+    }, containerRef.current || undefined)
 
     return () => {
       ctx.revert()
