@@ -12,6 +12,15 @@ export function BigBangHero() {
   const containerRef = useRef<HTMLDivElement>(null)
 
   useGSAP(() => {
+    const isMobile = window.matchMedia('(hover: none) and (pointer: coarse)').matches
+
+    if (isMobile) {
+      gsap.set('.bb-singularity', { opacity: 0, scale: 0 })
+      gsap.set('.bb-bg', { backgroundColor: '#F8F7F5' })
+      gsap.set(['.bb-headline', '.bb-sub'], { opacity: 1, y: 0, scale: 1 })
+      return
+    }
+
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: containerRef.current,
