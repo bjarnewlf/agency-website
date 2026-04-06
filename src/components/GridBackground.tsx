@@ -1,11 +1,10 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {
   motion,
   useMotionValue,
-  useMotionTemplate,
-  useAnimationFrame,
+  useTransform,
 } from 'framer-motion'
 
 const CELL = 40       // Zellgröße in px
@@ -75,14 +74,23 @@ export function GridBackground() {
     return () => window.removeEventListener('mousemove', onMove)
   }, [isTouch, mouseX, mouseY])
 
-  useAnimationFrame(() => {
-    if (isTouch === false) {
+  const rafRef = useRef<number>(0)
+  useEffect(() => {
+    if (isTouch !== false) return
+    const tick = () => {
       offsetX.set((offsetX.get() + SPEED) % CELL)
       offsetY.set((offsetY.get() + SPEED) % CELL)
+      rafRef.current = requestAnimationFrame(tick)
     }
-  })
+    rafRef.current = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(rafRef.current)
+  }, [isTouch, offsetX, offsetY])
 
-  const maskImage = useMotionTemplate`radial-gradient(${SPOTLIGHT}px circle at ${mouseX}px ${mouseY}px, black, transparent)`
+  const maskImage = useTransform(
+    [mouseX, mouseY],
+    ([x, y]: number[]) =>
+      `radial-gradient(${SPOTLIGHT}px circle at ${x}px ${y}px, black, transparent)`,
+  )
 
   if (isTouch !== false) {
     return <div className="fixed inset-0 z-0 pointer-events-none" style={CSS_FALLBACK} />
