@@ -5,8 +5,8 @@ import gsap from 'gsap'
 
 const CELL = 60
 const SEGMENTS = 16
-const STRENGTH = 110
-const RADIUS = 160
+const STRENGTH = 90
+const LENS_RADIUS = 200
 const LINE_COLOR = 'rgba(99, 102, 241, 0.08)'
 const LINE_WIDTH = 1
 
@@ -45,8 +45,8 @@ export function GridBackground() {
     }
     setSize()
 
-    const xTo = gsap.quickTo(mouse.current, 'x', { duration: 0.35, ease: 'power2.out' })
-    const yTo = gsap.quickTo(mouse.current, 'y', { duration: 0.35, ease: 'power2.out' })
+    const xTo = gsap.quickTo(mouse.current, 'x', { duration: 0.4, ease: 'power2.out' })
+    const yTo = gsap.quickTo(mouse.current, 'y', { duration: 0.4, ease: 'power2.out' })
 
     const onMouseMove = (e: MouseEvent) => {
       xTo(e.clientX)
@@ -86,10 +86,11 @@ export function GridBackground() {
           const dist = Math.sqrt(dx * dx + dy * dy)
           let ox = 0
           let oy = 0
-          if (dist >= 1) {
-            const mag = STRENGTH * RADIUS * RADIUS / (dist * dist + RADIUS * RADIUS)
-            ox = (dx / dist) * mag
-            oy = (dy / dist) * mag
+          if (dist < LENS_RADIUS && dist >= 1) {
+            const r = dist / LENS_RADIUS
+            const mag = STRENGTH * Math.sin(Math.PI * r)
+            ox = -(dx / dist) * mag
+            oy = -(dy / dist) * mag
           }
           pts.push({ x: baseX + ox, y: baseY + oy })
         }
@@ -115,10 +116,11 @@ export function GridBackground() {
           const dist = Math.sqrt(dx * dx + dy * dy)
           let ox = 0
           let oy = 0
-          if (dist >= 1) {
-            const mag = STRENGTH * RADIUS * RADIUS / (dist * dist + RADIUS * RADIUS)
-            ox = (dx / dist) * mag
-            oy = (dy / dist) * mag
+          if (dist < LENS_RADIUS && dist >= 1) {
+            const r = dist / LENS_RADIUS
+            const mag = STRENGTH * Math.sin(Math.PI * r)
+            ox = -(dx / dist) * mag
+            oy = -(dy / dist) * mag
           }
           pts.push({ x: baseX + ox, y: baseY + oy })
         }
