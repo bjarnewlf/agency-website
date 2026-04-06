@@ -53,6 +53,13 @@ export function Footer() {
           >
             Impressum
           </a>
+          <a
+            href="/datenschutz"
+            className="text-sm transition-colors duration-200 hover:text-[var(--text-primary)]"
+            style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-inter)' }}
+          >
+            Datenschutz
+          </a>
         </nav>
 
         {/* Domain */}
