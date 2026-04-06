@@ -10,18 +10,36 @@ gsap.registerPlugin(ScrollTrigger)
 
 export function BigBangHero() {
   const containerRef = useRef<HTMLDivElement>(null)
+  const isMobileRef = useRef(false)
+  const animationStartedRef = useRef(false)
+  const pulseRef = useRef<gsap.core.Tween | null>(null)
+
+  function handleTap() {
+    if (!isMobileRef.current || animationStartedRef.current) return
+    animationStartedRef.current = true
+    pulseRef.current?.kill()
+
+    const tl = gsap.timeline()
+    tl.to('.bb-bg', { backgroundColor: '#F8F7F5', duration: 10 }, 0)
+    tl.to('.bb-singularity', { scale: 0, opacity: 0, duration: 1.5, ease: 'power2.in' }, 0)
+    tl.fromTo('.bb-burst', { scale: 0, opacity: 0 }, { scale: 6, opacity: 1, duration: 3.5, ease: 'power2.out' }, 0)
+    tl.to('.bb-burst', { opacity: 0, duration: 3 }, 3)
+    tl.fromTo('.bb-headline', { scale: 0.03, opacity: 0 }, { scale: 1, opacity: 1, duration: 4.5, ease: 'power3.out' }, 1.5)
+    tl.fromTo('.bb-sub', { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 2, stagger: 0.4 }, 5.5)
+  }
 
   useGSAP(() => {
-    const isMobile = window.matchMedia('(hover: none) and (pointer: coarse)').matches
+    isMobileRef.current = window.matchMedia('(hover: none) and (pointer: coarse)').matches
 
-    if (isMobile) {
-      const tl = gsap.timeline()
-      tl.to('.bb-bg', { backgroundColor: '#F8F7F5', duration: 10 }, 0)
-      tl.to('.bb-singularity', { scale: 0, opacity: 0, duration: 1.5, ease: 'power2.in' }, 0)
-      tl.fromTo('.bb-burst', { scale: 0, opacity: 0 }, { scale: 6, opacity: 1, duration: 3.5, ease: 'power2.out' }, 0)
-      tl.to('.bb-burst', { opacity: 0, duration: 3 }, 3)
-      tl.fromTo('.bb-headline', { scale: 0.03, opacity: 0 }, { scale: 1, opacity: 1, duration: 4.5, ease: 'power3.out' }, 1.5)
-      tl.fromTo('.bb-sub', { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 2, stagger: 0.4 }, 5.5)
+    if (isMobileRef.current) {
+      pulseRef.current = gsap.to('.bb-singularity', {
+        scale: 1.5,
+        opacity: 0.4,
+        duration: 1.2,
+        repeat: -1,
+        yoyo: true,
+        ease: 'sine.inOut',
+      })
       return
     }
 
@@ -90,6 +108,7 @@ export function BigBangHero() {
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
       style={{ backgroundColor: '#000000' }}
       aria-label="Hero"
+      onTouchStart={handleTap}
     >
       <div
         className="bb-bg absolute inset-0"
