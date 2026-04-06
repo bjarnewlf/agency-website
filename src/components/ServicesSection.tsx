@@ -2,6 +2,26 @@
 
 import { services } from '@/data/content'
 
+function highlightRow(row: HTMLElement) {
+  row.style.background = 'rgba(99,102,241,0.03)'
+  const num = row.querySelector<HTMLElement>('.svc-num')
+  const title = row.querySelector<HTMLElement>('.svc-title')
+  const arrow = row.querySelector<HTMLElement>('.svc-arrow')
+  if (num) num.style.color = 'rgba(99,102,241,0.45)'
+  if (title) title.style.color = '#6366F1'
+  if (arrow) { arrow.style.color = 'rgba(99,102,241,1)'; arrow.style.transform = 'translateX(4px)' }
+}
+
+function resetRow(row: HTMLElement) {
+  row.style.background = 'transparent'
+  const num = row.querySelector<HTMLElement>('.svc-num')
+  const title = row.querySelector<HTMLElement>('.svc-title')
+  const arrow = row.querySelector<HTMLElement>('.svc-arrow')
+  if (num) num.style.color = 'rgba(99,102,241,0.15)'
+  if (title) title.style.color = 'var(--text-primary)'
+  if (arrow) { arrow.style.color = 'rgba(99,102,241,0.4)'; arrow.style.transform = 'translateX(0)' }
+}
+
 export function ServicesSection() {
   return (
     <section
@@ -12,7 +32,7 @@ export function ServicesSection() {
     >
       <div className="mx-auto" style={{ maxWidth: '1200px' }}>
         {/* Section Header */}
-        <div className="mb-16" style={{ paddingLeft: 'clamp(0rem, 0%, 0rem)' }}>
+        <div className="mb-16">
           <p className="eyebrow mb-4" data-animate>
             Leistungen
           </p>
@@ -25,7 +45,6 @@ export function ServicesSection() {
         <div>
           {services.map((service, i) => (
             <div key={service.title}>
-              {/* Divider */}
               <div
                 className="w-full"
                 style={{ height: '1px', backgroundColor: 'var(--border)' }}
@@ -39,25 +58,12 @@ export function ServicesSection() {
                   transition: 'background 0.25s ease',
                   cursor: 'default',
                 }}
-                onMouseEnter={(e) => {
+                onMouseEnter={(e) => highlightRow(e.currentTarget)}
+                onMouseLeave={(e) => resetRow(e.currentTarget)}
+                onTouchStart={(e) => highlightRow(e.currentTarget)}
+                onTouchEnd={(e) => {
                   const row = e.currentTarget
-                  row.style.background = 'rgba(99,102,241,0.03)'
-                  const num = row.querySelector<HTMLElement>('.svc-num')
-                  const title = row.querySelector<HTMLElement>('.svc-title')
-                  const arrow = row.querySelector<HTMLElement>('.svc-arrow')
-                  if (num) num.style.color = 'rgba(99,102,241,0.45)'
-                  if (title) title.style.color = '#6366F1'
-                  if (arrow) { arrow.style.color = 'rgba(99,102,241,1)'; arrow.style.transform = 'translateX(4px)' }
-                }}
-                onMouseLeave={(e) => {
-                  const row = e.currentTarget
-                  row.style.background = 'transparent'
-                  const num = row.querySelector<HTMLElement>('.svc-num')
-                  const title = row.querySelector<HTMLElement>('.svc-title')
-                  const arrow = row.querySelector<HTMLElement>('.svc-arrow')
-                  if (num) num.style.color = 'rgba(99,102,241,0.15)'
-                  if (title) title.style.color = 'var(--text-primary)'
-                  if (arrow) { arrow.style.color = 'rgba(99,102,241,0.4)'; arrow.style.transform = 'translateX(0)' }
+                  setTimeout(() => resetRow(row), 300)
                 }}
               >
                 {/* Dekorative Ziffer */}
@@ -138,7 +144,6 @@ export function ServicesSection() {
               </div>
             </div>
           ))}
-          {/* Abschluss-Divider */}
           <div
             className="w-full"
             style={{ height: '1px', backgroundColor: 'var(--border)' }}
