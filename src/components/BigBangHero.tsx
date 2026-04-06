@@ -15,9 +15,13 @@ export function BigBangHero() {
     const isMobile = window.matchMedia('(hover: none) and (pointer: coarse)').matches
 
     if (isMobile) {
-      gsap.set('.bb-singularity', { opacity: 0, scale: 0 })
-      gsap.set('.bb-bg', { backgroundColor: '#F8F7F5' })
-      gsap.set(['.bb-headline', '.bb-sub'], { opacity: 1, y: 0, scale: 1 })
+      const tl = gsap.timeline()
+      tl.to('.bb-bg', { backgroundColor: '#F8F7F5', duration: 10 }, 0)
+      tl.to('.bb-singularity', { scale: 0, opacity: 0, duration: 1.5, ease: 'power2.in' }, 0)
+      tl.fromTo('.bb-burst', { scale: 0, opacity: 0 }, { scale: 6, opacity: 1, duration: 3.5, ease: 'power2.out' }, 0)
+      tl.to('.bb-burst', { opacity: 0, duration: 3 }, 3)
+      tl.fromTo('.bb-headline', { scale: 0.03, opacity: 0 }, { scale: 1, opacity: 1, duration: 4.5, ease: 'power3.out' }, 1.5)
+      tl.fromTo('.bb-sub', { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 2, stagger: 0.4 }, 5.5)
       return
     }
 
