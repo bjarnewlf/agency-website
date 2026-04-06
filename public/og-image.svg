@@ -1,0 +1,117 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="1200"
+  height="630"
+  viewBox="0 0 1200 630"
+>
+  <defs>
+    <!-- Subtiles Dot-Grid als Hintergrundtextur -->
+    <pattern id="dot-grid" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+      <circle cx="20" cy="20" r="1" fill="rgba(255,255,255,0.045)" />
+    </pattern>
+
+    <!-- Lila Radial-Glow rechts -->
+    <radialGradient id="accent-glow" cx="75%" cy="50%" r="45%" fx="75%" fy="50%">
+      <stop offset="0%"   stop-color="#6366F1" stop-opacity="0.18" />
+      <stop offset="60%"  stop-color="#6366F1" stop-opacity="0.04" />
+      <stop offset="100%" stop-color="#6366F1" stop-opacity="0"    />
+    </radialGradient>
+
+    <!-- Glow hinter der Wortmarke -->
+    <radialGradient id="wordmark-glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"   stop-color="#6366F1" stop-opacity="0.12" />
+      <stop offset="100%" stop-color="#6366F1" stop-opacity="0"    />
+    </radialGradient>
+  </defs>
+
+  <!-- Hintergrund: Void -->
+  <rect width="1200" height="630" fill="#0A0A0F" />
+
+  <!-- Dot-Grid-Overlay -->
+  <rect width="1200" height="630" fill="url(#dot-grid)" />
+
+  <!-- Akzent-Glow rechts -->
+  <rect width="1200" height="630" fill="url(#accent-glow)" />
+
+  <!-- ————————————————————————————————————————
+       Gravitations-Ringe: dekoratives Element rechts
+       Referenz auf das Website-Gravitationsfeld-Motiv
+  ———————————————————————————————————————— -->
+  <g transform="translate(940, 315)" opacity="0.55">
+    <!-- Äußerste Ringe: sehr leise -->
+    <circle cx="0" cy="0" r="220" fill="none" stroke="#6366F1" stroke-width="0.5"  opacity="0.15" />
+    <circle cx="0" cy="0" r="185" fill="none" stroke="#6366F1" stroke-width="0.5"  opacity="0.2"  />
+    <circle cx="0" cy="0" r="150" fill="none" stroke="#6366F1" stroke-width="0.75" opacity="0.28" />
+    <circle cx="0" cy="0" r="115" fill="none" stroke="#6366F1" stroke-width="0.75" opacity="0.35" />
+    <circle cx="0" cy="0" r="82"  fill="none" stroke="#6366F1" stroke-width="1"    opacity="0.45" />
+    <circle cx="0" cy="0" r="52"  fill="none" stroke="#6366F1" stroke-width="1.5"  opacity="0.55" />
+    <circle cx="0" cy="0" r="28"  fill="none" stroke="#6366F1" stroke-width="2"    opacity="0.7"  />
+    <!-- Kern -->
+    <circle cx="0" cy="0" r="10"  fill="#6366F1" opacity="0.5" />
+    <circle cx="0" cy="0" r="4"   fill="#6366F1" opacity="0.9" />
+  </g>
+
+  <!-- Schwache Lensing-Ellipse -->
+  <ellipse cx="940" cy="315" rx="260" ry="180"
+    fill="none" stroke="#6366F1" stroke-width="0.5"
+    opacity="0.1"
+    transform="rotate(-18, 940, 315)"
+  />
+
+  <!-- ————————————————————————————————————————
+       Content — linksbündig, großzügiger Margin
+  ———————————————————————————————————————— -->
+
+  <!-- Wordmark-Glow hinter "0." -->
+  <ellipse cx="128" cy="108" rx="80" ry="60" fill="url(#wordmark-glow)" />
+
+  <!-- Wortmarke "0." — dominant, oben links -->
+  <text
+    x="80"
+    y="140"
+    font-family="'Syne', 'Arial Black', system-ui, sans-serif"
+    font-size="96"
+    font-weight="800"
+    letter-spacing="-0.04em"
+    fill="#FFFFFF"
+  >0.</text>
+
+  <!-- Trennlinie -->
+  <rect x="80" y="210" width="48" height="2" fill="#6366F1" opacity="0.8" rx="1" />
+
+  <!-- Hauptzeile -->
+  <text
+    x="80"
+    y="320"
+    font-family="'Syne', 'Arial Black', system-ui, sans-serif"
+    font-size="54"
+    font-weight="700"
+    letter-spacing="-0.03em"
+    fill="#FFFFFF"
+  >Wo Ideen</text>
+  <text
+    x="80"
+    y="384"
+    font-family="'Syne', 'Arial Black', system-ui, sans-serif"
+    font-size="54"
+    font-weight="700"
+    letter-spacing="-0.03em"
+    fill="#FFFFFF"
+  >Masse gewinnen.</text>
+
+  <!-- Subzeile / Domain -->
+  <text
+    x="80"
+    y="468"
+    font-family="'JetBrains Mono', 'Courier New', monospace"
+    font-size="18"
+    font-weight="400"
+    letter-spacing="0.12em"
+    fill="#6366F1"
+    opacity="0.85"
+  >nullpunkt.cc</text>
+
+  <!-- Accent-Bar unten links — Marken-Anker -->
+  <rect x="80" y="560" width="120" height="2" fill="#6366F1" opacity="0.4" rx="1" />
+  <rect x="80" y="560" width="36"  height="2" fill="#6366F1" opacity="1"   rx="1" />
+</svg>

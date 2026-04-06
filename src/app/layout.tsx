@@ -33,6 +33,15 @@ export const metadata: Metadata = {
     title: 'Nullpunkt — Digitale Produkte',
     description: 'Digitale Produkte. Design und Engineering aus einer Hand.',
     type: 'website',
+    url: 'https://nullpunkt.cc',
+    images: [
+      {
+        url: 'https://nullpunkt.cc/og-image.svg',
+        width: 1200,
+        height: 630,
+        alt: 'Nullpunkt — Wo Ideen Masse gewinnen.',
+      },
+    ],
   },
 }
 
