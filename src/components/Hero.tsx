@@ -1,6 +1,5 @@
 import type { ReactNode } from 'react'
 import { HeroAnimations } from '@/components/HeroAnimations'
-import { GravitationalField } from '@/components/GravitationalField'
 
 
 function RevealLine({
@@ -29,36 +28,29 @@ export function Hero() {
       className="relative min-h-screen flex flex-col justify-center overflow-hidden"
       aria-label="Hero"
     >
-      {/* Radialer Hintergrundverlauf zentriert auf das SVG */}
+
+      {/* Grid Pattern Background */}
       <div
-        className="absolute pointer-events-none"
-        aria-hidden="true"
+        className="absolute inset-0 z-0 pointer-events-none"
         style={{
-          width: '680px',
-          height: '680px',
-          background: 'radial-gradient(circle at center, rgba(79,70,229,0.035) 0%, transparent 65%)',
-          top: '50%',
-          right: '-80px',
-          transform: 'translateY(-50%)',
-          borderRadius: '50%',
+          backgroundSize: '60px 60px',
+          backgroundImage: `
+            linear-gradient(to right, rgba(99, 102, 241, 0.04) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(99, 102, 241, 0.04) 1px, transparent 1px)
+          `,
+          maskImage: 'linear-gradient(to bottom, transparent, black 20%, black 80%, transparent)',
+          WebkitMaskImage: 'linear-gradient(to bottom, transparent, black 20%, black 80%, transparent)',
         }}
       />
 
-      {/* Gravitationsfeld — rechts-mittig, bricht aus dem Grid aus */}
+      {/* Aurora Glow Background */}
       <div
-        id="gravitational-field-wrapper"
-        className="absolute pointer-events-none"
+        className="absolute inset-0 z-0 pointer-events-none"
         style={{
-          right: '-80px',
-          top: '50%',
-          transform: 'translateY(-50%)',
-          zIndex: 0,
-          opacity: 0,
+          background: 'radial-gradient(circle at 50% 50%, rgba(79, 70, 229, 0.08) 0%, transparent 60%)',
+          animation: 'breathe 8s ease-in-out infinite alternate',
         }}
-        aria-hidden="true"
-      >
-        <GravitationalField size={480} />
-      </div>
+      />
 
       {/* Content — links ausgerichtet */}
       <div
