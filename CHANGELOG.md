@@ -1,5 +1,41 @@
 # Changelog
 
+## 2026-04-06 — Tuning-Sprint (Session heute)
+
+### Neu
+
+- **BigBangHero** — Urknall-Effekt als neues Hero-Konzept. ScrollTrigger-Pin + scrub: schwarzer Screen, "0." als Singularität, Lichtburst aus der Mitte, Headline explodiert rein, Übergang zu hellem Design. Ersetzt Hero.tsx.
+- **Navbar Dark-Phase** — Navigation erkennt beim Seitenstart den dunklen Hero-Hintergrund und wechselt auf `rgba(0,0,0,0.35)` + weißer Schrift. Smooth Transition zu hellem Design beim Scrollen.
+- **MagneticButton auf CTAs** — Beide Hero-CTAs ("Projekte ansehen", "Projekt starten") und Contact-CTA mit GSAP-Proximity-Magnetismus gewrappt.
+- **Services Row Hover** — Hover-State auf Service-Rows: Ziffer leuchtet auf, Titel wird lila, Pfeil translateX. Touch-Feedback für Mobile via `onTouchStart`/`onTouchEnd`.
+- **BridgeSection** — Positionierungssatz zwischen Hero und Work: *"Eine Agentur. Ein Entwickler. KI als Werkzeug, nicht als Buzzword."*
+- **AboutSection** — Reaktiviert mit echtem Inhalt: drei Blöcke Wer / Wie / Warum. Zwischen Services und Contact eingebunden.
+- **Favicon SVG** — "0." als SVG-Favicon in `/public/favicon.svg`, in `layout.tsx` referenziert.
+
+### Geändert
+
+- **ContactSection** — Subtext: *"Kein Pitch-Deck. Kein Formular. Einfach schreiben."*
+- **Hero-Subline** — Von "Design und Engineering ohne Kompromiss." zu *"KI-Produkte. Gebaut, nicht geplant."*
+- **Services-Texte** — Alle drei Services geschärft: "Interface Design" → "Produkt & Interface", "Strategie & Aufbau" → "Technische Strategie". Beschreibungen konkreter.
+- **Work-Kartentext** — *"Erste Projekte in Entwicklung. Case Studies folgen, wenn sie fertig sind — nicht vorher."*
+- **Smart Navbar** — Hide/Show beim Scrollen (GSAP pixelbasiert, aus vorheriger Session).
+- **Animated Grid** — Infinite Grid mit Spotlight-Reveal per Radial-Gradient-Maske auf Mausposition (Framer Motion SVG, aus vorheriger Session).
+
+### Entfernt
+
+- `Hero.tsx` — durch BigBangHero ersetzt
+- `HeroAnimations.tsx` — nicht mehr benötigt
+- Fake-Projekte aus `content.ts` (`VetConnect`, `Horizon Dashboard`, `Meridian Brand`)
+
+---
+
+**Statistik**
+- 10 Commits diese Session
+- tsc: Clean
+- Build: Clean (Vercel)
+
+---
+
 ## 2026-04-06 — Upgrade-Sprint Session
 
 Website durchlief zwei Phasen heute: grosse Redesign-Umsetzung in der Nacht (Hybrid E+A Design mit typografischer Dramatik), dann Feinschliff mit interaktiven Elementen (animiertes Grid, Custom Cursor, Performance-Tuning).
@@ -35,5 +71,5 @@ Website durchlief zwei Phasen heute: grosse Redesign-Umsetzung in der Nacht (Hyb
 
 **Getestet & freigegeben**
 - TypeScript: Clean
-- Build: Clean  
+- Build: Clean
 - QA: Reviewed
