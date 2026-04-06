@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { HeroAnimations } from '@/components/HeroAnimations'
+import { MagneticButton } from '@/components/MagneticButton'
 
 
 function RevealLine({
@@ -87,24 +88,28 @@ export function Hero() {
           data-reveal-element
           data-reveal-delay="3"
         >
-          <a
-            href="#work"
-            className="inline-flex items-center gap-2 font-semibold text-white rounded-lg px-7 py-3.5 transition-all duration-200 hover:opacity-90 hover:scale-[0.98]"
-            style={{
-              backgroundColor: '#6366F1',
-              boxShadow: 'var(--shadow-md)',
-              fontFamily: 'var(--font-syne)',
-            }}
-          >
-            Projekte ansehen
-          </a>
-          <a
-            href="#contact"
-            className="font-medium transition-colors duration-200 hover:text-[var(--text-primary)]"
-            style={{ color: 'var(--text-secondary)' }}
-          >
-            Projekt starten &rarr;
-          </a>
+          <MagneticButton>
+            <a
+              href="#work"
+              className="inline-flex items-center gap-2 font-semibold text-white rounded-lg px-7 py-3.5 transition-all duration-200 hover:opacity-90 hover:scale-[0.98]"
+              style={{
+                backgroundColor: '#6366F1',
+                boxShadow: 'var(--shadow-md)',
+                fontFamily: 'var(--font-syne)',
+              }}
+            >
+              Projekte ansehen
+            </a>
+          </MagneticButton>
+          <MagneticButton>
+            <a
+              href="#contact"
+              className="font-medium transition-colors duration-200 hover:text-[var(--text-primary)]"
+              style={{ color: 'var(--text-secondary)' }}
+            >
+              Projekt starten &rarr;
+            </a>
+          </MagneticButton>
         </div>
       </div>
 

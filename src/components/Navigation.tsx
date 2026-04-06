@@ -1,6 +1,7 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import gsap from 'gsap'
 import { useActiveSection } from '@/lib/hooks/useActiveSection'
 
 const NAV_LINKS = [
@@ -12,6 +13,31 @@ const NAV_LINKS = [
 export function Navigation() {
   const [menuOpen, setMenuOpen] = useState(false)
   const { activeSection } = useActiveSection()
+
+  useEffect(() => {
+    let lastY = window.scrollY
+    const header = document.querySelector('header')
+    if (!header) return
+
+    const onScroll = () => {
+      const currentY = window.scrollY
+      const diff = currentY - lastY
+
+      if (currentY < 80) {
+        gsap.to(header, { y: 0, duration: 0.35, ease: 'power2.out' })
+      } else if (diff > 0) {
+        // nach unten
+        gsap.to(header, { y: '-100%', duration: 0.35, ease: 'power2.inOut' })
+      } else if (diff < 0) {
+        // nach oben
+        gsap.to(header, { y: 0, duration: 0.35, ease: 'power2.out' })
+      }
+      lastY = currentY
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
   return (
     <header

@@ -13,7 +13,7 @@ export function WorkSection() {
             <p className="eyebrow mb-4" data-animate>
               REFERENZEN
             </p>
-            <h2 data-animate>
+            <h2 data-split-headline>
               In Arbeit.
             </h2>
           </div>

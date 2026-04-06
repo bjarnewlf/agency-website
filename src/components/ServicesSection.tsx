@@ -14,8 +14,8 @@ export function ServicesSection() {
           <p className="eyebrow mb-4" data-animate>
             Leistungen
           </p>
-          <h2 data-animate>
-            Was wir<br />bauen.
+          <h2 data-split-headline>
+            Was wir bauen.
           </h2>
         </div>
 
