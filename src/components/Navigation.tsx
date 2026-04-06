@@ -12,6 +12,7 @@ const NAV_LINKS = [
 
 export function Navigation() {
   const [menuOpen, setMenuOpen] = useState(false)
+  const [isDark, setIsDark] = useState(true)
   const { activeSection } = useActiveSection()
   const headerRef = useRef<HTMLElement>(null)
 
@@ -19,13 +20,22 @@ export function Navigation() {
     const header = headerRef.current
     if (!header) return
 
-    const HEADER_H = header.offsetHeight  // ~72px
+    const HEADER_H = header.offsetHeight
     let lastY = window.scrollY
     let hidden = false
+
+    const checkDark = (y: number) => {
+      setIsDark(y < window.innerHeight * 0.9)
+    }
+
+    // Initial check
+    checkDark(window.scrollY)
 
     const onScroll = () => {
       const y = window.scrollY
       const diff = y - lastY
+
+      checkDark(y)
 
       if (y < 80) {
         if (hidden) {
@@ -52,11 +62,12 @@ export function Navigation() {
       ref={headerRef}
       className="fixed top-0 left-0 right-0 z-50"
       style={{
-        background: 'rgba(255, 255, 255, 0.75)',
-        backdropFilter: 'blur(20px)',
-        WebkitBackdropFilter: 'blur(20px)',
-        borderBottom: '1px solid var(--border)',
-        boxShadow: '0 1px 0 rgba(0,0,0,0.04)',
+        background: isDark ? 'transparent' : 'rgba(255, 255, 255, 0.75)',
+        backdropFilter: isDark ? 'none' : 'blur(20px)',
+        WebkitBackdropFilter: isDark ? 'none' : 'blur(20px)',
+        borderBottom: isDark ? '1px solid rgba(255,255,255,0.1)' : '1px solid var(--border)',
+        boxShadow: isDark ? 'none' : '0 1px 0 rgba(0,0,0,0.04)',
+        transition: 'background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease',
       }}
     >
       <nav
@@ -73,7 +84,8 @@ export function Navigation() {
             fontSize: '1.25rem',
             fontWeight: 700,
             letterSpacing: '0.05em',
-            color: 'var(--text-primary)',
+            color: isDark ? '#FFFFFF' : 'var(--text-primary)',
+            transition: 'color 0.4s ease',
           }}
           aria-label="Nullpunkt — Startseite"
         >
@@ -94,19 +106,22 @@ export function Navigation() {
                   className="text-sm transition-colors duration-200"
                   style={{
                     fontFamily: 'var(--font-inter)',
-                    color: isActive ? 'var(--text-primary)' : 'var(--text-secondary)',
+                    color: isDark
+                      ? (isActive ? '#FFFFFF' : 'rgba(255,255,255,0.7)')
+                      : (isActive ? 'var(--text-primary)' : 'var(--text-secondary)'),
                     letterSpacing: '0.01em',
                     fontWeight: isActive ? 600 : 500,
                     borderBottom: isActive ? '1px solid var(--accent)' : '1px solid transparent',
                     paddingBottom: '2px',
+                    transition: 'color 0.4s ease',
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.color = 'var(--text-primary)'
+                    e.currentTarget.style.color = isDark ? '#FFFFFF' : 'var(--text-primary)'
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.color = isActive
-                      ? 'var(--text-primary)'
-                      : 'var(--text-secondary)'
+                    e.currentTarget.style.color = isDark
+                      ? (isActive ? '#FFFFFF' : 'rgba(255,255,255,0.7)')
+                      : (isActive ? 'var(--text-primary)' : 'var(--text-secondary)')
                   }}
                 >
                   {link.label}
@@ -135,28 +150,28 @@ export function Navigation() {
           <span
             className="block w-5 h-px transition-all duration-200"
             style={{
-              background: 'var(--text-primary)',
+              background: isDark ? '#FFFFFF' : 'var(--text-primary)',
               transform: menuOpen ? 'translateY(4px) rotate(45deg)' : 'none',
             }}
           />
           <span
             className="block w-5 h-px transition-all duration-200"
             style={{
-              background: 'var(--text-primary)',
+              background: isDark ? '#FFFFFF' : 'var(--text-primary)',
               opacity: menuOpen ? 0 : 1,
             }}
           />
           <span
             className="block w-5 h-px transition-all duration-200"
             style={{
-              background: 'var(--text-primary)',
+              background: isDark ? '#FFFFFF' : 'var(--text-primary)',
               transform: menuOpen ? 'translateY(-4px) rotate(-45deg)' : 'none',
             }}
           />
         </button>
       </nav>
 
-      {/* Mobile Menu — immer im DOM, per CSS gesteuert */}
+      {/* Mobile Menu */}
       <div
         id="mobile-menu"
         className="md:hidden"

@@ -1,3 +1,5 @@
+'use client'
+
 import { services } from '@/data/content'
 
 export function ServicesSection() {
@@ -33,10 +35,34 @@ export function ServicesSection() {
                 className="grid items-center py-8 gap-6"
                 style={{
                   gridTemplateColumns: '80px 1fr auto',
+                  borderRadius: '8px',
+                  transition: 'background 0.25s ease',
+                  cursor: 'default',
+                }}
+                onMouseEnter={(e) => {
+                  const row = e.currentTarget
+                  row.style.background = 'rgba(99,102,241,0.03)'
+                  const num = row.querySelector<HTMLElement>('.svc-num')
+                  const title = row.querySelector<HTMLElement>('.svc-title')
+                  const arrow = row.querySelector<HTMLElement>('.svc-arrow')
+                  if (num) num.style.color = 'rgba(99,102,241,0.45)'
+                  if (title) title.style.color = '#6366F1'
+                  if (arrow) { arrow.style.color = 'rgba(99,102,241,1)'; arrow.style.transform = 'translateX(4px)' }
+                }}
+                onMouseLeave={(e) => {
+                  const row = e.currentTarget
+                  row.style.background = 'transparent'
+                  const num = row.querySelector<HTMLElement>('.svc-num')
+                  const title = row.querySelector<HTMLElement>('.svc-title')
+                  const arrow = row.querySelector<HTMLElement>('.svc-arrow')
+                  if (num) num.style.color = 'rgba(99,102,241,0.15)'
+                  if (title) title.style.color = 'var(--text-primary)'
+                  if (arrow) { arrow.style.color = 'rgba(99,102,241,0.4)'; arrow.style.transform = 'translateX(0)' }
                 }}
               >
                 {/* Dekorative Ziffer */}
                 <span
+                  className="svc-num"
                   aria-hidden="true"
                   style={{
                     fontFamily: 'var(--font-syne)',
@@ -46,6 +72,7 @@ export function ServicesSection() {
                     lineHeight: 1,
                     color: 'rgba(99, 102, 241, 0.15)',
                     userSelect: 'none',
+                    transition: 'color 0.25s ease',
                   }}
                 >
                   {String(i + 1).padStart(2, '0')}
@@ -54,12 +81,14 @@ export function ServicesSection() {
                 {/* Service Name + Beschreibung */}
                 <div>
                   <h3
+                    className="svc-title"
                     style={{
                       fontFamily: 'var(--font-syne)',
                       fontSize: '28px',
                       fontWeight: 700,
                       color: 'var(--text-primary)',
                       marginBottom: '0.375rem',
+                      transition: 'color 0.25s ease',
                     }}
                   >
                     {service.title}
@@ -94,9 +123,12 @@ export function ServicesSection() {
                     ))}
                   </div>
                   <span
+                    className="svc-arrow"
                     style={{
                       fontSize: '1.25rem',
                       color: 'rgba(99, 102, 241, 0.4)',
+                      transition: 'color 0.25s ease, transform 0.25s ease',
+                      display: 'inline-block',
                     }}
                     aria-hidden="true"
                   >

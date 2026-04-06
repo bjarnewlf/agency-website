@@ -26,6 +26,9 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: 'Nullpunkt — Digitale Produkte',
   description: 'Digitale Produkte. Design und Engineering aus einer Hand.',
+  icons: {
+    icon: '/favicon.svg',
+  },
   openGraph: {
     title: 'Nullpunkt — Digitale Produkte',
     description: 'Digitale Produkte. Design und Engineering aus einer Hand.',

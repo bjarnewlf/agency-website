@@ -1,4 +1,7 @@
+'use client'
+
 import { contactEmail } from '@/data/content'
+import { MagneticButton } from '@/components/MagneticButton'
 
 export function ContactSection() {
   return (
@@ -33,22 +36,24 @@ export function ContactSection() {
             marginBottom: '2.5rem',
           }}
         >
-          Lass uns reden.
+          Kein Pitch-Deck. Kein Formular. Einfach schreiben.
         </p>
 
         <div data-animate className="flex flex-col items-center gap-4">
-          <a
-            href={`mailto:${contactEmail}`}
-            className="inline-flex items-center font-semibold text-white rounded-lg px-8 py-4 transition-all duration-200 hover:opacity-90 hover:scale-[0.98]"
-            style={{
-              backgroundColor: '#6366F1',
-              boxShadow: 'var(--shadow-md)',
-              fontFamily: 'var(--font-syne)',
-              fontSize: '1rem',
-            }}
-          >
-            Projekt starten
-          </a>
+          <MagneticButton>
+            <a
+              href={`mailto:${contactEmail}`}
+              className="inline-flex items-center font-semibold text-white rounded-lg px-8 py-4 transition-all duration-200 hover:opacity-90 hover:scale-[0.98]"
+              style={{
+                backgroundColor: '#6366F1',
+                boxShadow: 'var(--shadow-md)',
+                fontFamily: 'var(--font-syne)',
+                fontSize: '1rem',
+              }}
+            >
+              Projekt starten
+            </a>
+          </MagneticButton>
 
           <a
             href={`mailto:${contactEmail}`}
