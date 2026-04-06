@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 
-const SECTION_IDS = ['work', 'services', 'about', 'contact'] as const
+const SECTION_IDS = ['work', 'services', 'contact'] as const
 type SectionId = (typeof SECTION_IDS)[number]
 
 export function useActiveSection(): { activeSection: string | null } {

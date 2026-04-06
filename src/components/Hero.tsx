@@ -1,7 +1,6 @@
 import type { ReactNode } from 'react'
 import { HeroAnimations } from '@/components/HeroAnimations'
 
-// Wrapper fuer spaetere GSAP Text-Reveal Animation
 function RevealLine({
   children,
   delay = 0,
@@ -25,144 +24,113 @@ function RevealLine({
 export function Hero() {
   return (
     <section
-      className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden px-6 text-center"
+      className="relative min-h-screen flex flex-col justify-center overflow-hidden"
       aria-label="Hero"
     >
-      {/* Subtiles Grid-Pattern — Accent-Farbe mit sehr niedriger Opacity */}
+      {/* Dot-Grid-Pattern */}
       <div
         className="absolute inset-0 pointer-events-none"
         aria-hidden="true"
         style={{
-          backgroundImage: `
-            linear-gradient(rgba(99, 102, 241, 0.05) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(99, 102, 241, 0.05) 1px, transparent 1px)
-          `,
+          backgroundImage: `radial-gradient(circle, rgba(99, 102, 241, 0.04) 1px, transparent 1px)`,
           backgroundSize: '64px 64px',
         }}
       />
 
-      {/* Dezenter Accent-Glow in der Mitte */}
+      {/* Dezenter Indigo-Glow links-mittig */}
       <div
         className="absolute pointer-events-none"
         aria-hidden="true"
         style={{
-          width: '600px',
-          height: '600px',
+          width: '700px',
+          height: '700px',
           background:
             'radial-gradient(circle, rgba(99, 102, 241, 0.07) 0%, transparent 70%)',
           top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
+          left: '8%',
+          transform: 'translate(-20%, -50%)',
         }}
       />
 
-      {/* Content */}
-      <div className="relative z-10 flex flex-col items-center">
-        {/* Eyebrow Label */}
+      {/* Content — links ausgerichtet */}
+      <div
+        className="relative z-10 w-full mx-auto px-6"
+        style={{
+          maxWidth: '1200px',
+          paddingLeft: 'clamp(1.5rem, 12%, 10rem)',
+          paddingRight: 'clamp(1.5rem, 6%, 4rem)',
+          paddingTop: '6rem',
+          paddingBottom: '6rem',
+        }}
+      >
+        {/* Eyebrow */}
         <p
-          className="text-xs tracking-[0.15em] uppercase font-medium mb-6"
-          style={{
-            color: 'var(--accent)',
-            fontFamily: 'var(--font-inter)',
-          }}
+          className="eyebrow mb-6"
           data-reveal-element
           data-reveal-delay="0"
         >
-          Digital Craftsmanship
+          KI-Agentur
         </p>
 
-        {/* Haupt-Headline — Syne, gross, gradient */}
+        {/* H1 — dreizeilig, links */}
         <h1
-          className="font-bold leading-none mb-8"
-          style={{
-            fontFamily: 'var(--font-syne)',
-            fontSize: 'clamp(3.5rem, 10vw, 9rem)',
-            letterSpacing: '-0.04em',
-            lineHeight: '0.92',
-          }}
-          data-reveal-element
-          data-reveal-delay="1"
+          className="mb-8"
         >
           <RevealLine delay={0}>
-            <span
-              style={{
-                background:
-                  'linear-gradient(135deg, #0A0A0F 0%, #6B6B7E 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-              }}
-            >
-              We craft
-            </span>
+            <span style={{ color: '#0A0A0F' }}>Wo Ideen</span>
           </RevealLine>
           <RevealLine delay={80}>
-            <span
-              style={{
-                background:
-                  'linear-gradient(135deg, #4F46E5 0%, #6366F1 50%, #818CF8 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-              }}
-            >
-              digital
-            </span>
+            <span style={{ color: '#6366F1' }}>Masse</span>
           </RevealLine>
           <RevealLine delay={160}>
-            <span
-              style={{
-                background:
-                  'linear-gradient(135deg, #0A0A0F 0%, #6B6B7E 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-              }}
-            >
-              experiences.
-            </span>
+            <span style={{ color: '#0A0A0F' }}>gewinnen.</span>
           </RevealLine>
         </h1>
 
-        {/* Subline — Inter, ruhig */}
+        {/* Subline */}
         <p
-          className="max-w-md leading-relaxed"
+          className="mb-10"
           style={{
             fontFamily: 'var(--font-inter)',
             fontSize: '1.125rem',
             color: 'var(--text-secondary)',
             lineHeight: '1.7',
+            maxWidth: '420px',
           }}
           data-reveal-element
           data-reveal-delay="2"
         >
-          Design-driven development for forward-thinking companies.
-          We build fast, accessible and beautiful products.
+          Design und Engineering ohne Kompromiss.
         </p>
 
         {/* CTAs */}
         <div
-          className="flex items-center gap-6 mt-10"
+          className="flex items-center gap-6"
           data-reveal-element
           data-reveal-delay="3"
         >
           <a
             href="#work"
-            className="inline-flex items-center gap-2 font-semibold text-white bg-[var(--accent)] rounded-lg px-7 py-3.5 transition-all duration-200 hover:opacity-90 hover:scale-[0.98]"
-            style={{ boxShadow: 'var(--shadow-md)', fontFamily: 'var(--font-syne)' }}
+            className="inline-flex items-center gap-2 font-semibold text-white rounded-lg px-7 py-3.5 transition-all duration-200 hover:opacity-90 hover:scale-[0.98]"
+            style={{
+              backgroundColor: '#6366F1',
+              boxShadow: 'var(--shadow-md)',
+              fontFamily: 'var(--font-syne)',
+            }}
           >
-            See our work
+            Projekte ansehen
           </a>
           <a
             href="#contact"
-            className="text-[var(--text-secondary)] font-medium transition-colors duration-200 hover:text-[var(--text-primary)] underline underline-offset-4 decoration-[var(--border)] hover:decoration-[var(--accent)]"
+            className="font-medium transition-colors duration-200 hover:text-[var(--text-primary)]"
+            style={{ color: 'var(--text-secondary)' }}
           >
-            Start a project &rarr;
+            Projekt starten &rarr;
           </a>
         </div>
       </div>
 
-      {/* Scroll-Hint unten */}
+      {/* Scroll-Hint */}
       <div
         className="absolute bottom-10 left-1/2 flex flex-col items-center gap-2"
         style={{ transform: 'translateX(-50%)' }}
@@ -177,8 +145,7 @@ export function Hero() {
         <span
           className="block w-px h-10"
           style={{
-            background:
-              'linear-gradient(to bottom, var(--accent), transparent)',
+            background: 'linear-gradient(to bottom, var(--accent), transparent)',
             animation: 'scrollLine 1.5s ease infinite',
           }}
         />

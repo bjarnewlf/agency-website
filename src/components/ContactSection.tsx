@@ -5,35 +5,64 @@ export function ContactSection() {
     <section
       id="contact"
       aria-label="Contact"
-      className="bg-[var(--surface-2)] border-t border-[var(--border)] py-24 px-8"
+      className="section-padding border-t border-[var(--border)] px-6 text-center"
+      style={{ backgroundColor: '#F0EFFF' }}
     >
-      <div className="max-w-[1200px] mx-auto">
-        <p
-          data-animate
-          className="text-xs font-semibold tracking-[0.15em] uppercase text-[var(--accent)] mb-4"
-        >
-          Get in touch
-        </p>
+      <div className="mx-auto" style={{ maxWidth: '1200px' }}>
         <h2
           data-animate
-          className="text-[clamp(1.75rem,4vw,2.75rem)] font-bold text-[var(--text-primary)] mb-6 max-w-[640px]"
+          style={{
+            fontFamily: 'var(--font-syne)',
+            fontSize: 'clamp(3rem, 7vw, 4rem)',
+            fontWeight: 800,
+            color: '#0A0A0F',
+            letterSpacing: '-0.03em',
+            lineHeight: '0.92',
+            marginBottom: '1.25rem',
+          }}
         >
-          Let&apos;s talk
+          Bereit?
         </h2>
+
         <p
           data-animate
-          className="text-lg text-[var(--text-secondary)] max-w-[520px] leading-[1.7] mb-10"
+          style={{
+            fontFamily: 'var(--font-inter)',
+            fontSize: '1.25rem',
+            color: 'var(--text-secondary)',
+            marginBottom: '2.5rem',
+          }}
         >
-          Have a project in mind? We&apos;d love to hear about it. Drop us a line and we&apos;ll get back to you within 24 hours.
+          Lass uns reden.
         </p>
-        <a
-          data-animate
-          href={`mailto:${contactEmail}`}
-          className="inline-flex items-center gap-2 text-base font-semibold text-[var(--surface-1)] bg-[var(--accent)] rounded-lg px-8 py-[0.875rem] transition-all duration-150 hover:opacity-90 hover:scale-[0.98]"
-          style={{ boxShadow: 'var(--shadow-md)' }}
-        >
-          {contactEmail}
-        </a>
+
+        <div data-animate className="flex flex-col items-center gap-4">
+          <a
+            href={`mailto:${contactEmail}`}
+            className="inline-flex items-center font-semibold text-white rounded-lg px-8 py-4 transition-all duration-200 hover:opacity-90 hover:scale-[0.98]"
+            style={{
+              backgroundColor: '#6366F1',
+              boxShadow: 'var(--shadow-md)',
+              fontFamily: 'var(--font-syne)',
+              fontSize: '1rem',
+            }}
+          >
+            Projekt starten
+          </a>
+
+          <a
+            href={`mailto:${contactEmail}`}
+            className="transition-colors duration-200 hover:text-[var(--text-primary)]"
+            style={{
+              fontFamily: 'var(--font-jetbrains-mono)',
+              fontSize: '13px',
+              color: 'var(--text-secondary)',
+              letterSpacing: '0.04em',
+            }}
+          >
+            {contactEmail}
+          </a>
+        </div>
       </div>
     </section>
   )

@@ -4,10 +4,9 @@ import { useState } from 'react'
 import { useActiveSection } from '@/lib/hooks/useActiveSection'
 
 const NAV_LINKS = [
-  { label: 'Work', href: '#work', id: 'work' },
-  { label: 'Services', href: '#services', id: 'services' },
-  { label: 'About', href: '#about', id: 'about' },
-  { label: 'Contact', href: '#contact', id: 'contact' },
+  { label: 'Projekte', href: '#work', id: 'work' },
+  { label: 'Leistungen', href: '#services', id: 'services' },
+  { label: 'Kontakt', href: '#contact', id: 'contact' },
 ] as const
 
 export function Navigation() {
@@ -35,15 +34,15 @@ export function Navigation() {
           href="/"
           className="flex items-center"
           style={{
-            fontFamily: 'var(--font-syne)',
-            fontSize: '1.1rem',
-            fontWeight: 800,
-            letterSpacing: '-0.02em',
+            fontFamily: 'var(--font-jetbrains-mono)',
+            fontSize: '1.25rem',
+            fontWeight: 700,
+            letterSpacing: '0.05em',
             color: 'var(--text-primary)',
           }}
-          aria-label="Studio — Startseite"
+          aria-label="Nullpunkt — Startseite"
         >
-          Studio
+          0.
         </a>
 
         {/* Desktop Nav */}
@@ -94,7 +93,7 @@ export function Navigation() {
             padding: '0.5rem',
           }}
           onClick={() => setMenuOpen((prev) => !prev)}
-          aria-label={menuOpen ? 'Menu schliessen' : 'Menu oeffnen'}
+          aria-label={menuOpen ? 'Menu schließen' : 'Menu öffnen'}
           aria-expanded={menuOpen}
           aria-controls="mobile-menu"
         >

@@ -6,33 +6,31 @@ export type Project = {
 export type Service = {
   title: string
   text: string
-}
-
-export type Stat = {
-  value: string
-  label: string
+  tags: string[]
 }
 
 export const projects: Project[] = [
-  { title: 'Brand Identity', tags: ['Branding', 'Strategy'] },
-  { title: 'E-Commerce Platform', tags: ['Web', 'Development'] },
-  { title: 'Mobile App', tags: ['UI/UX', 'React Native'] },
+  { title: 'VetConnect', tags: ['Mobile App', 'React Native', 'UX Design'] },
+  { title: 'Horizon Dashboard', tags: ['Web App', 'React', 'Data Visualization'] },
+  { title: 'Meridian Brand', tags: ['Brand Identity', 'Web Design'] },
 ]
 
 export const services: Service[] = [
-  { title: 'Brand Strategy', text: 'Positioning, naming, and visual identity that makes you stand out.' },
-  { title: 'Web Design', text: 'Pixel-perfect interfaces built around your users and goals.' },
-  { title: 'Development', text: 'Fast, accessible, and maintainable code — from prototype to production.' },
-  { title: 'Product Design', text: 'End-to-end UX design for web and mobile products.' },
-  { title: 'Motion & Interaction', text: 'Animations and micro-interactions that bring your product to life.' },
-  { title: 'Consulting', text: 'Strategic guidance for teams building ambitious digital products.' },
+  {
+    title: 'KI-Automatisierung',
+    text: 'Workflows die arbeiten während du schläfst.',
+    tags: ['LLM', 'Agents', 'APIs'],
+  },
+  {
+    title: 'Interface Design',
+    text: 'Produkte die man versteht bevor man denkt.',
+    tags: ['UX', 'React', 'Motion'],
+  },
+  {
+    title: 'Strategie & Aufbau',
+    text: 'Der richtige Start, bevor der erste Commit.',
+    tags: ['Audit', 'Roadmap', 'MVP'],
+  },
 ]
 
-export const stats: Stat[] = [
-  { value: '50+', label: 'Projects shipped' },
-  { value: '5', label: 'Years in business' },
-  { value: '30+', label: 'Happy clients' },
-  { value: '3', label: 'Core team members' },
-]
-
-export const contactEmail = 'hello@agency.dev'
+export const contactEmail = 'hallo@nullpunkt.cc'

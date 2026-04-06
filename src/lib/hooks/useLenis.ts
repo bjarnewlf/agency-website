@@ -15,20 +15,17 @@ export function useLenis() {
 
     lenisRef.current = lenis
 
-    // ScrollTrigger mit Lenis-Virtual-Scroll synchronisieren
-    lenis.on('scroll', ScrollTrigger.update)
-
     let rafId: number
 
     function raf(time: number) {
       lenis.raf(time)
+      ScrollTrigger.update()
       rafId = requestAnimationFrame(raf)
     }
 
     rafId = requestAnimationFrame(raf)
 
     return () => {
-      lenis.off('scroll', ScrollTrigger.update)
       cancelAnimationFrame(rafId)
       lenis.destroy()
       lenisRef.current = null

@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Inter, Syne } from 'next/font/google'
+import { Inter, Syne, JetBrains_Mono } from 'next/font/google'
 import { LenisProvider } from '@/components/LenisProvider'
 import './globals.css'
 
@@ -15,12 +15,18 @@ const syne = Syne({
   variable: '--font-syne',
 })
 
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-jetbrains-mono',
+})
+
 export const metadata: Metadata = {
-  title: 'Studio — Digital Craftsmanship',
-  description: 'We build exceptional digital experiences. Design-driven development for forward-thinking companies.',
+  title: 'Nullpunkt — Digitale Produkte',
+  description: 'Digitale Produkte. Design und Engineering aus einer Hand.',
   openGraph: {
-    title: 'Studio — Digital Craftsmanship',
-    description: 'We build exceptional digital experiences.',
+    title: 'Nullpunkt — Digitale Produkte',
+    description: 'Digitale Produkte. Design und Engineering aus einer Hand.',
     type: 'website',
   },
 }
@@ -33,7 +39,7 @@ export default function RootLayout({
   return (
     <html
       lang="de"
-      className={`${inter.variable} ${syne.variable}`}
+      className={`${inter.variable} ${syne.variable} ${jetbrainsMono.variable}`}
     >
       <body>
         <LenisProvider>

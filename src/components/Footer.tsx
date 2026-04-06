@@ -2,57 +2,63 @@ export function Footer() {
   return (
     <footer
       style={{
-        backgroundColor: 'var(--surface-2)',
+        backgroundColor: 'var(--bg)',
         borderTop: '1px solid var(--border)',
       }}
     >
       <div
-        className="mx-auto flex flex-col items-center gap-4 py-8 px-8 sm:flex-row sm:justify-between sm:gap-0"
+        className="mx-auto px-6 py-8 flex items-center justify-between gap-6 flex-wrap"
         style={{ maxWidth: '1200px' }}
       >
-        {/* Copyright */}
-        <p
-          className="text-sm"
-          style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-inter)' }}
+        {/* Wordmark */}
+        <span
+          style={{
+            fontFamily: 'var(--font-syne)',
+            fontWeight: 700,
+            fontSize: '1rem',
+            color: 'var(--text-primary)',
+            letterSpacing: '-0.02em',
+          }}
         >
-          &copy; 2026 Studio
-        </p>
+          0. Nullpunkt
+        </span>
 
-        {/* Legal Links */}
+        {/* Nav Links */}
         <nav className="flex items-center gap-6" aria-label="Footer Navigation">
           <a
-            href="#"
+            href="#work"
             className="text-sm transition-colors duration-200 hover:text-[var(--text-primary)]"
             style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-inter)' }}
           >
-            Impressum
+            Projekte
           </a>
           <a
-            href="#"
+            href="#services"
             className="text-sm transition-colors duration-200 hover:text-[var(--text-primary)]"
             style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-inter)' }}
           >
-            Datenschutz
+            Leistungen
+          </a>
+          <a
+            href="#contact"
+            className="text-sm transition-colors duration-200 hover:text-[var(--text-primary)]"
+            style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-inter)' }}
+          >
+            Kontakt
           </a>
         </nav>
 
-        {/* Social Links */}
-        <nav className="flex items-center gap-6" aria-label="Social Links">
-          <a
-            href="#"
-            className="text-sm transition-colors duration-200 hover:text-[var(--text-primary)]"
-            style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-inter)' }}
-          >
-            GitHub
-          </a>
-          <a
-            href="#"
-            className="text-sm transition-colors duration-200 hover:text-[var(--text-primary)]"
-            style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-inter)' }}
-          >
-            LinkedIn
-          </a>
-        </nav>
+        {/* Domain */}
+        <span
+          style={{
+            fontFamily: 'var(--font-jetbrains-mono)',
+            fontSize: '13px',
+            color: 'var(--text-secondary)',
+            letterSpacing: '0.04em',
+          }}
+        >
+          nullpunkt.cc
+        </span>
       </div>
     </footer>
   )

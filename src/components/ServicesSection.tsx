@@ -5,48 +5,112 @@ export function ServicesSection() {
     <section
       id="services"
       aria-label="Services"
-      className="bg-[var(--bg)] border-t border-[var(--border)] py-24 px-8"
+      className="section-padding border-t border-[var(--border)] px-6"
+      style={{ backgroundColor: 'var(--surface-1)' }}
     >
-      <div className="max-w-[1200px] mx-auto">
-        <p
-          data-animate
-          className="text-xs font-semibold tracking-[0.15em] uppercase text-[var(--accent)] mb-4"
-        >
-          Capabilities
-        </p>
-        <h2
-          data-animate
-          className="text-[clamp(1.75rem,4vw,2.75rem)] font-bold text-[var(--text-primary)] mb-4"
-        >
-          What we do
-        </h2>
-        <p
-          data-animate
-          className="text-lg text-[var(--text-secondary)] max-w-[520px] mb-16"
-        >
-          We combine strategy, design and engineering into a single focused team.
-        </p>
+      <div className="mx-auto" style={{ maxWidth: '1200px' }}>
+        {/* Section Header */}
+        <div className="mb-16" style={{ paddingLeft: 'clamp(0rem, 0%, 0rem)' }}>
+          <p className="eyebrow mb-4" data-animate>
+            Leistungen
+          </p>
+          <h2 data-animate>
+            Was wir<br />bauen.
+          </h2>
+        </div>
 
-        <div
-          className="grid gap-6"
-          style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))' }}
-        >
+        {/* Service Rows */}
+        <div>
           {services.map((service, i) => (
-            <div
-              key={i}
-              data-animate
-              className="bg-[var(--surface-1)] rounded-xl p-8 transition-all duration-200 hover:-translate-y-1"
-              style={{ boxShadow: 'var(--shadow-sm)' }}
-            >
-              <div className="w-10 h-10 bg-[var(--accent-subtle)] rounded-lg mb-5" />
-              <h3 className="text-lg font-bold text-[var(--text-primary)] mb-2">
-                {service.title}
-              </h3>
-              <p className="text-[0.9375rem] text-[var(--text-secondary)] leading-relaxed">
-                {service.text}
-              </p>
+            <div key={service.title}>
+              {/* Divider */}
+              <div
+                className="w-full"
+                style={{ height: '1px', backgroundColor: 'var(--border)' }}
+              />
+              <div
+                data-animate
+                className="grid items-center py-8 gap-6"
+                style={{
+                  gridTemplateColumns: '80px 1fr auto',
+                }}
+              >
+                {/* Dekorative Ziffer */}
+                <span
+                  aria-hidden="true"
+                  style={{
+                    fontFamily: 'var(--font-syne)',
+                    fontSize: '80px',
+                    fontWeight: 800,
+                    letterSpacing: '-0.04em',
+                    lineHeight: 1,
+                    color: 'rgba(99, 102, 241, 0.15)',
+                    userSelect: 'none',
+                  }}
+                >
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+
+                {/* Service Name + Beschreibung */}
+                <div>
+                  <h3
+                    style={{
+                      fontFamily: 'var(--font-syne)',
+                      fontSize: '28px',
+                      fontWeight: 700,
+                      color: 'var(--text-primary)',
+                      marginBottom: '0.375rem',
+                    }}
+                  >
+                    {service.title}
+                  </h3>
+                  <p
+                    style={{
+                      fontFamily: 'var(--font-inter)',
+                      fontSize: '1rem',
+                      color: 'var(--text-secondary)',
+                      lineHeight: '1.6',
+                    }}
+                  >
+                    {service.text}
+                  </p>
+                </div>
+
+                {/* Tags + Pfeil */}
+                <div className="flex items-center gap-4">
+                  <div className="hidden sm:flex gap-2 flex-wrap justify-end">
+                    {service.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        style={{
+                          fontFamily: 'var(--font-jetbrains-mono)',
+                          fontSize: '12px',
+                          color: '#6366F1',
+                          letterSpacing: '0.04em',
+                        }}
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                  <span
+                    style={{
+                      fontSize: '1.25rem',
+                      color: 'rgba(99, 102, 241, 0.4)',
+                    }}
+                    aria-hidden="true"
+                  >
+                    &rarr;
+                  </span>
+                </div>
+              </div>
             </div>
           ))}
+          {/* Abschluss-Divider */}
+          <div
+            className="w-full"
+            style={{ height: '1px', backgroundColor: 'var(--border)' }}
+          />
         </div>
       </div>
     </section>

@@ -1,0 +1,1850 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Design-Richtungen Bewertung — Nullpunkt</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    /* ============================================================
+       TOKENS
+    ============================================================ */
+    :root {
+      --bg:           #F8F7F5;
+      --surface-1:    #FFFFFF;
+      --surface-2:    #EBEBF0;
+      --surface-3:    #F0EFF7;
+      --border:       rgba(0,0,0,0.07);
+      --border-strong:rgba(0,0,0,0.13);
+
+      --text-primary:   #0A0A0F;
+      --text-secondary: #5A5A6E;
+      --text-muted:     #9090A2;
+
+      --accent:       #4F46E5;
+      --accent-light: #6366F1;
+      --accent-hover: #4338CA;
+      --accent-subtle:rgba(79,70,229,0.08);
+      --accent-tint:  rgba(79,70,229,0.04);
+
+      --green:        #16A34A;
+      --green-subtle: rgba(22,163,74,0.08);
+      --amber:        #D97706;
+      --amber-subtle: rgba(217,119,6,0.08);
+      --red:          #DC2626;
+      --red-subtle:   rgba(220,38,38,0.08);
+
+      --shadow-sm:  0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+      --shadow-md:  0 4px 16px rgba(0,0,0,0.07), 0 2px 6px rgba(0,0,0,0.04);
+      --shadow-lg:  0 8px 32px rgba(0,0,0,0.09), 0 4px 12px rgba(0,0,0,0.05);
+    }
+
+    /* ============================================================
+       RESET + BASE
+    ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html {
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-primary);
+      font-family: 'Inter', system-ui, sans-serif;
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+
+    h1,h2,h3,h4,h5,h6 {
+      font-family: 'Syne', system-ui, sans-serif;
+      font-weight: 700;
+      line-height: 1.1;
+    }
+
+    code, .mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ============================================================
+       LAYOUT PRIMITIVES
+    ============================================================ */
+    .container {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 clamp(1.25rem, 4vw, 2.5rem);
+    }
+
+    .section {
+      padding: clamp(4rem, 7vw, 8rem) 0;
+    }
+
+    .section + .section {
+      border-top: 1px solid var(--border);
+    }
+
+    /* ============================================================
+       HEADER / MASTHEAD
+    ============================================================ */
+    .masthead {
+      padding: clamp(5rem, 10vw, 10rem) 0 clamp(3rem, 6vw, 6rem);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .masthead::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(79,70,229,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(79,70,229,0.04) 1px, transparent 1px);
+      background-size: 48px 48px;
+      pointer-events: none;
+    }
+
+    .masthead::after {
+      content: '';
+      position: absolute;
+      width: 700px;
+      height: 700px;
+      background: radial-gradient(circle, rgba(79,70,229,0.06) 0%, transparent 65%);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%,-50%);
+      pointer-events: none;
+    }
+
+    .masthead-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .masthead-eyebrow {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent-light);
+      margin-bottom: 1.5rem;
+    }
+
+    .masthead-title {
+      font-size: clamp(2.8rem, 7vw, 6rem);
+      letter-spacing: -0.04em;
+      line-height: 0.95;
+      margin-bottom: 1.75rem;
+    }
+
+    .masthead-title span {
+      background: linear-gradient(135deg, #4F46E5 0%, #6366F1 50%, #818CF8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .masthead-meta {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .meta-item {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      letter-spacing: 0.08em;
+    }
+
+    .meta-item strong {
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    /* ============================================================
+       INTRO BLOCK
+    ============================================================ */
+    .intro-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    @media (max-width: 700px) {
+      .intro-grid { grid-template-columns: 1fr; gap: 2rem; }
+    }
+
+    .intro-lead {
+      font-size: 1.2rem;
+      line-height: 1.65;
+      color: var(--text-secondary);
+      max-width: 480px;
+    }
+
+    .intro-lead strong {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    .criteria-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .criteria-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+
+    .criteria-bullet {
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--accent-subtle);
+      color: var(--accent);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.6rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 0.1rem;
+    }
+
+    /* ============================================================
+       OVERVIEW TABLE
+    ============================================================ */
+    .overview-table-wrap {
+      overflow-x: auto;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .overview-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--surface-1);
+      font-size: 0.875rem;
+    }
+
+    .overview-table thead th {
+      background: var(--surface-2);
+      padding: 0.875rem 1rem;
+      text-align: left;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      white-space: nowrap;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .overview-table tbody td {
+      padding: 0.875rem 1rem;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+    }
+
+    .overview-table tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    .overview-table tbody tr:hover td {
+      background: var(--accent-tint);
+    }
+
+    .direction-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 0.875rem;
+    }
+
+    .direction-letter {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      background: var(--accent-subtle);
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .direction-letter.winner {
+      background: var(--accent);
+      color: white;
+    }
+
+    /* Mini score bar */
+    .score-cell {
+      min-width: 100px;
+    }
+
+    .score-bar-track {
+      width: 80px;
+      height: 4px;
+      background: var(--surface-2);
+      border-radius: 99px;
+      overflow: hidden;
+      display: inline-block;
+      vertical-align: middle;
+      margin-right: 0.5rem;
+    }
+
+    .score-bar-fill {
+      height: 100%;
+      border-radius: 99px;
+      background: var(--accent);
+    }
+
+    .score-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      vertical-align: middle;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 0.2em 0.55em;
+      border-radius: 4px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+    }
+
+    .tag-green  { background: var(--green-subtle);  color: var(--green); }
+    .tag-amber  { background: var(--amber-subtle);  color: var(--amber); }
+    .tag-accent { background: var(--accent-subtle); color: var(--accent); }
+    .tag-muted  { background: var(--surface-2);     color: var(--text-secondary); }
+
+    /* ============================================================
+       DIRECTION CARDS
+    ============================================================ */
+    .section-heading {
+      font-size: clamp(1.5rem, 3.5vw, 2.25rem);
+      letter-spacing: -0.03em;
+      margin-bottom: 0.625rem;
+    }
+
+    .section-sub {
+      font-size: 1rem;
+      color: var(--text-secondary);
+      margin-bottom: 3rem;
+      max-width: 560px;
+    }
+
+    .directions-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .direction-card {
+      background: var(--surface-1);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: box-shadow 0.2s ease;
+    }
+
+    .direction-card:hover {
+      box-shadow: var(--shadow-md);
+    }
+
+    .direction-card.is-recommended {
+      border-color: var(--accent-light);
+      box-shadow: 0 0 0 1px var(--accent-light), var(--shadow-md);
+    }
+
+    .card-header {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 1.25rem;
+      align-items: start;
+      padding: 1.75rem 2rem;
+      cursor: pointer;
+    }
+
+    .card-letter-block {
+      width: 52px;
+      height: 52px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Syne', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    .letter-a { background: #EEF2FF; color: #4F46E5; }
+    .letter-b { background: #F0FDF4; color: #16A34A; }
+    .letter-c { background: #FFF7ED; color: #C2410C; }
+    .letter-d { background: #F0F9FF; color: #0369A1; }
+    .letter-e { background: #FDF4FF; color: #9333EA; }
+
+    .card-title-group {}
+
+    .card-title {
+      font-size: 1.2rem;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.25rem;
+    }
+
+    .card-subtitle {
+      font-size: 0.825rem;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .card-total-score {
+      text-align: right;
+    }
+
+    .total-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      display: block;
+      margin-bottom: 0.25rem;
+    }
+
+    .total-value {
+      font-family: 'Syne', sans-serif;
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      color: var(--text-primary);
+      line-height: 1;
+    }
+
+    .total-max {
+      font-size: 1rem;
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+
+    .recommended-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      background: var(--accent);
+      color: white;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.35em 0.7em;
+      border-radius: 99px;
+      margin-top: 0.5rem;
+    }
+
+    .card-body {
+      padding: 0 2rem 2rem;
+      border-top: 1px solid var(--border);
+    }
+
+    /* Score breakdown */
+    .score-breakdown {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 1px;
+      background: var(--border);
+      margin-bottom: 1.5rem;
+      border-radius: 0 0 0 0;
+    }
+
+    @media (max-width: 640px) {
+      .score-breakdown { grid-template-columns: 1fr 1fr; }
+    }
+
+    .score-breakdown-item {
+      background: var(--surface-1);
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .score-breakdown-item:first-child { border-radius: 0 0 0 0; }
+
+    .breakdown-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+    }
+
+    .breakdown-bar-track {
+      height: 5px;
+      background: var(--surface-2);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+
+    .breakdown-bar-fill {
+      height: 100%;
+      border-radius: 99px;
+      background: linear-gradient(90deg, var(--accent) 0%, var(--accent-light) 100%);
+      transition: width 0.4s ease;
+    }
+
+    .breakdown-score {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+    }
+
+    .breakdown-max {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+
+    /* Pros / Cons */
+    .pros-cons-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    @media (max-width: 640px) {
+      .pros-cons-grid { grid-template-columns: 1fr; }
+    }
+
+    .pros-box, .cons-box {
+      border-radius: 10px;
+      padding: 1rem 1.25rem;
+    }
+
+    .pros-box {
+      background: var(--green-subtle);
+      border: 1px solid rgba(22,163,74,0.14);
+    }
+
+    .cons-box {
+      background: rgba(220,38,38,0.05);
+      border: 1px solid rgba(220,38,38,0.1);
+    }
+
+    .pros-cons-heading {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 500;
+      margin-bottom: 0.625rem;
+    }
+
+    .pros-box .pros-cons-heading { color: var(--green); }
+    .cons-box .pros-cons-heading { color: var(--red); }
+
+    .pros-cons-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .pros-cons-list li {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      display: flex;
+      gap: 0.5rem;
+      align-items: flex-start;
+    }
+
+    .pros-cons-list li::before {
+      flex-shrink: 0;
+      margin-top: 0.1rem;
+    }
+
+    .pros-box li::before { content: '+'; color: var(--green); font-weight: 700; }
+    .cons-box li::before { content: '−'; color: var(--red);   font-weight: 700; }
+
+    /* Verdict */
+    .verdict {
+      background: var(--accent-tint);
+      border-left: 3px solid var(--accent);
+      padding: 1rem 1.25rem;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .verdict-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      margin-bottom: 0.35rem;
+    }
+
+    .verdict-text {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* ============================================================
+       COMPARISON RADAR
+    ============================================================ */
+    .radar-section {
+      background: var(--surface-1);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2.5rem;
+    }
+
+    .radar-title {
+      font-size: 1.1rem;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.4rem;
+    }
+
+    .radar-sub {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .comparison-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.875rem;
+    }
+
+    .comparison-table th {
+      padding: 0.6rem 0.75rem;
+      text-align: left;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.62rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .comparison-table td {
+      padding: 0.75rem 0.75rem;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+    }
+
+    .comparison-table tr:last-child td { border-bottom: none; }
+
+    .comparison-table tr.highlight-row td {
+      background: var(--accent-tint);
+    }
+
+    .dot-score {
+      display: flex;
+      gap: 3px;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    .dot.filled { background: var(--accent); }
+    .dot.empty  { background: var(--surface-2); }
+
+    /* ============================================================
+       RECOMMENDATION BLOCK
+    ============================================================ */
+    .recommendation-block {
+      background: var(--surface-1);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .rec-header {
+      background: linear-gradient(135deg, #4F46E5 0%, #6366F1 50%, #818CF8 100%);
+      padding: 3rem 2.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .rec-header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.07) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.07) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+
+    .rec-header-inner { position: relative; z-index: 1; }
+
+    .rec-eyebrow {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.65);
+      margin-bottom: 1rem;
+    }
+
+    .rec-title {
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      letter-spacing: -0.04em;
+      color: white;
+      line-height: 1;
+      margin-bottom: 0.75rem;
+    }
+
+    .rec-tagline {
+      font-size: 1.05rem;
+      color: rgba(255,255,255,0.78);
+      max-width: 540px;
+      line-height: 1.6;
+      font-weight: 400;
+    }
+
+    .rec-body {
+      padding: 2.5rem;
+    }
+
+    .rec-columns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    @media (max-width: 700px) {
+      .rec-columns { grid-template-columns: 1fr; }
+    }
+
+    .rec-column-title {
+      font-size: 0.875rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin-bottom: 0.875rem;
+      color: var(--text-primary);
+    }
+
+    .why-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+    }
+
+    .why-list li {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.55;
+      display: flex;
+      gap: 0.6rem;
+      align-items: flex-start;
+    }
+
+    .why-marker {
+      flex-shrink: 0;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--accent-subtle);
+      color: var(--accent);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.55rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 0.15rem;
+    }
+
+    /* ============================================================
+       NEXT STEPS
+    ============================================================ */
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+
+    @media (max-width: 800px) {
+      .steps-grid { grid-template-columns: 1fr; }
+    }
+
+    .step-card {
+      background: var(--surface-1);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+    }
+
+    .step-number {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: var(--accent);
+      letter-spacing: 0.08em;
+      margin-bottom: 0.625rem;
+    }
+
+    .step-title {
+      font-size: 1rem;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.5rem;
+    }
+
+    .step-text {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .step-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      margin-top: 0.875rem;
+    }
+
+    /* ============================================================
+       HYBRID NOTE
+    ============================================================ */
+    .hybrid-box {
+      background: var(--surface-3);
+      border: 1px solid rgba(79,70,229,0.15);
+      border-radius: 14px;
+      padding: 2rem;
+      margin-top: 1.5rem;
+    }
+
+    .hybrid-eyebrow {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      margin-bottom: 0.625rem;
+    }
+
+    .hybrid-title {
+      font-size: 1.1rem;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.625rem;
+    }
+
+    .hybrid-text {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.65;
+      max-width: 680px;
+    }
+
+    /* ============================================================
+       FOOTER
+    ============================================================ */
+    .report-footer {
+      padding: 2.5rem 0;
+      border-top: 1px solid var(--border);
+      margin-top: 6rem;
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .footer-mark {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .footer-meta {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      letter-spacing: 0.06em;
+    }
+
+    /* ============================================================
+       UTILITIES
+    ============================================================ */
+    .mt-2 { margin-top: 0.5rem; }
+    .mt-4 { margin-top: 1rem; }
+    .mt-6 { margin-top: 1.5rem; }
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 2rem 0;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============================================================
+       MASTHEAD
+  ============================================================ -->
+  <header class="masthead">
+    <div class="container masthead-inner">
+      <p class="masthead-eyebrow">nullpunkt.cc — Design Sprint 2026</p>
+      <h1 class="masthead-title">
+        Design-Richtungen<br /><span>Bewertung</span>
+      </h1>
+      <div class="masthead-meta">
+        <span class="meta-item"><strong>Datum</strong> — 06.04.2026</span>
+        <span class="meta-item"><strong>Reviewer</strong> — Designer</span>
+        <span class="meta-item"><strong>Richtungen</strong> — A B C D E</span>
+        <span class="meta-item"><strong>Stack</strong> — Next.js + GSAP + Lenis + Tailwind v4</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       INTRO
+  ============================================================ -->
+  <section class="section">
+    <div class="container">
+      <div class="intro-grid">
+        <div>
+          <p class="intro-lead">
+            Fünf Richtungen, eine Entscheidung. Ich habe jede Option gegen dieselben Kriterien gemessen —
+            <strong>Markenpassung, Umsetzbarkeit, Aufwand, Differenzierung, Conversion.</strong>
+            Kein Bauchgefühl, sondern Scores. Dann eine klare Empfehlung.
+          </p>
+          <p class="intro-lead mt-4" style="font-size:0.95rem;">
+            Basis: Research-Briefing, Design-Review, bestehende Codebasis (globals.css, Hero.tsx).
+            Nullpunkt ist nicht irgendeine KI-Agentur — das ist der Anspruch.
+            Das Design muss diesen Anspruch halten.
+          </p>
+        </div>
+        <div>
+          <ul class="criteria-list">
+            <li class="criteria-item">
+              <span class="criteria-bullet">01</span>
+              <span><strong style="color:var(--text-primary)">Markenpassung</strong> — Trifft es Nullpunkt: KI, Präzision, Neuanfang, kosmische Metaphorik?</span>
+            </li>
+            <li class="criteria-item">
+              <span class="criteria-bullet">02</span>
+              <span><strong style="color:var(--text-primary)">Umsetzbarkeit</strong> — Funktioniert es mit Syne/Inter/JetBrains Mono und Light Theme ohne Umbau des Stacks?</span>
+            </li>
+            <li class="criteria-item">
+              <span class="criteria-bullet">03</span>
+              <span><strong style="color:var(--text-primary)">Aufwand</strong> — Wie viele Sprints? Je weniger Aufwand, desto höher der Score.</span>
+            </li>
+            <li class="criteria-item">
+              <span class="criteria-bullet">04</span>
+              <span><strong style="color:var(--text-primary)">Differenzierung</strong> — Hebt es sich von generischen KI-Agenturen ab?</span>
+            </li>
+            <li class="criteria-item">
+              <span class="criteria-bullet">05</span>
+              <span><strong style="color:var(--text-primary)">Conversion</strong> — Würde ein Gründer nach dem Besuch Kontakt aufnehmen wollen?</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       OVERVIEW TABLE
+  ============================================================ -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-heading">Schnellübersicht</h2>
+      <p class="section-sub">Alle fünf Richtungen auf einen Blick. Scores 1–10 pro Kriterium.</p>
+
+      <div class="overview-table-wrap">
+        <table class="overview-table">
+          <thead>
+            <tr>
+              <th>Richtung</th>
+              <th>Marke</th>
+              <th>Umsetzbar</th>
+              <th>Aufwand</th>
+              <th>Differenz.</th>
+              <th>Conversion</th>
+              <th>Gesamt</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div class="direction-badge">
+                  <span class="direction-letter">A</span>
+                  Präzisions-Editorial
+                </div>
+              </td>
+              <td class="score-cell">
+                <span class="score-bar-track"><span class="score-bar-fill" style="width:90%"></span></span>
+                <span class="score-num">9</span>
+              </td>
+              <td class="score-cell">
+                <span class="score-bar-track"><span class="score-bar-fill" style="width:80%"></span></span>
+                <span class="score-num">8</span>
+              </td>
+              <td class="score-cell">
+                <span class="score-bar-track"><span class="score-bar-fill" style="width:70%"></span></span>
+                <span class="score-num">7</span>
+              </td>
+              <td class="score-cell">
+                <span class="score-bar-track"><span class="score-bar-fill" style="width:90%"></span></span>
+                <span class="score-num">9</span>
+              </td>
+              <td class="score-cell">
+                <span class="score-bar-track"><span class="score-bar-fill" style="width:60%"></span></span>
+                <span class="score-num">6</span>
+              </td>
+              <td><strong style="font-family:'Syne',sans-serif;font-size:1rem;letter-spacing:-0.02em;">39</strong><span style="color:var(--text-muted);font-size:0.8rem;">/50</span></td>
+              <td><span class="tag tag-accent">Stark</span></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="direction-badge">
+                  <span class="direction-letter">B</span>
+                  Structured Dark-Light
+                </div>
+              </td>
+              <td class="score-cell">
+                <span class="score-bar-track"><span class="score-bar-fill" style="width:70%"></span></span>
+                <span class="score-num">7</span>
+              </td>
+              <td class="score-cell">
+                <span class="score-bar-track"><span class="score-bar-fill" style="width:90%"></span></span>
+                <span class="score-num">9</span>
+              </td>
+              <td class="score-cell">
+                <span class="score-bar-track"><span class="score-bar-fill" style="width:80%"></span></span>
+                <span class="score-num">8</span>
+              </td>
+              <td class="score-cell">
+                <span class="score-bar-track"><span class="score-bar-fill" style="width:60%"></span></span>
+                <span class="score-num">6</span>
+              </td>
+              <td class="score-cell">
+                <span class="score-bar-track"><span class="score-bar-fill" style="width:90%"></span></span>
+                <span class="score-num">9</span>
+              </td>
+              <td><strong style="font-family:'Syne',sans-serif;font-size:1rem;letter-spacing:-0.02em;">39</strong><span style="color:var(--text-muted);font-size:0.8rem;">/50</span></td>
+              <td><span class="tag tag-green">Solid</span></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="direction-badge">
+                  <span class="direction-letter">C</span>
+                  Gravitational Drama
+                </div>
+              </td>
+              <td class="score-cell">
+                <span class="score-bar-track"><span class="score-bar-fill" style="width:100%"></span></span>
+                <span class="score-num">10</span>
+              </td>
+              <td class="score-cell">
+                <span class="score-bar-track"><span class="score-bar-fill" style="width:50%"></span></span>
+                <span class="score-num">5</span>
+              </td>
+              <td class="score-cell">
+                <span class="score-bar-track"><span class="score-bar-fill" style="width:30%"></span></span>
+                <span class="score-num">3</span>
+              </td>
+              <td class="score-cell">
+                <span class="score-bar-track"><span class="score-bar-fill" style="width:100%"></span></span>
+                <span class="score-num">10</span>
+              </td>
+              <td class="score-cell">
+                <span class="score-bar-track"><span class="score-bar-fill" style="width:70%"></span></span>
+                <span class="score-num">7</span>
+              </td>
+              <td><strong style="font-family:'Syne',sans-serif;font-size:1rem;letter-spacing:-0.02em;">35</strong><span style="color:var(--text-muted);font-size:0.8rem;">/50</span></td>
+              <td><span class="tag tag-amber">Risikoreich</span></td>
+            </tr>
+            <tr style="background:var(--accent-tint);">
+              <td>
+                <div class="direction-badge">
+                  <span class="direction-letter winner">E+A</span>
+                  Hybrid-Empfehlung
+                </div>
+              </td>
+              <td class="score-cell">
+                <span class="score-bar-track"><span class="score-bar-fill" style="width:90%"></span></span>
+                <span class="score-num">9</span>
+              </td>
+              <td class="score-cell">
+                <span class="score-bar-track"><span class="score-bar-fill" style="width:90%"></span></span>
+                <span class="score-num">9</span>
+              </td>
+              <td class="score-cell">
+                <span class="score-bar-track"><span class="score-bar-fill" style="width:80%"></span></span>
+                <span class="score-num">8</span>
+              </td>
+              <td class="score-cell">
+                <span class="score-bar-track"><span class="score-bar-fill" style="width:80%"></span></span>
+                <span class="score-num">8</span>
+              </td>
+              <td class="score-cell">
+                <span class="score-bar-track"><span class="score-bar-fill" style="width:90%"></span></span>
+                <span class="score-num">9</span>
+              </td>
+              <td><strong style="font-family:'Syne',sans-serif;font-size:1.1rem;letter-spacing:-0.02em;color:var(--accent);">43</strong><span style="color:var(--text-muted);font-size:0.8rem;">/50</span></td>
+              <td><span class="tag tag-accent">Empfehlung</span></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="direction-badge">
+                  <span class="direction-letter">D</span>
+                  Code as Design
+                </div>
+              </td>
+              <td class="score-cell">
+                <span class="score-bar-track"><span class="score-bar-fill" style="width:70%"></span></span>
+                <span class="score-num">7</span>
+              </td>
+              <td class="score-cell">
+                <span class="score-bar-track"><span class="score-bar-fill" style="width:90%"></span></span>
+                <span class="score-num">9</span>
+              </td>
+              <td class="score-cell">
+                <span class="score-bar-track"><span class="score-bar-fill" style="width:80%"></span></span>
+                <span class="score-num">8</span>
+              </td>
+              <td class="score-cell">
+                <span class="score-bar-track"><span class="score-bar-fill" style="width:80%"></span></span>
+                <span class="score-num">8</span>
+              </td>
+              <td class="score-cell">
+                <span class="score-bar-track"><span class="score-bar-fill" style="width:70%"></span></span>
+                <span class="score-num">7</span>
+              </td>
+              <td><strong style="font-family:'Syne',sans-serif;font-size:1rem;letter-spacing:-0.02em;">39</strong><span style="color:var(--text-muted);font-size:0.8rem;">/50</span></td>
+              <td><span class="tag tag-accent">Stark</span></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="direction-badge">
+                  <span class="direction-letter">E</span>
+                  Minimal Bold
+                </div>
+              </td>
+              <td class="score-cell">
+                <span class="score-bar-track"><span class="score-bar-fill" style="width:80%"></span></span>
+                <span class="score-num">8</span>
+              </td>
+              <td class="score-cell">
+                <span class="score-bar-track"><span class="score-bar-fill" style="width:100%"></span></span>
+                <span class="score-num">10</span>
+              </td>
+              <td class="score-cell">
+                <span class="score-bar-track"><span class="score-bar-fill" style="width:100%"></span></span>
+                <span class="score-num">10</span>
+              </td>
+              <td class="score-cell">
+                <span class="score-bar-track"><span class="score-bar-fill" style="width:60%"></span></span>
+                <span class="score-num">6</span>
+              </td>
+              <td class="score-cell">
+                <span class="score-bar-track"><span class="score-bar-fill" style="width:80%"></span></span>
+                <span class="score-num">8</span>
+              </td>
+              <td><strong style="font-family:'Syne',sans-serif;font-size:1rem;letter-spacing:-0.02em;">42</strong><span style="color:var(--text-muted);font-size:0.8rem;">/50</span></td>
+              <td><span class="tag tag-green">Solide Basis</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       DIRECTION CARDS — DETAILED
+  ============================================================ -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-heading">Detailbewertung</h2>
+      <p class="section-sub">Jede Richtung einzeln durchgeleuchtet — Stärken, Schwächen, Kontext.</p>
+
+      <div class="directions-grid">
+
+        <!-- ===== RICHTUNG A ===== -->
+        <div class="direction-card">
+          <div class="card-header">
+            <div class="card-letter-block letter-a">A</div>
+            <div class="card-title-group">
+              <h3 class="card-title">Präzisions-Editorial</h3>
+              <span class="card-subtitle">Inspiration: Auros + Rauno Freiberg</span>
+            </div>
+            <div class="card-total-score">
+              <span class="total-label">Score</span>
+              <div class="total-value">39<span class="total-max">/50</span></div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="score-breakdown">
+              <div class="score-breakdown-item">
+                <span class="breakdown-label">Marke</span>
+                <div class="breakdown-bar-track"><div class="breakdown-bar-fill" style="width:90%"></div></div>
+                <div class="breakdown-score">9<span class="breakdown-max">/10</span></div>
+              </div>
+              <div class="score-breakdown-item">
+                <span class="breakdown-label">Umsetzbar</span>
+                <div class="breakdown-bar-track"><div class="breakdown-bar-fill" style="width:80%"></div></div>
+                <div class="breakdown-score">8<span class="breakdown-max">/10</span></div>
+              </div>
+              <div class="score-breakdown-item">
+                <span class="breakdown-label">Aufwand</span>
+                <div class="breakdown-bar-track"><div class="breakdown-bar-fill" style="width:70%"></div></div>
+                <div class="breakdown-score">7<span class="breakdown-max">/10</span></div>
+              </div>
+              <div class="score-breakdown-item">
+                <span class="breakdown-label">Differenz.</span>
+                <div class="breakdown-bar-track"><div class="breakdown-bar-fill" style="width:90%"></div></div>
+                <div class="breakdown-score">9<span class="breakdown-max">/10</span></div>
+              </div>
+              <div class="score-breakdown-item">
+                <span class="breakdown-label">Conversion</span>
+                <div class="breakdown-bar-track"><div class="breakdown-bar-fill" style="width:60%"></div></div>
+                <div class="breakdown-score">6<span class="breakdown-max">/10</span></div>
+              </div>
+            </div>
+
+            <div class="pros-cons-grid">
+              <div class="pros-box">
+                <p class="pros-cons-heading">Stärken</p>
+                <ul class="pros-cons-list">
+                  <li>Syne bei −0.05em Tracking ist für diese Richtung geboren</li>
+                  <li>Radikale Differenzierung — kein KI-Anbieter macht das</li>
+                  <li>Korrespondiert perfekt mit dem bestehenden Hero-Ansatz</li>
+                  <li>Wenig Bildmaterial nötig — Copy trägt das Layout</li>
+                </ul>
+              </div>
+              <div class="cons-box">
+                <p class="pros-cons-heading">Risiken</p>
+                <ul class="pros-cons-list">
+                  <li>Verzeiht schwache Copy nicht — "Wo Ideen Masse gewinnen." muss wirklich sitzen</li>
+                  <li>Conversion-Pfad ist dünner — kein Social Proof, keine Feature-Listen</li>
+                  <li>Gründer ohne Design-Hintergrund verstehen das Signal möglicherweise nicht</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="verdict">
+              <p class="verdict-label">Designer-Einschätzung</p>
+              <p class="verdict-text">
+                A ist die riskanteste und gleichzeitig stärkste Richtung — wenn die Copy stimmt.
+                Als Hybrid-Basis für den Hero ideal, als vollständige Site-Richtung für eine junge Agentur ohne breites Portfolio zu riskant.
+                Elemente davon sollten in die Empfehlung einfliessen.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== RICHTUNG B ===== -->
+        <div class="direction-card">
+          <div class="card-header">
+            <div class="card-letter-block letter-b">B</div>
+            <div class="card-title-group">
+              <h3 class="card-title">Structured Dark-Light</h3>
+              <span class="card-subtitle">Inspiration: Linear + Stripe</span>
+            </div>
+            <div class="card-total-score">
+              <span class="total-label">Score</span>
+              <div class="total-value">39<span class="total-max">/50</span></div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="score-breakdown">
+              <div class="score-breakdown-item">
+                <span class="breakdown-label">Marke</span>
+                <div class="breakdown-bar-track"><div class="breakdown-bar-fill" style="width:70%"></div></div>
+                <div class="breakdown-score">7<span class="breakdown-max">/10</span></div>
+              </div>
+              <div class="score-breakdown-item">
+                <span class="breakdown-label">Umsetzbar</span>
+                <div class="breakdown-bar-track"><div class="breakdown-bar-fill" style="width:90%"></div></div>
+                <div class="breakdown-score">9<span class="breakdown-max">/10</span></div>
+              </div>
+              <div class="score-breakdown-item">
+                <span class="breakdown-label">Aufwand</span>
+                <div class="breakdown-bar-track"><div class="breakdown-bar-fill" style="width:80%"></div></div>
+                <div class="breakdown-score">8<span class="breakdown-max">/10</span></div>
+              </div>
+              <div class="score-breakdown-item">
+                <span class="breakdown-label">Differenz.</span>
+                <div class="breakdown-bar-track"><div class="breakdown-bar-fill" style="width:60%"></div></div>
+                <div class="breakdown-score">6<span class="breakdown-max">/10</span></div>
+              </div>
+              <div class="score-breakdown-item">
+                <span class="breakdown-label">Conversion</span>
+                <div class="breakdown-bar-track"><div class="breakdown-bar-fill" style="width:90%"></div></div>
+                <div class="breakdown-score">9<span class="breakdown-max">/10</span></div>
+              </div>
+            </div>
+
+            <div class="pros-cons-grid">
+              <div class="pros-box">
+                <p class="pros-cons-heading">Stärken</p>
+                <ul class="pros-cons-list">
+                  <li>Höchste Conversion-Sicherheit — bewährtes Muster für Gründer als Zielgruppe</li>
+                  <li>Gut implementierbar ohne Deep-Dive in exotische CSS-Techniken</li>
+                  <li>Gut bekannte Ästhetik schafft sofort Vertrauen</li>
+                  <li>Social Proof und Feature-Listen funktionieren in diesem Rahmen</li>
+                </ul>
+              </div>
+              <div class="cons-box">
+                <p class="pros-cons-heading">Risiken</p>
+                <ul class="pros-cons-list">
+                  <li>Differenzierungsproblem — sieht aus wie Linear-Klon</li>
+                  <li>Markenpassung schwächer — Nullpunkt hat mehr Persönlichkeit als "seriöses SaaS"</li>
+                  <li>Wird vom Markt bereits gesättigt — zuviele Agenturen kopieren diesen Look</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="verdict">
+              <p class="verdict-label">Designer-Einschätzung</p>
+              <p class="verdict-text">
+                B ist die sichere Wahl. Sie funktioniert, aber sie erinnert sofort an Linear, Stripe oder Arc.
+                Für Nullpunkt wäre das ein Downgrade des Anspruchs. Conversion-Elemente aus B sollten in die Empfehlung einfliessen
+                — aber nicht als tragendes Konzept.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== RICHTUNG C ===== -->
+        <div class="direction-card">
+          <div class="card-header">
+            <div class="card-letter-block letter-c">C</div>
+            <div class="card-title-group">
+              <h3 class="card-title">Gravitational Drama</h3>
+              <span class="card-subtitle">Inspiration: Basement Studio + Fey App</span>
+            </div>
+            <div class="card-total-score">
+              <span class="total-label">Score</span>
+              <div class="total-value">35<span class="total-max">/50</span></div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="score-breakdown">
+              <div class="score-breakdown-item">
+                <span class="breakdown-label">Marke</span>
+                <div class="breakdown-bar-track"><div class="breakdown-bar-fill" style="width:100%"></div></div>
+                <div class="breakdown-score">10<span class="breakdown-max">/10</span></div>
+              </div>
+              <div class="score-breakdown-item">
+                <span class="breakdown-label">Umsetzbar</span>
+                <div class="breakdown-bar-track"><div class="breakdown-bar-fill" style="width:50%"></div></div>
+                <div class="breakdown-score">5<span class="breakdown-max">/10</span></div>
+              </div>
+              <div class="score-breakdown-item">
+                <span class="breakdown-label">Aufwand</span>
+                <div class="breakdown-bar-track"><div class="breakdown-bar-fill" style="width:30%"></div></div>
+                <div class="breakdown-score">3<span class="breakdown-max">/10</span></div>
+              </div>
+              <div class="score-breakdown-item">
+                <span class="breakdown-label">Differenz.</span>
+                <div class="breakdown-bar-track"><div class="breakdown-bar-fill" style="width:100%"></div></div>
+                <div class="breakdown-score">10<span class="breakdown-max">/10</span></div>
+              </div>
+              <div class="score-breakdown-item">
+                <span class="breakdown-label">Conversion</span>
+                <div class="breakdown-bar-track"><div class="breakdown-bar-fill" style="width:70%"></div></div>
+                <div class="breakdown-score">7<span class="breakdown-max">/10</span></div>
+              </div>
+            </div>
+
+            <div class="pros-cons-grid">
+              <div class="pros-box">
+                <p class="pros-cons-heading">Stärken</p>
+                <ul class="pros-cons-list">
+                  <li>Einzige Richtung die den Namen "Nullpunkt" wirklich buchstabiert</li>
+                  <li>Maximale Differenzierung — niemand macht das im KI-Agentur-Markt</li>
+                  <li>Award-Potential (Godly, Awwwards) ist real</li>
+                  <li>Custom Cursor + gravitationale Interaktion sind echte Qualitätssignale</li>
+                </ul>
+              </div>
+              <div class="cons-box">
+                <p class="pros-cons-heading">Risiken</p>
+                <ul class="pros-cons-list">
+                  <li>3–5 Sprints nur für die Kern-Animationen — realistisch</li>
+                  <li>Custom SVG-Effekte und gravitationale Verzerrungen sind technisch nicht trivial</li>
+                  <li>Kann auf Mid-Range-Geräten performen-Probleme bekommen</li>
+                  <li>Wenn es nicht perfekt ist, wirkt es billig statt mutig</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="verdict">
+              <p class="verdict-label">Designer-Einschätzung</p>
+              <p class="verdict-text">
+                C ist das Traumszenario — und das richtige Langfrist-Ziel für Nullpunkt.
+                Jetzt, mit noch jungem Portfolio, ist es zu viel Ressourcen für zu unsicheres Ergebnis.
+                Einzelne Elemente (kosmische Lensing-Glow im Hero, "fall-in" Scroll-Animationen) sollten
+                als subtile Tonalität in die Empfehlung einfliessen — nicht als vollständiges Konzept.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== RICHTUNG D ===== -->
+        <div class="direction-card">
+          <div class="card-header">
+            <div class="card-letter-block letter-d">D</div>
+            <div class="card-title-group">
+              <h3 class="card-title">Code as Design</h3>
+              <span class="card-subtitle">Inspiration: Resend + Vercel</span>
+            </div>
+            <div class="card-total-score">
+              <span class="total-label">Score</span>
+              <div class="total-value">39<span class="total-max">/50</span></div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="score-breakdown">
+              <div class="score-breakdown-item">
+                <span class="breakdown-label">Marke</span>
+                <div class="breakdown-bar-track"><div class="breakdown-bar-fill" style="width:70%"></div></div>
+                <div class="breakdown-score">7<span class="breakdown-max">/10</span></div>
+              </div>
+              <div class="score-breakdown-item">
+                <span class="breakdown-label">Umsetzbar</span>
+                <div class="breakdown-bar-track"><div class="breakdown-bar-fill" style="width:90%"></div></div>
+                <div class="breakdown-score">9<span class="breakdown-max">/10</span></div>
+              </div>
+              <div class="score-breakdown-item">
+                <span class="breakdown-label">Aufwand</span>
+                <div class="breakdown-bar-track"><div class="breakdown-bar-fill" style="width:80%"></div></div>
+                <div class="breakdown-score">8<span class="breakdown-max">/10</span></div>
+              </div>
+              <div class="score-breakdown-item">
+                <span class="breakdown-label">Differenz.</span>
+                <div class="breakdown-bar-track"><div class="breakdown-bar-fill" style="width:80%"></div></div>
+                <div class="breakdown-score">8<span class="breakdown-max">/10</span></div>
+              </div>
+              <div class="score-breakdown-item">
+                <span class="breakdown-label">Conversion</span>
+                <div class="breakdown-bar-track"><div class="breakdown-bar-fill" style="width:70%"></div></div>
+                <div class="breakdown-score">7<span class="breakdown-max">/10</span></div>
+              </div>
+            </div>
+
+            <div class="pros-cons-grid">
+              <div class="pros-box">
+                <p class="pros-cons-heading">Stärken</p>
+                <ul class="pros-cons-list">
+                  <li>JetBrains Mono ist bereits im Stack — sofort einsatzbereit</li>
+                  <li>Code-Blöcke als Designelement sind bei tech-affinen Gründern überzeugend</li>
+                  <li>Positionierung als "technische Agentur" ist glaubwürdig und spitz</li>
+                  <li>Syntax-Highlighting mit Indigo-Akzent funktioniert gut</li>
+                </ul>
+              </div>
+              <div class="cons-box">
+                <p class="pros-cons-heading">Risiken</p>
+                <ul class="pros-cons-list">
+                  <li>Schränkt die Zielgruppe auf technisch versierte Gründer ein</li>
+                  <li>Markenpassung: "Präzision und KI" ja — aber "Neuanfang" und kosmische Metaphorik gehen verloren</li>
+                  <li>Resend und Vercel haben das bereits perfekt gemacht — schwer zu übertreffen</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="verdict">
+              <p class="verdict-label">Designer-Einschätzung</p>
+              <p class="verdict-text">
+                D ist gut, aber zu nischig und zu sehr von Resend/Vercel besetzt.
+                JetBrains Mono als Akzent-Element (Eyebrow-Labels, Zahlen, Tags) sollte in die Empfehlung einfliessen —
+                als Tonalitätsschicht, nicht als Hauptsprache.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== RICHTUNG E ===== -->
+        <div class="direction-card">
+          <div class="card-header">
+            <div class="card-letter-block letter-e">E</div>
+            <div class="card-title-group">
+              <h3 class="card-title">Minimal Bold</h3>
+              <span class="card-subtitle">Inspiration: Monopo + Auros (pragmatisch)</span>
+            </div>
+            <div class="card-total-score">
+              <span class="total-label">Score</span>
+              <div class="total-value">42<span class="total-max">/50</span></div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="score-breakdown">
+              <div class="score-breakdown-item">
+                <span class="breakdown-label">Marke</span>
+                <div class="breakdown-bar-track"><div class="breakdown-bar-fill" style="width:80%"></div></div>
+                <div class="breakdown-score">8<span class="breakdown-max">/10</span></div>
+              </div>
+              <div class="score-breakdown-item">
+                <span class="breakdown-label">Umsetzbar</span>
+                <div class="breakdown-bar-track"><div class="breakdown-bar-fill" style="width:100%"></div></div>
+                <div class="breakdown-score">10<span class="breakdown-max">/10</span></div>
+              </div>
+              <div class="score-breakdown-item">
+                <span class="breakdown-label">Aufwand</span>
+                <div class="breakdown-bar-track"><div class="breakdown-bar-fill" style="width:100%"></div></div>
+                <div class="breakdown-score">10<span class="breakdown-max">/10</span></div>
+              </div>
+              <div class="score-breakdown-item">
+                <span class="breakdown-label">Differenz.</span>
+                <div class="breakdown-bar-track"><div class="breakdown-bar-fill" style="width:60%"></div></div>
+                <div class="breakdown-score">6<span class="breakdown-max">/10</span></div>
+              </div>
+              <div class="score-breakdown-item">
+                <span class="breakdown-label">Conversion</span>
+                <div class="breakdown-bar-track"><div class="breakdown-bar-fill" style="width:80%"></div></div>
+                <div class="breakdown-score">8<span class="breakdown-max">/10</span></div>
+              </div>
+            </div>
+
+            <div class="pros-cons-grid">
+              <div class="pros-box">
+                <p class="pros-cons-heading">Stärken</p>
+                <ul class="pros-cons-list">
+                  <li>Maximale Umsetzbarkeit — 1 Sprint für Kern-Layout</li>
+                  <li>Verzeiht noch dünnes Portfolio — große Typo kompensiert fehlende Visuals</li>
+                  <li>Copy-unabhängig — funktioniert auch wenn die Texte noch nicht perfekt sind</li>
+                  <li>Solide Conversion durch klare Hierarchie und Struktur</li>
+                </ul>
+              </div>
+              <div class="cons-box">
+                <p class="pros-cons-heading">Risiken</p>
+                <ul class="pros-cons-list">
+                  <li>Niedrigste Differenzierung — viele Agenturen machen "Minimal Bold"</li>
+                  <li>Kann langweilig wirken wenn nicht mit einem Signature-Element aufgeladen</li>
+                  <li>Ohne ergänzende Elemente kein Awwwards-Potenzial</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="verdict">
+              <p class="verdict-label">Designer-Einschätzung</p>
+              <p class="verdict-text">
+                E ist die stärkste Basis — und als Basis perfekt. Als vollständige Designrichtung braucht sie
+                Charakter-Injektionen aus A und C um aus der Beliebigkeit herauszutreten.
+                Das macht E zum idealen Strukturgerüst der Hybrid-Empfehlung.
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       COMPARISON TABLE
+  ============================================================ -->
+  <section class="section">
+    <div class="container">
+      <div class="radar-section">
+        <h3 class="radar-title">Detailvergleich nach Kriterium</h3>
+        <p class="radar-sub">5 Punkte pro Zeile — Dot = 2 Punkte</p>
+
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Kriterium</th>
+              <th>A — Editorial</th>
+              <th>B — Structured</th>
+              <th>C — Gravitational</th>
+              <th>D — Code</th>
+              <th>E — Minimal Bold</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="font-weight:600;font-size:0.8rem;">Markenpassung</td>
+              <td><div class="dot-score"><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot empty"></div></div></td>
+              <td><div class="dot-score"><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot empty"></div><div class="dot empty"></div></div></td>
+              <td><div class="dot-score"><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div></div></td>
+              <td><div class="dot-score"><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot empty"></div><div class="dot empty"></div></div></td>
+              <td><div class="dot-score"><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot empty"></div></div></td>
+            </tr>
+            <tr>
+              <td style="font-weight:600;font-size:0.8rem;">Umsetzbarkeit</td>
+              <td><div class="dot-score"><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot empty"></div></div></td>
+              <td><div class="dot-score"><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot empty"></div></div></td>
+              <td><div class="dot-score"><div class="dot filled"></div><div class="dot filled"></div><div class="dot empty"></div><div class="dot empty"></div><div class="dot empty"></div></div></td>
+              <td><div class="dot-score"><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot empty"></div></div></td>
+              <td><div class="dot-score"><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div></div></td>
+            </tr>
+            <tr>
+              <td style="font-weight:600;font-size:0.8rem;">Aufwand (niedriger = besser)</td>
+              <td><div class="dot-score"><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot empty"></div><div class="dot empty"></div></div></td>
+              <td><div class="dot-score"><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot empty"></div></div></td>
+              <td><div class="dot-score"><div class="dot filled"></div><div class="dot empty"></div><div class="dot empty"></div><div class="dot empty"></div><div class="dot empty"></div></div></td>
+              <td><div class="dot-score"><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot empty"></div></div></td>
+              <td><div class="dot-score"><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div></div></td>
+            </tr>
+            <tr>
+              <td style="font-weight:600;font-size:0.8rem;">Differenzierung</td>
+              <td><div class="dot-score"><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot empty"></div></div></td>
+              <td><div class="dot-score"><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot empty"></div><div class="dot empty"></div></div></td>
+              <td><div class="dot-score"><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div></div></td>
+              <td><div class="dot-score"><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot empty"></div></div></td>
+              <td><div class="dot-score"><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot empty"></div><div class="dot empty"></div></div></td>
+            </tr>
+            <tr>
+              <td style="font-weight:600;font-size:0.8rem;">Conversion-Potential</td>
+              <td><div class="dot-score"><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot empty"></div><div class="dot empty"></div></div></td>
+              <td><div class="dot-score"><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot empty"></div></div></td>
+              <td><div class="dot-score"><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot empty"></div><div class="dot empty"></div></div></td>
+              <td><div class="dot-score"><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot empty"></div><div class="dot empty"></div></div></td>
+              <td><div class="dot-score"><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot empty"></div></div></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       RECOMMENDATION
+  ============================================================ -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-heading">Die Empfehlung</h2>
+      <p class="section-sub">Keine Richtung gewinnt allein. Aber eine Kombination gewinnt klar.</p>
+
+      <div class="recommendation-block">
+        <div class="rec-header">
+          <div class="rec-header-inner">
+            <p class="rec-eyebrow">Designer-Empfehlung — Nullpunkt Design Sprint 2026</p>
+            <h2 class="rec-title">Hybrid E + A<br />mit Tonalität aus C</h2>
+            <p class="rec-tagline">
+              Die Struktur von E. Die typografische Radikalität von A. Die kosmische Schwere von C als
+              unterschwelliges Motiv — nicht buchstäblich, sondern als Gravitationsfeld des Layouts.
+            </p>
+          </div>
+        </div>
+
+        <div class="rec-body">
+          <div class="rec-columns">
+            <div>
+              <p class="rec-column-title">Warum dieser Hybrid?</p>
+              <ul class="why-list">
+                <li>
+                  <span class="why-marker">E</span>
+                  <span>E gibt die Struktur: nummerierte Listen statt Kacheln, zwei grosse Work-Cards pro Row, klare Hierarchie ohne Komplexität. Das löst die Layout-Probleme aus dem Design-Review in einem Sprint.</span>
+                </li>
+                <li>
+                  <span class="why-marker">A</span>
+                  <span>A gibt den Charakter: Syne bei −0.05em Tracking, grosse Zahlen als strukturierende Elemente (Section-Nummern 01, 02, 03 — gross, nicht klein), monochrome Strenge unterbrochen nur durch Indigo.</span>
+                </li>
+                <li>
+                  <span class="why-marker">C</span>
+                  <span>C gibt die Tonalität: Der Radial-Glow im Hero bleibt und wächst. "Lensing"-Effekte als subtile Surface-Tints. Elemente die beim Scrollen schwer "fallen" statt linear zu faden. Der Name Nullpunkt spürt sich im Layout an.</span>
+                </li>
+                <li>
+                  <span class="why-marker">D</span>
+                  <span>Aus D: JetBrains Mono für Eyebrows, Labels, Zahlen und Tags — aber nie als Fliesstext. Der Monospace-Kontrast zu Syne signalisiert "tech but designed" ohne die Zielgruppe einzuengen.</span>
+                </li>
+              </ul>
+            </div>
+            <div>
+              <p class="rec-column-title">Was das konkret bedeutet</p>
+              <ul class="why-list">
+                <li>
+                  <span class="why-marker">1</span>
+                  <span><strong style="color:var(--text-primary)">Hero:</strong> Ein Claim, drei Zeilen, −0.05em Tracking. Radial-Glow hinter der Headline. Kein Untertitel der erklärt — der Claim muss stehen. CTA darunter.</span>
+                </li>
+                <li>
+                  <span class="why-marker">2</span>
+                  <span><strong style="color:var(--text-primary)">Services:</strong> Nummerierte Liste (01 — 03), nicht Kacheln. Große Zahl links, Service-Name in Syne, Beschreibung in Inter darunter. Horizontal-Linie als Trennelemente.</span>
+                </li>
+                <li>
+                  <span class="why-marker">3</span>
+                  <span><strong style="color:var(--text-primary)">Work:</strong> Zwei grosse Cards, volle Breite, asym­metrisch gestapelt. Projektbild dominant, Projektname gross. Hover: Clip-Path Reveal von Projektdetails.</span>
+                </li>
+                <li>
+                  <span class="why-marker">4</span>
+                  <span><strong style="color:var(--text-primary)">About:</strong> Ein Satz in gross — nicht drei Absätze. Drei Zahlen/Stats daneben als Gravitationspunkte des Abschnitts.</span>
+                </li>
+                <li>
+                  <span class="why-marker">5</span>
+                  <span><strong style="color:var(--text-primary)">BG:</strong> #F8F7F5 statt #F5F5F7 — einen Tick wärmer. Reinweiß für Cards. Indigo bleibt der einzige Farbakzent.</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="hybrid-box">
+            <p class="hybrid-eyebrow">Langfrist-Pfad</p>
+            <h4 class="hybrid-title">E+A jetzt — C als Version 2.0</h4>
+            <p class="hybrid-text">
+              Dieser Hybrid funktioniert als vollständige Site in 2–3 Sprints. Gleichzeitig ist er so angelegt,
+              dass Richtung C — das Gravitational Drama — in einem späteren Schritt als Erweiterung gebaut werden kann,
+              ohne die Struktur neu erfinden zu müssen. Die kosmische Metaphorik ist als Tonalität bereits drin,
+              die Animationen können später intensiviert werden. Kein Wegwerfen, kein Neuanfang.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       NEXT STEPS
+  ============================================================ -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-heading">Konkrete nächste Schritte</h2>
+      <p class="section-sub">Was ich als Designer als nächstes tun würde — in dieser Reihenfolge.</p>
+
+      <div class="steps-grid">
+        <div class="step-card">
+          <p class="step-number">Sprint 01</p>
+          <h4 class="step-title">Typografie-System fixieren</h4>
+          <p class="step-text">
+            Alle H1–H3 Grössen, Letter-Spacings und Line-Heights in globals.css festlegen.
+            Syne mit −0.04em auf H1, −0.03em auf H2, −0.02em auf H3.
+            Section-H2 auf max 2.75rem reduzieren (weg von 3.5rem).
+            Alle font-family Inline-Styles entfernen und durch globale Regeln ersetzen.
+          </p>
+          <div class="step-tags">
+            <span class="tag tag-accent">globals.css</span>
+            <span class="tag tag-muted">Quick Win</span>
+            <span class="tag tag-green">2–3h</span>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <p class="step-number">Sprint 01</p>
+          <h4 class="step-title">Services-Section redesignen</h4>
+          <p class="step-text">
+            Kacheln raus, nummerierte Liste rein. Layout: grosse Ziffer (Syne, 5rem, 10% Opacity)
+            links als dekorative Zahl, Service-Name daneben, Trennlinie darunter.
+            Kein Grid für gleich grosse Blöcke — vertikaler Flow mit horizontalen Linien.
+          </p>
+          <div class="step-tags">
+            <span class="tag tag-accent">ServicesSection.tsx</span>
+            <span class="tag tag-muted">Redesign</span>
+            <span class="tag tag-amber">Halber Tag</span>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <p class="step-number">Sprint 01</p>
+          <h4 class="step-title">Work-Section Asymmetrie</h4>
+          <p class="step-text">
+            Work-Cards: von 3-Kacheln-Grid auf zwei grosse asym­metrische Cards.
+            Erste Card: breit + gross. Zweite Card: etwas schmaler, versetzt.
+            Projektbilder dominant, min. 280px Höhe. Hover-State mit Clip-Path Reveal.
+          </p>
+          <div class="step-tags">
+            <span class="tag tag-accent">WorkSection.tsx</span>
+            <span class="tag tag-muted">Layout-Umbau</span>
+            <span class="tag tag-amber">Halber Tag</span>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <p class="step-number">Sprint 02</p>
+          <h4 class="step-title">Hero-Claim schärfen</h4>
+          <p class="step-text">
+            "Wo Ideen Masse gewinnen." ist ein Anfang. Aber der Claim muss ohne Erklärung stehen können.
+            Varianten testen: "Der Nullpunkt kommt vor dem Start." oder rein typografisch
+            "Nullpunkt." als einzige Headline — Claim durch Gestaltung, nicht Text.
+          </p>
+          <div class="step-tags">
+            <span class="tag tag-accent">Hero.tsx</span>
+            <span class="tag tag-muted">Copy + Design</span>
+            <span class="tag tag-green">Claas entscheidet</span>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <p class="step-number">Sprint 02</p>
+          <h4 class="step-title">Spacing-System auf 8px-Basis</h4>
+          <p class="step-text">
+            Section-Padding auf clamp(5rem, 8vw, 8rem) erhöhen — mehr Luft.
+            Alle internen Abstände prüfen: Eyebrow→H2 = 12px, H2→Sub = 16px, Sub→Content = 48px.
+            SectionHeader-Komponente extrahieren damit das nie wieder divergiert.
+          </p>
+          <div class="step-tags">
+            <span class="tag tag-accent">Alle Sections</span>
+            <span class="tag tag-muted">Refactoring</span>
+            <span class="tag tag-amber">Tag</span>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <p class="step-number">Sprint 02</p>
+          <h4 class="step-title">Scroll-Animationen verfeinern</h4>
+          <p class="step-text">
+            Grid-Items einzeln mit [data-animate] taggen statt den Container.
+            "Fall-in" Effekt für Cards: von Y(60px) + scale(0.97) auf Y(0) + scale(1).
+            Lensing-Glow im Hero reagiert leicht auf Scroll-Position via GSAP ScrollTrigger.
+          </p>
+          <div class="step-tags">
+            <span class="tag tag-accent">ScrollAnimations.tsx</span>
+            <span class="tag tag-muted">GSAP</span>
+            <span class="tag tag-amber">Tag</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FOOTER
+  ============================================================ -->
+  <footer class="report-footer">
+    <div class="container">
+      <div class="footer-inner">
+        <span class="footer-mark">Nullpunkt — Design Sprint 2026</span>
+        <span class="footer-meta">Erstellt: 06.04.2026 &nbsp;·&nbsp; Designer &nbsp;·&nbsp; Empfehlung: Hybrid E+A mit C-Tonalität</span>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

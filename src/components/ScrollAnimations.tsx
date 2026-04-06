@@ -8,7 +8,7 @@ gsap.registerPlugin(ScrollTrigger)
 
 export function ScrollAnimations() {
   useGSAP(() => {
-    const sections = ['#work', '#services', '#about', '#contact']
+    const sections = ['#work', '#services', '#contact']
 
     sections.forEach((id) => {
       const section = document.querySelector(id)
