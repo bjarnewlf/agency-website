@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Inter, Syne, JetBrains_Mono } from 'next/font/google'
 import { LenisProvider } from '@/components/LenisProvider'
 import { CustomCursor } from '@/components/CustomCursor'
+import { GridBackground } from '@/components/GridBackground'
 import './globals.css'
 
 const inter = Inter({
@@ -45,6 +46,7 @@ export default function RootLayout({
       <body>
         {/* Setzt js-ready synchron beim HTML-Parsen — vor React Hydration */}
         <script dangerouslySetInnerHTML={{ __html: `document.documentElement.classList.add('js-ready')` }} />
+        <GridBackground />
         <LenisProvider>
           <CustomCursor />
           {children}

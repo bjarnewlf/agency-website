@@ -19,8 +19,8 @@ export function CustomCursor() {
     const el = cursorRef.current
     if (!el) return
 
-    const xTo = gsap.quickTo(el, 'x', { duration: 0.35, ease: 'power3.out' })
-    const yTo = gsap.quickTo(el, 'y', { duration: 0.35, ease: 'power3.out' })
+    const xTo = gsap.quickTo(el, 'x', { duration: 0.15, ease: 'power3.out' })
+    const yTo = gsap.quickTo(el, 'y', { duration: 0.15, ease: 'power3.out' })
 
     // Initial: Cursor ausserhalb des Viewports — kein Flash bei Load
     gsap.set(el, { x: -100, y: -100 })
