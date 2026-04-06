@@ -4,9 +4,9 @@ import { useEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
 
 const CELL = 60
-const SEGMENTS = 6
-const STRENGTH = 55
-const RADIUS = 220
+const SEGMENTS = 16
+const STRENGTH = 110
+const RADIUS = 160
 const LINE_COLOR = 'rgba(99, 102, 241, 0.08)'
 const LINE_WIDTH = 1
 
@@ -45,8 +45,8 @@ export function GridBackground() {
     }
     setSize()
 
-    const xTo = gsap.quickTo(mouse.current, 'x', { duration: 0.5, ease: 'power2.out' })
-    const yTo = gsap.quickTo(mouse.current, 'y', { duration: 0.5, ease: 'power2.out' })
+    const xTo = gsap.quickTo(mouse.current, 'x', { duration: 0.35, ease: 'power2.out' })
+    const yTo = gsap.quickTo(mouse.current, 'y', { duration: 0.35, ease: 'power2.out' })
 
     const onMouseMove = (e: MouseEvent) => {
       xTo(e.clientX)
@@ -78,7 +78,7 @@ export function GridBackground() {
       // Vertikale Linien
       for (let col = 0; col * CELL <= w + CELL; col++) {
         const baseX = col * CELL
-        ctx.beginPath()
+        const pts: { x: number; y: number }[] = []
         for (let s = 0; s * (CELL / SEGMENTS) <= h + CELL / SEGMENTS; s++) {
           const baseY = s * (CELL / SEGMENTS)
           const dx = mx - baseX
@@ -91,19 +91,23 @@ export function GridBackground() {
             ox = (dx / dist) * mag
             oy = (dy / dist) * mag
           }
-          if (s === 0) {
-            ctx.moveTo(baseX + ox, baseY + oy)
-          } else {
-            ctx.lineTo(baseX + ox, baseY + oy)
-          }
+          pts.push({ x: baseX + ox, y: baseY + oy })
         }
+        ctx.beginPath()
+        ctx.moveTo(pts[0].x, pts[0].y)
+        for (let i = 1; i < pts.length - 1; i++) {
+          const mx2 = (pts[i].x + pts[i + 1].x) / 2
+          const my2 = (pts[i].y + pts[i + 1].y) / 2
+          ctx.quadraticCurveTo(pts[i].x, pts[i].y, mx2, my2)
+        }
+        if (pts.length > 1) ctx.lineTo(pts[pts.length - 1].x, pts[pts.length - 1].y)
         ctx.stroke()
       }
 
       // Horizontale Linien
       for (let row = 0; row * CELL <= h + CELL; row++) {
         const baseY = row * CELL
-        ctx.beginPath()
+        const pts: { x: number; y: number }[] = []
         for (let s = 0; s * (CELL / SEGMENTS) <= w + CELL / SEGMENTS; s++) {
           const baseX = s * (CELL / SEGMENTS)
           const dx = mx - baseX
@@ -116,12 +120,16 @@ export function GridBackground() {
             ox = (dx / dist) * mag
             oy = (dy / dist) * mag
           }
-          if (s === 0) {
-            ctx.moveTo(baseX + ox, baseY + oy)
-          } else {
-            ctx.lineTo(baseX + ox, baseY + oy)
-          }
+          pts.push({ x: baseX + ox, y: baseY + oy })
         }
+        ctx.beginPath()
+        ctx.moveTo(pts[0].x, pts[0].y)
+        for (let i = 1; i < pts.length - 1; i++) {
+          const mx2 = (pts[i].x + pts[i + 1].x) / 2
+          const my2 = (pts[i].y + pts[i + 1].y) / 2
+          ctx.quadraticCurveTo(pts[i].x, pts[i].y, mx2, my2)
+        }
+        if (pts.length > 1) ctx.lineTo(pts[pts.length - 1].x, pts[pts.length - 1].y)
         ctx.stroke()
       }
 
