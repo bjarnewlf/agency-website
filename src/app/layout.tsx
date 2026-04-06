@@ -38,7 +38,7 @@ export const metadata: Metadata = {
     url: 'https://nullpunkt.cc',
     images: [
       {
-        url: 'https://nullpunkt.cc/og-image.svg',
+        url: 'https://nullpunkt.cc/og-image.png',
         width: 1200,
         height: 630,
         alt: 'Nullpunkt — Wo Ideen Masse gewinnen.',

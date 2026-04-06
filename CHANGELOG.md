@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-04-06 — Favicon + OG-Image Fix
+
+### Geändert
+
+- **Favicon** — `src/app/favicon.ico` (Next.js-Default) gelöscht; SVG-Referenz in `layout.tsx` greift jetzt korrekt
+- **OG Image** — `public/og-image.svg` mit sharp zu `public/og-image.png` (1200×630) konvertiert; `layout.tsx` OG-URL auf `.png` aktualisiert — SVG wird von Social-Media-Plattformen nicht als OG-Image akzeptiert
+
+---
+
 ## 2026-04-06 — Tuning-Sprint (Session heute)
 
 ### Neu
