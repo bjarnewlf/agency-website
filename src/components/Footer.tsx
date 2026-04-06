@@ -46,6 +46,13 @@ export function Footer() {
           >
             Kontakt
           </a>
+          <a
+            href="/impressum"
+            className="text-sm transition-colors duration-200 hover:text-[var(--text-primary)]"
+            style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-inter)' }}
+          >
+            Impressum
+          </a>
         </nav>
 
         {/* Domain */}
