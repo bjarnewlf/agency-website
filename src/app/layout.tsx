@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Inter, Syne, JetBrains_Mono } from 'next/font/google'
+import Script from 'next/script'
 import { LenisProvider } from '@/components/LenisProvider'
 import { CustomCursor } from '@/components/CustomCursor'
 import { GridBackground } from '@/components/GridBackground'
@@ -60,6 +61,14 @@ export default function RootLayout({
       <body>
         {/* Setzt js-ready synchron beim HTML-Parsen — vor React Hydration */}
         <script dangerouslySetInnerHTML={{ __html: `document.documentElement.classList.add('js-ready')` }} />
+        {process.env.NODE_ENV === 'production' && (
+          <Script
+            defer
+            data-domain="nullpunkt.cc"
+            src="https://plausible.io/js/script.js"
+            strategy="afterInteractive"
+          />
+        )}
         <GridBackground />
         <TransitionProvider>
           <LenisProvider>

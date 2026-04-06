@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-04-06 — Plausible Analytics
+
+### Neu
+
+- **Plausible Analytics** — Script-Tag (`data-domain="nullpunkt.cc"`) via Next.js `<Script strategy="afterInteractive">` in `layout.tsx` eingebunden. Nur in Production aktiv (`NODE_ENV === 'production'`), im Dev-Modus deaktiviert.
+
+---
+
 ## 2026-04-06 — Bugfixes AboutSection + WorkSection Padding
 
 ### Fixes
