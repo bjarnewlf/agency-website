@@ -1,27 +1,65 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
-import gsap from 'gsap'
+import React, { useEffect, useState } from 'react'
+import {
+  motion,
+  useMotionValue,
+  useMotionTemplate,
+  useAnimationFrame,
+} from 'framer-motion'
 
-const CELL = 60
-const SEGMENTS = 16
-const STRENGTH = 90
-const LENS_RADIUS = 200
-const LINE_COLOR = 'rgba(99, 102, 241, 0.08)'
-const LINE_WIDTH = 1
+const CELL = 40       // Zellgröße in px
+const SPEED = 0.25    // Drift-Geschwindigkeit px/frame
+const SPOTLIGHT = 220 // Radius des Spotlights in px
 
-const CSS_FALLBACK_STYLE: React.CSSProperties = {
-  backgroundSize: '60px 60px',
+function GridSVG({
+  offsetX,
+  offsetY,
+  patternId,
+}: {
+  offsetX: ReturnType<typeof useMotionValue<number>>
+  offsetY: ReturnType<typeof useMotionValue<number>>
+  patternId: string
+}) {
+  return (
+    <svg className="w-full h-full" aria-hidden="true">
+      <defs>
+        <motion.pattern
+          id={patternId}
+          width={CELL}
+          height={CELL}
+          patternUnits="userSpaceOnUse"
+          x={offsetX}
+          y={offsetY}
+        >
+          <path
+            d={`M ${CELL} 0 L 0 0 0 ${CELL}`}
+            fill="none"
+            stroke="rgba(99, 102, 241, 1)"
+            strokeWidth="1"
+          />
+        </motion.pattern>
+      </defs>
+      <rect width="100%" height="100%" fill={`url(#${patternId})`} />
+    </svg>
+  )
+}
+
+const CSS_FALLBACK: React.CSSProperties = {
+  backgroundSize: '40px 40px',
   backgroundImage: `
-    linear-gradient(to right, rgba(99, 102, 241, 0.08) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(99, 102, 241, 0.08) 1px, transparent 1px)
+    linear-gradient(to right, rgba(99, 102, 241, 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(99, 102, 241, 0.06) 1px, transparent 1px)
   `,
 }
 
 export function GridBackground() {
-  const canvasRef = useRef<HTMLCanvasElement>(null)
-  const mouse = useRef({ x: -9999, y: -9999 })
   const [isTouch, setIsTouch] = useState<boolean | null>(null)
+
+  const mouseX = useMotionValue(-9999)
+  const mouseY = useMotionValue(-9999)
+  const offsetX = useMotionValue(0)
+  const offsetY = useMotionValue(0)
 
   useEffect(() => {
     setIsTouch(window.matchMedia('(pointer: coarse)').matches)
@@ -29,145 +67,45 @@ export function GridBackground() {
 
   useEffect(() => {
     if (isTouch !== false) return
-
-    const canvas = canvasRef.current
-    if (!canvas) return
-
-    const ctx = canvas.getContext('2d')
-    if (!ctx) return
-
-    const dpr = window.devicePixelRatio || 1
-
-    const setSize = () => {
-      canvas.width = window.innerWidth * dpr
-      canvas.height = window.innerHeight * dpr
-      ctx.scale(dpr, dpr)
+    const onMove = (e: MouseEvent) => {
+      mouseX.set(e.clientX)
+      mouseY.set(e.clientY)
     }
-    setSize()
+    window.addEventListener('mousemove', onMove)
+    return () => window.removeEventListener('mousemove', onMove)
+  }, [isTouch, mouseX, mouseY])
 
-    const xTo = gsap.quickTo(mouse.current, 'x', { duration: 0.4, ease: 'power2.out' })
-    const yTo = gsap.quickTo(mouse.current, 'y', { duration: 0.4, ease: 'power2.out' })
-
-    const onMouseMove = (e: MouseEvent) => {
-      xTo(e.clientX)
-      yTo(e.clientY)
+  useAnimationFrame(() => {
+    if (isTouch === false) {
+      offsetX.set((offsetX.get() + SPEED) % CELL)
+      offsetY.set((offsetY.get() + SPEED) % CELL)
     }
-    window.addEventListener('mousemove', onMouseMove)
+  })
 
-    const resizeObserver = new ResizeObserver(() => {
-      setSize()
-    })
-    resizeObserver.observe(document.documentElement)
-
-    ctx.strokeStyle = LINE_COLOR
-    ctx.lineWidth = LINE_WIDTH
-
-    let rafId: number
-
-    const render = () => {
-      const w = window.innerWidth
-      const h = window.innerHeight
-      const mx = mouse.current.x
-      const my = mouse.current.y
-
-      ctx.clearRect(0, 0, w, h)
-
-      ctx.strokeStyle = LINE_COLOR
-      ctx.lineWidth = LINE_WIDTH
-
-      // Vertikale Linien
-      for (let col = 0; col * CELL <= w + CELL; col++) {
-        const baseX = col * CELL
-        const pts: { x: number; y: number }[] = []
-        for (let s = 0; s * (CELL / SEGMENTS) <= h + CELL / SEGMENTS; s++) {
-          const baseY = s * (CELL / SEGMENTS)
-          const dx = mx - baseX
-          const dy = my - baseY
-          const dist = Math.sqrt(dx * dx + dy * dy)
-          let ox = 0
-          let oy = 0
-          if (dist < LENS_RADIUS && dist >= 1) {
-            const r = dist / LENS_RADIUS
-            const mag = STRENGTH * Math.sin(Math.PI * r)
-            ox = -(dx / dist) * mag
-            oy = -(dy / dist) * mag
-          }
-          pts.push({ x: baseX + ox, y: baseY + oy })
-        }
-        ctx.beginPath()
-        ctx.moveTo(pts[0].x, pts[0].y)
-        for (let i = 1; i < pts.length - 1; i++) {
-          const mx2 = (pts[i].x + pts[i + 1].x) / 2
-          const my2 = (pts[i].y + pts[i + 1].y) / 2
-          ctx.quadraticCurveTo(pts[i].x, pts[i].y, mx2, my2)
-        }
-        if (pts.length > 1) ctx.lineTo(pts[pts.length - 1].x, pts[pts.length - 1].y)
-        ctx.stroke()
-      }
-
-      // Horizontale Linien
-      for (let row = 0; row * CELL <= h + CELL; row++) {
-        const baseY = row * CELL
-        const pts: { x: number; y: number }[] = []
-        for (let s = 0; s * (CELL / SEGMENTS) <= w + CELL / SEGMENTS; s++) {
-          const baseX = s * (CELL / SEGMENTS)
-          const dx = mx - baseX
-          const dy = my - baseY
-          const dist = Math.sqrt(dx * dx + dy * dy)
-          let ox = 0
-          let oy = 0
-          if (dist < LENS_RADIUS && dist >= 1) {
-            const r = dist / LENS_RADIUS
-            const mag = STRENGTH * Math.sin(Math.PI * r)
-            ox = -(dx / dist) * mag
-            oy = -(dy / dist) * mag
-          }
-          pts.push({ x: baseX + ox, y: baseY + oy })
-        }
-        ctx.beginPath()
-        ctx.moveTo(pts[0].x, pts[0].y)
-        for (let i = 1; i < pts.length - 1; i++) {
-          const mx2 = (pts[i].x + pts[i + 1].x) / 2
-          const my2 = (pts[i].y + pts[i + 1].y) / 2
-          ctx.quadraticCurveTo(pts[i].x, pts[i].y, mx2, my2)
-        }
-        if (pts.length > 1) ctx.lineTo(pts[pts.length - 1].x, pts[pts.length - 1].y)
-        ctx.stroke()
-      }
-
-      rafId = requestAnimationFrame(render)
-    }
-
-    rafId = requestAnimationFrame(render)
-
-    return () => {
-      cancelAnimationFrame(rafId)
-      window.removeEventListener('mousemove', onMouseMove)
-      resizeObserver.disconnect()
-    }
-  }, [isTouch])
+  const maskImage = useMotionTemplate`radial-gradient(${SPOTLIGHT}px circle at ${mouseX}px ${mouseY}px, black, transparent)`
 
   if (isTouch !== false) {
-    return (
-      <div
-        className="fixed inset-0 z-0 pointer-events-none"
-        style={CSS_FALLBACK_STYLE}
-      />
-    )
+    return <div className="fixed inset-0 z-0 pointer-events-none" style={CSS_FALLBACK} />
   }
 
   return (
-    <canvas
-      ref={canvasRef}
-      style={{
-        position: 'fixed',
-        inset: 0,
-        zIndex: 0,
-        pointerEvents: 'none',
-        width: '100%',
-        height: '100%',
-        willChange: 'transform',
-      }}
-    />
+    <div className="fixed inset-0 z-0 pointer-events-none" aria-hidden="true">
+      {/* Basis-Grid — sehr schwach, überall sichtbar */}
+      <div className="absolute inset-0" style={{ opacity: 0.055 }}>
+        <GridSVG offsetX={offsetX} offsetY={offsetY} patternId="grid-base" />
+      </div>
+
+      {/* Spotlight-Grid — heller, nur im Mausbereich sichtbar */}
+      <motion.div
+        className="absolute inset-0"
+        style={{
+          opacity: 0.45,
+          maskImage,
+          WebkitMaskImage: maskImage,
+        }}
+      >
+        <GridSVG offsetX={offsetX} offsetY={offsetY} patternId="grid-reveal" />
+      </motion.div>
+    </div>
   )
 }
