@@ -1,5 +1,7 @@
 import type { ReactNode } from 'react'
 import { HeroAnimations } from '@/components/HeroAnimations'
+import { GravitationalField } from '@/components/GravitationalField'
+
 
 function RevealLine({
   children,
@@ -27,30 +29,36 @@ export function Hero() {
       className="relative min-h-screen flex flex-col justify-center overflow-hidden"
       aria-label="Hero"
     >
-      {/* Dot-Grid-Pattern */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        aria-hidden="true"
-        style={{
-          backgroundImage: `radial-gradient(circle, rgba(99, 102, 241, 0.04) 1px, transparent 1px)`,
-          backgroundSize: '64px 64px',
-        }}
-      />
-
-      {/* Dezenter Indigo-Glow links-mittig */}
+      {/* Radialer Hintergrundverlauf zentriert auf das SVG */}
       <div
         className="absolute pointer-events-none"
         aria-hidden="true"
         style={{
-          width: '700px',
-          height: '700px',
-          background:
-            'radial-gradient(circle, rgba(99, 102, 241, 0.07) 0%, transparent 70%)',
+          width: '680px',
+          height: '680px',
+          background: 'radial-gradient(circle at center, rgba(79,70,229,0.035) 0%, transparent 65%)',
           top: '50%',
-          left: '8%',
-          transform: 'translate(-20%, -50%)',
+          right: '-80px',
+          transform: 'translateY(-50%)',
+          borderRadius: '50%',
         }}
       />
+
+      {/* Gravitationsfeld — rechts-mittig, bricht aus dem Grid aus */}
+      <div
+        id="gravitational-field-wrapper"
+        className="absolute pointer-events-none"
+        style={{
+          right: '-80px',
+          top: '50%',
+          transform: 'translateY(-50%)',
+          zIndex: 0,
+          opacity: 0,
+        }}
+        aria-hidden="true"
+      >
+        <GravitationalField size={480} />
+      </div>
 
       {/* Content — links ausgerichtet */}
       <div
