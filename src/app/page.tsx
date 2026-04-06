@@ -1,5 +1,5 @@
 import { Navigation } from '@/components/Navigation'
-import { Hero } from '@/components/Hero'
+import { BigBangHero } from '@/components/BigBangHero'
 import { WorkSection } from '@/components/WorkSection'
 import { ServicesSection } from '@/components/ServicesSection'
 import { ContactSection } from '@/components/ContactSection'
@@ -11,7 +11,7 @@ export default function Home() {
     <>
       <Navigation />
       <main>
-        <Hero />
+        <BigBangHero />
         <WorkSection />
         <ServicesSection />
         <ContactSection />
