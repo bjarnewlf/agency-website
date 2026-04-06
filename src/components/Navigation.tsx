@@ -63,7 +63,7 @@ export function Navigation() {
       ref={headerRef}
       className="fixed top-0 left-0 right-0 z-50"
       style={{
-        background: isDark ? 'rgba(0,0,0,0.35)' : 'rgba(255, 255, 255, 0.75)',
+        background: isDark ? 'rgba(0,0,0,0.15)' : 'rgba(255, 255, 255, 0.75)',
         backdropFilter: isDark ? 'blur(12px)' : 'blur(20px)',
         WebkitBackdropFilter: isDark ? 'blur(12px)' : 'blur(20px)',
         borderBottom: isDark ? '1px solid rgba(255,255,255,0.1)' : '1px solid var(--border)',
