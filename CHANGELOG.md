@@ -1,5 +1,15 @@
 # Changelog
 
+## 2026-04-06 — Bugfixes AboutSection + WorkSection Padding
+
+### Fixes
+
+- **AboutSection sichtbar** — `#about` fehlte in `ScrollAnimations.tsx` sections-Array. `data-animate`-Elemente blieben dauerhaft bei `opacity: 0`. Aufgenommen.
+- **WorkSection Padding** — `px-6` auf `<section>` wurde durch globalen Reset überschrieben (`getBoundingClientRect().left = 0`). Ersetzt durch inline `paddingLeft/paddingRight: 1.5rem`, greift zuverlässig.
+
+---
+
+
 ## 2026-04-06 — Favicon + OG-Image Fix
 
 ### Geändert

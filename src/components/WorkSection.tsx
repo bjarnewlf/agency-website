@@ -3,8 +3,8 @@ export function WorkSection() {
     <section
       id="work"
       aria-label="Work"
-      className="section-padding border-t border-[var(--border)] px-6"
-      style={{ backgroundColor: 'var(--bg)' }}
+      className="section-padding border-t border-[var(--border)]"
+      style={{ backgroundColor: 'var(--bg)', paddingLeft: '1.5rem', paddingRight: '1.5rem' }}
     >
       <div className="mx-auto" style={{ maxWidth: '1200px' }}>
         {/* Section Header */}
