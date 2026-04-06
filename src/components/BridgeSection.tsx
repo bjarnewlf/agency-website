@@ -23,9 +23,9 @@ export function BridgeSection() {
             maxWidth: '640px',
           }}
         >
-          Wir bauen, was zählt.{' '}
+          Eine Agentur. Ein Entwickler.{' '}
           <span style={{ color: 'var(--text-secondary)', fontWeight: 500 }}>
-            Kein Aufwärmen, kein Agentur-Bullshit.
+            KI als Werkzeug, nicht als Buzzword.
           </span>
         </p>
       </div>

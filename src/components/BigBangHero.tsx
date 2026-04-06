@@ -23,13 +23,11 @@ export function BigBangHero() {
       },
     })
 
-    // Hintergrund: Schwarz → Hellgrau (#F8F7F5)
     tl.to('.bb-bg', {
       backgroundColor: '#F8F7F5',
       duration: 10,
     }, 0)
 
-    // Singularität verschwindet (0–1.5)
     tl.to('.bb-singularity', {
       scale: 0,
       opacity: 0,
@@ -37,7 +35,6 @@ export function BigBangHero() {
       ease: 'power2.in',
     }, 0)
 
-    // Lichtburst expandiert (0–3.5)
     tl.fromTo('.bb-burst', {
       scale: 0,
       opacity: 0,
@@ -48,13 +45,11 @@ export function BigBangHero() {
       ease: 'power2.out',
     }, 0)
 
-    // Burst verblasst (3–6)
     tl.to('.bb-burst', {
       opacity: 0,
       duration: 3,
     }, 3)
 
-    // Headline explodiert rein (1.5–6)
     tl.fromTo('.bb-headline', {
       scale: 0.03,
       opacity: 0,
@@ -65,7 +60,6 @@ export function BigBangHero() {
       ease: 'power3.out',
     }, 1.5)
 
-    // Sub-Elemente einblenden (5.5–10)
     tl.fromTo('.bb-sub', {
       opacity: 0,
       y: 24,
@@ -84,13 +78,11 @@ export function BigBangHero() {
       style={{ backgroundColor: '#000000' }}
       aria-label="Hero"
     >
-      {/* Hintergrund-Layer */}
       <div
         className="bb-bg absolute inset-0"
         style={{ backgroundColor: '#000000' }}
       />
 
-      {/* Lichtburst — radial aus der Mitte */}
       <div
         className="bb-burst absolute pointer-events-none"
         style={{
@@ -105,7 +97,6 @@ export function BigBangHero() {
         }}
       />
 
-      {/* Singularität — der Nullpunkt */}
       <div
         className="bb-singularity absolute flex items-center justify-center"
         style={{
@@ -127,7 +118,6 @@ export function BigBangHero() {
         </span>
       </div>
 
-      {/* Content-Layer */}
       <div
         className="relative z-10 w-full mx-auto"
         style={{
@@ -136,7 +126,6 @@ export function BigBangHero() {
           paddingRight: 'clamp(1.5rem, 6%, 4rem)',
         }}
       >
-        {/* Eyebrow */}
         <p
           className="bb-sub eyebrow mb-6"
           style={{ opacity: 0, color: 'var(--accent-light)' }}
@@ -144,7 +133,6 @@ export function BigBangHero() {
           KI-Agentur
         </p>
 
-        {/* Headline — explodiert rein */}
         <h1
           className="bb-headline mb-8"
           style={{
@@ -157,7 +145,6 @@ export function BigBangHero() {
           <span style={{ display: 'block', color: '#0A0A0F' }}>gewinnen.</span>
         </h1>
 
-        {/* Subline */}
         <p
           className="bb-sub mb-10"
           style={{
@@ -169,10 +156,9 @@ export function BigBangHero() {
             opacity: 0,
           }}
         >
-          Design und Engineering ohne Kompromiss.
+          KI-Produkte. Gebaut, nicht geplant.
         </p>
 
-        {/* CTAs */}
         <div
           className="bb-sub flex items-center gap-6"
           style={{ opacity: 0 }}

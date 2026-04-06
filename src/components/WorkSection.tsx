@@ -97,8 +97,8 @@ export function WorkSection() {
                   maxWidth: '360px',
                 }}
               >
-                Die ersten Projekte laufen. VetApp. Sonos TTS.<br />
-                Wenn wir etwas zeigen, ist es echt.
+                Erste Projekte in Entwicklung. Case Studies folgen,
+                wenn sie fertig sind — nicht vorher.
               </p>
             </div>
 
@@ -156,8 +156,8 @@ export function WorkSection() {
                 marginTop: '1rem',
               }}
             >
-              Die ersten Projekte laufen. VetApp. Sonos TTS.<br />
-              Wenn wir etwas zeigen, ist es echt.
+              Erste Projekte in Entwicklung. Case Studies folgen,
+              wenn sie fertig sind — nicht vorher.
             </p>
           </div>
         </article>
