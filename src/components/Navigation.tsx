@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useLayoutEffect } from 'react'
 import gsap from 'gsap'
 import { useActiveSection } from '@/lib/hooks/useActiveSection'
 import { TransitionLink } from '@/components/TransitionLink'
@@ -16,6 +16,7 @@ export function Navigation() {
   const [isDark, setIsDark] = useState(true)
   const { activeSection } = useActiveSection()
   const headerRef = useRef<HTMLElement>(null)
+  const mobileMenuRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const header = headerRef.current
@@ -57,6 +58,22 @@ export function Navigation() {
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
+
+  // Initialzustand Mobile Menu — collapsed
+  useLayoutEffect(() => {
+    if (!mobileMenuRef.current) return
+    gsap.set(mobileMenuRef.current, { height: 0, opacity: 0 })
+  }, [])
+
+  // Mobile Menu Animation
+  useEffect(() => {
+    if (!mobileMenuRef.current) return
+    if (menuOpen) {
+      gsap.to(mobileMenuRef.current, { height: 'auto', opacity: 1, duration: 0.35, ease: 'power2.out' })
+    } else {
+      gsap.to(mobileMenuRef.current, { height: 0, opacity: 0, duration: 0.25, ease: 'power2.in' })
+    }
+  }, [menuOpen])
 
   return (
     <header
@@ -174,6 +191,7 @@ export function Navigation() {
 
       {/* Mobile Menu */}
       <div
+        ref={mobileMenuRef}
         id="mobile-menu"
         className="md:hidden"
         aria-hidden={!menuOpen}
@@ -181,11 +199,8 @@ export function Navigation() {
           background: 'rgba(255, 255, 255, 0.95)',
           backdropFilter: 'blur(20px)',
           borderTop: '1px solid var(--border)',
-          maxHeight: menuOpen ? '300px' : '0',
-          opacity: menuOpen ? 1 : 0,
           overflow: 'hidden',
           pointerEvents: menuOpen ? 'auto' : 'none',
-          transition: 'max-height 0.3s ease, opacity 0.2s ease',
         }}
       >
         <ul

@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-04-06 — Lenis Mobile Disable + Mobile Menu GSAP
+
+### Geändert
+
+- **useLenis** — Lenis wird auf Touch-Devices (`hover: none` + `pointer: coarse`) nicht mehr initialisiert. Native Browser-Scroll statt smooth scroll auf Mobile.
+- **Navigation Mobile Menu** — CSS-Transition (`max-height/opacity`) durch GSAP ersetzt. `useLayoutEffect` setzt Initialzustand (`height: 0, opacity: 0`), `useEffect` animiert per `gsap.to` auf open/close. Kein `max-height` mehr.
+
+---
+
 ## 2026-04-06 — Plausible Analytics
 
 ### Neu
