@@ -21,6 +21,11 @@
 - **Smart Navbar** — Hide/Show beim Scrollen (GSAP pixelbasiert, aus vorheriger Session).
 - **Animated Grid** — Infinite Grid mit Spotlight-Reveal per Radial-Gradient-Maske auf Mausposition (Framer Motion SVG, aus vorheriger Session).
 
+### Fixes
+
+- **Custom Cursor** — Kein Upscaling mehr. Cursor ist jetzt 40px nativ, startet bei scale(0.35) (~14px sichtbar), wächst auf scale(1.0) beim Hover. Verhindert Pixel-Artefakte bei interaktiven Elementen.
+- **Navbar Transparenz** — Dark-Phase von rgba(0,0,0,0.35) auf rgba(0,0,0,0.15) reduziert.
+
 ### Neu (Fortsetzung)
 
 - **Page Transitions** — "Ink Bleed" Panel-Wipe: zweischichtiges Panel (Schwarz + Lila fährt von unten), "0." erscheint kurz auf Panel, ~700ms Gesamtdauer. TransitionProvider + PageTransitionOverlay + TransitionLink. Lenis-Pause, ScrollTrigger-Cleanup + Refresh, popstate-Handler, prefers-reduced-motion-Support.
@@ -35,7 +40,7 @@
 ---
 
 **Statistik**
-- 13 Commits diese Session
+- 15 Commits diese Session
 - tsc: Clean
 - Build: Clean (Vercel)
 
@@ -61,6 +66,11 @@ Website durchlief zwei Phasen heute: grosse Redesign-Umsetzung in der Nacht (Hyb
   - CTA-Section neu hinzugefügt
   - Waermeres Off-White, erweiterter Whitespace, schaerfere Typografie-Hierarchie
 - **GSAP Visibility Bug Fix** — Content war bei langer JS-Ladezeit unsichtbar. CSS-Animation-States (opacity:0) greifen jetzt erst nach `js-ready` Klasse. Verhindert weisse Seite bei verzögerten GSAP-Load.
+
+### Fixes
+
+- **Custom Cursor** — Kein Upscaling mehr. Cursor ist jetzt 40px nativ, startet bei scale(0.35) (~14px sichtbar), wächst auf scale(1.0) beim Hover. Verhindert Pixel-Artefakte bei interaktiven Elementen.
+- **Navbar Transparenz** — Dark-Phase von rgba(0,0,0,0.35) auf rgba(0,0,0,0.15) reduziert.
 
 ### Neu (Fortsetzung)
 
