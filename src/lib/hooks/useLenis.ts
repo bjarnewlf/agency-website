@@ -1,9 +1,11 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useContext } from 'react'
 import Lenis from 'lenis'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { TransitionContext } from '@/components/TransitionProvider'
 
 export function useLenis() {
   const lenisRef = useRef<Lenis | null>(null)
+  const ctx = useContext(TransitionContext)
 
   useEffect(() => {
     const lenis = new Lenis({
@@ -14,6 +16,9 @@ export function useLenis() {
     })
 
     lenisRef.current = lenis
+
+    // Im TransitionContext registrieren (falls vorhanden)
+    ctx?.registerLenis(lenis)
 
     let rafId: number
 
@@ -29,7 +34,10 @@ export function useLenis() {
       cancelAnimationFrame(rafId)
       lenis.destroy()
       lenisRef.current = null
+      ctx?.registerLenis(null)
     }
+    // ctx ist stabil (useCallback), daher kein Dependency-Problem
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return lenisRef

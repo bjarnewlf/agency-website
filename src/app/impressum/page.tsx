@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Navigation } from '@/components/Navigation'
 import { Footer } from '@/components/Footer'
+import { TransitionLink } from '@/components/TransitionLink'
 
 export const metadata: Metadata = {
   title: 'Impressum — Nullpunkt',
@@ -26,7 +27,7 @@ export default function ImpressumPage() {
           }}
         >
           {/* Zurück-Link */}
-          <a
+          <TransitionLink
             href="/"
             className="inline-flex items-center gap-2 text-sm transition-colors duration-200 hover:text-[var(--text-primary)]"
             style={{
@@ -52,7 +53,7 @@ export default function ImpressumPage() {
               />
             </svg>
             Zurück zur Startseite
-          </a>
+          </TransitionLink>
 
           {/* Heading */}
           <h1

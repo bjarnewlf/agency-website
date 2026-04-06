@@ -78,6 +78,7 @@ export function CustomCursor() {
     <div
       ref={cursorRef}
       aria-hidden="true"
+      data-cursor=""
       style={{
         position: 'fixed',
         top: 0,

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Navigation } from '@/components/Navigation'
 import { Footer } from '@/components/Footer'
+import { TransitionLink } from '@/components/TransitionLink'
 
 export const metadata: Metadata = {
   title: 'Datenschutz — Nullpunkt',
@@ -60,7 +61,7 @@ export default function DatenschutzPage() {
           }}
         >
           {/* Zurück-Link */}
-          <a
+          <TransitionLink
             href="/"
             className="inline-flex items-center gap-2 text-sm transition-colors duration-200 hover:text-[var(--text-primary)]"
             style={{
@@ -86,7 +87,7 @@ export default function DatenschutzPage() {
               />
             </svg>
             Zurück zur Startseite
-          </a>
+          </TransitionLink>
 
           {/* Heading */}
           <h1

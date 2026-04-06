@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { useActiveSection } from '@/lib/hooks/useActiveSection'
+import { TransitionLink } from '@/components/TransitionLink'
 
 const NAV_LINKS = [
   { label: 'Projekte', href: '#work', id: 'work' },
@@ -76,7 +77,7 @@ export function Navigation() {
         aria-label="Hauptnavigation"
       >
         {/* Logo */}
-        <a
+        <TransitionLink
           href="/"
           className="flex items-center"
           style={{
@@ -90,7 +91,7 @@ export function Navigation() {
           aria-label="Nullpunkt — Startseite"
         >
           0.
-        </a>
+        </TransitionLink>
 
         {/* Desktop Nav */}
         <ul
