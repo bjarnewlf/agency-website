@@ -51,7 +51,7 @@ export function ServicesSection() {
               />
               <div
                 data-animate
-                className="grid items-center py-8 gap-6"
+                className="services-row grid items-center py-8 gap-6"
                 style={{
                   gridTemplateColumns: '80px 1fr auto',
                   borderRadius: '8px',

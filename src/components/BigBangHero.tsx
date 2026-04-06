@@ -122,7 +122,7 @@ export function BigBangHero() {
         className="relative z-10 w-full mx-auto"
         style={{
           maxWidth: '1200px',
-          paddingLeft: 'clamp(1.5rem, 12%, 10rem)',
+          paddingLeft: 'clamp(1.25rem, 6%, 10rem)',
           paddingRight: 'clamp(1.5rem, 6%, 4rem)',
         }}
       >

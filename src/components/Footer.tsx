@@ -11,7 +11,7 @@ export function Footer() {
       }}
     >
       <div
-        className="mx-auto px-6 py-8 flex items-center justify-between gap-6 flex-wrap"
+        className="mx-auto px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-6"
         style={{ maxWidth: '1200px' }}
       >
         {/* Wordmark */}
@@ -28,7 +28,7 @@ export function Footer() {
         </span>
 
         {/* Nav Links */}
-        <nav className="flex items-center gap-6" aria-label="Footer Navigation">
+        <nav className="flex flex-wrap items-center justify-center sm:justify-start gap-x-5 gap-y-2" aria-label="Footer Navigation">
           <a
             href="#work"
             className="text-sm transition-colors duration-200 hover:text-[var(--text-primary)]"
@@ -68,6 +68,7 @@ export function Footer() {
 
         {/* Domain */}
         <span
+          className="hidden sm:block"
           style={{
             fontFamily: 'var(--font-jetbrains-mono)',
             fontSize: '13px',

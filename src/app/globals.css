@@ -81,6 +81,12 @@ h1 {
   line-height: 0.92;
 }
 
+@media (max-width: 640px) {
+  h1 {
+    font-size: clamp(2.25rem, 11vw, 3.5rem);
+  }
+}
+
 h2 {
   font-family: var(--font-syne), system-ui, sans-serif;
   font-size: clamp(2.5rem, 5vw, 3.5rem);
@@ -186,6 +192,21 @@ html.lenis body {
   html,
   html * {
     cursor: none !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .services-row {
+    grid-template-columns: 48px 1fr 24px !important;
+    gap: 0.75rem !important;
+    padding-top: 1.25rem !important;
+    padding-bottom: 1.25rem !important;
+  }
+  .svc-num {
+    font-size: 48px !important;
+  }
+  .svc-title {
+    font-size: 19px !important;
   }
 }
 
