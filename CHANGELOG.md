@@ -21,6 +21,11 @@
 - **Smart Navbar** — Hide/Show beim Scrollen (GSAP pixelbasiert, aus vorheriger Session).
 - **Animated Grid** — Infinite Grid mit Spotlight-Reveal per Radial-Gradient-Maske auf Mausposition (Framer Motion SVG, aus vorheriger Session).
 
+### Neu (Fortsetzung)
+
+- **Page Transitions** — "Ink Bleed" Panel-Wipe: zweischichtiges Panel (Schwarz + Lila fährt von unten), "0." erscheint kurz auf Panel, ~700ms Gesamtdauer. TransitionProvider + PageTransitionOverlay + TransitionLink. Lenis-Pause, ScrollTrigger-Cleanup + Refresh, popstate-Handler, prefers-reduced-motion-Support.
+- **OG Image** — SVG-Vorschaubild (1200×630) für Social Sharing. OpenGraph-Metadata in layout.tsx ergänzt.
+
 ### Entfernt
 
 - `Hero.tsx` — durch BigBangHero ersetzt
@@ -30,7 +35,7 @@
 ---
 
 **Statistik**
-- 10 Commits diese Session
+- 13 Commits diese Session
 - tsc: Clean
 - Build: Clean (Vercel)
 
@@ -56,6 +61,11 @@ Website durchlief zwei Phasen heute: grosse Redesign-Umsetzung in der Nacht (Hyb
   - CTA-Section neu hinzugefügt
   - Waermeres Off-White, erweiterter Whitespace, schaerfere Typografie-Hierarchie
 - **GSAP Visibility Bug Fix** — Content war bei langer JS-Ladezeit unsichtbar. CSS-Animation-States (opacity:0) greifen jetzt erst nach `js-ready` Klasse. Verhindert weisse Seite bei verzögerten GSAP-Load.
+
+### Neu (Fortsetzung)
+
+- **Page Transitions** — "Ink Bleed" Panel-Wipe: zweischichtiges Panel (Schwarz + Lila fährt von unten), "0." erscheint kurz auf Panel, ~700ms Gesamtdauer. TransitionProvider + PageTransitionOverlay + TransitionLink. Lenis-Pause, ScrollTrigger-Cleanup + Refresh, popstate-Handler, prefers-reduced-motion-Support.
+- **OG Image** — SVG-Vorschaubild (1200×630) für Social Sharing. OpenGraph-Metadata in layout.tsx ergänzt.
 
 ### Entfernt
 
