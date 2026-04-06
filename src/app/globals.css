@@ -144,17 +144,17 @@ a {
   outline: none;
 }
 
-/* GSAP Animation — Initial states (verhindert Flash) */
-[data-reveal-text] {
+/* GSAP Animation — Initial states NUR wenn JS geladen */
+.js-ready [data-reveal-text] {
   transform: translateY(100%);
 }
 
-[data-reveal-element] {
+.js-ready [data-reveal-element] {
   opacity: 0;
   transform: translateY(20px);
 }
 
-[data-animate] {
+.js-ready [data-animate] {
   opacity: 0;
   transform: translateY(40px);
 }

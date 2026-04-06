@@ -42,6 +42,8 @@ export default function RootLayout({
       className={`${inter.variable} ${syne.variable} ${jetbrainsMono.variable}`}
     >
       <body>
+        {/* Setzt js-ready synchron beim HTML-Parsen — vor React Hydration */}
+        <script dangerouslySetInnerHTML={{ __html: `document.documentElement.classList.add('js-ready')` }} />
         <LenisProvider>
           {children}
         </LenisProvider>
