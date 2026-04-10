@@ -12,11 +12,31 @@ import { ScrollAnimations } from '@/components/ScrollAnimations'
 import { CosmicScrollOrchestrator } from '@/components/CosmicScrollOrchestrator'
 
 export const metadata: Metadata = {
-  title: 'Nullpunkt — Digitale Produkte. Design und Engineering.',
+  title: 'nullpunkt — KI-Agentur für digitale Produkte',
   description:
-    'Wir bauen digitale Produkte — von der Idee bis zum Launch. Design und Engineering aus einer Hand.',
+    'KI-Automatisierung, digitale Produkte und MVP-Entwicklung aus einer Hand. nullpunkt baut mit dir von der Idee bis zum Launch — schnell, sauber, skalierbar.',
   alternates: {
-    canonical: '/',
+    canonical: 'https://nullpunkt.cc',
+  },
+  openGraph: {
+    title: 'nullpunkt — KI-Agentur für digitale Produkte',
+    description:
+      'KI-Automatisierung, digitale Produkte und MVP-Entwicklung aus einer Hand. nullpunkt baut mit dir von der Idee bis zum Launch — schnell, sauber, skalierbar.',
+    url: 'https://nullpunkt.cc',
+    images: [
+      {
+        url: 'https://nullpunkt.cc/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'nullpunkt — Wo Ideen Masse gewinnen.',
+      },
+    ],
+  },
+  twitter: {
+    title: 'nullpunkt — KI-Agentur für digitale Produkte',
+    description:
+      'KI-Automatisierung, digitale Produkte und MVP-Entwicklung aus einer Hand. nullpunkt baut mit dir von der Idee bis zum Launch — schnell, sauber, skalierbar.',
+    images: ['https://nullpunkt.cc/og-image.png'],
   },
 }
 

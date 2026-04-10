@@ -4,10 +4,14 @@ import { Footer } from '@/components/Footer'
 import { TransitionLink } from '@/components/TransitionLink'
 
 export const metadata: Metadata = {
-  title: 'Datenschutz — Nullpunkt',
-  description: 'Datenschutzerklärung von Nullpunkt.',
+  title: 'Datenschutzerklärung',
+  description: 'Datenschutzerklärung von nullpunkt gemäß DSGVO.',
   alternates: {
-    canonical: '/datenschutz',
+    canonical: 'https://nullpunkt.cc/datenschutz',
+  },
+  robots: {
+    index: false,
+    follow: false,
   },
 }
 

@@ -1,82 +1,69 @@
 # Tasks — Agency Website
 
-## SOFORT
-- [ ] Agentur-Name festlegen — ueberall noch "Studio" als Platzhalter
-- [ ] Hero-Canvas daempfen — weniger Schimmern (Claas-Feedback v2-Konzept)
+> Zuletzt abgeglichen: 2026-04-06 (nach Bugfix-Session)
 
-## BALD
-- [ ] Gedaempftes v2-Konzept in Next.js uebertragen (Canvas-Hero + Bento-Grid zuerst)
-- [ ] Token-Doppeldefinition aufloesen — @theme vs :root, Single Source of Truth (Architekt S4)
-- [ ] --accent-subtle in @theme Block ergaenzen
-- [ ] Impressum-Seite anlegen (rechtlich noetig)
-- [ ] Datenschutz-Seite anlegen
-- [ ] Social Links mit echten URLs befuellen (GitHub, LinkedIn)
+## SOFORT
+- [x] Page Transitions auf nullpunkt.cc live testen (Homepage ↔ Impressum/Datenschutz)
+- [x] Favicon SVG aktiv (favicon.ico default entfernt)
+- [x] OG-Image als PNG (war SVG — Social Media inkompatibel)
+- [x] About-Section content sichtbar (fehlte in ScrollAnimations)
+- [x] WorkSection REFERENZEN Padding-Bug gefixt
 
 ## Diese Woche
-- [ ] Page Transitions (GSAP — Researcher-Empfehlung)
-- [ ] Echte Inhalte: Services definieren + einfuegen
-- [ ] Echte Inhalte: Work/Case Studies mit echten Projekten
-- [ ] About-Texte schreiben
-- [ ] Contact-Formular (Formspree/Resend)
-- [ ] Mobile Menu Transition (Animation statt hartes Toggle)
-- [ ] Custom Cursor + magnetische Buttons (~80 Zeilen, GSAP)
-- [ ] Lenis auf Mobile deaktivieren — nativ scrollen lassen
+
+### Mobile
+- [ ] **Lenis auf Mobile deaktivieren** — `matchMedia('(hover: none)')` oder Breakpoint-Check in `useLenis.ts`
+- [ ] **Mobile Menu Transition** — aktuell CSS (`max-height + opacity`), auf GSAP umstellen
+
+### Formulare & Infrastruktur
+- [ ] **Contact-Formular** — aktuell `mailto:`, auf Formspree oder Resend umstellen
+- [ ] **Analytics** — Plausible oder Umami einbinden
+
+### SEO
+- [ ] **SEO Meta Tags** — Homepage + Impressum + Datenschutz haben Metadata ✅, bei neuen Seiten direkt ergänzen
 
 ## Backlog
-- [ ] prefers-reduced-motion im HTML-Konzept + Next.js respektieren
-- [ ] Focus-visible Styling im HTML-Konzept
-- [ ] Mobile Nav im HTML-Konzept (Hamburger)
-- [ ] Hardcodierte Farben in Hero durch Design-Tokens ersetzen
-- [ ] Text-Split-Reveals (groesster Quick-Win fuer Godly-Level)
-- [ ] Parallax-Effekte (scroll-basiert, GSAP)
+- [ ] Echte Inhalte — Work/Case Studies (wenn VetApp fertig)
+- [ ] About-Texte schärfen
 - [ ] Case Study Template + VetApp Showcase
-- [ ] Horizontal Scroll fuer Case Studies
-- [ ] Text Scramble Effekte (Nav, Headlines)
+- [ ] Horizontal Scroll für Case Studies
+- [ ] 3D-Handy-Showcase (scroll-triggered, GSAP/Three.js)
+- [ ] Parallax-Effekte (scroll-basiert, GSAP)
+- [ ] Text Scramble Effekte
 - [ ] Mobile Responsive Feinschliff
-- [ ] Section-Padding auf clamp() fuer Mobile
-- [ ] Work-Cards minmax-Fix fuer Mobile
-- [ ] SEO + Meta Tags + OG Images
-- [ ] Analytics (Plausible/Umami)
-- [ ] Domain + Deployment (Vercel)
-- [ ] Blog (optional, spaeter)
-- [ ] data-reveal-delay umbenennen (-ms vs -index)
-- [ ] ScrollLine Keyframe vereinfachen
+- [ ] Section-Padding auf clamp() für Mobile
+- [ ] prefers-reduced-motion — TransitionProvider ✅, restliche Animationen prüfen
 
-## Erledigt
-- [x] Redesign v2 HTML-Konzept erstellt (Auros-inspiriert, alle 10 Elemente)
-- [x] Auros-Website recherchiert und analysiert
-- [x] HTML-Plan updaten mit Godly-Inspirationen
-- [x] Light-Version des Plans erstellt
-- [x] Design-Entscheidung: Light Theme statt Dark
-- [x] Next.js Projekt scaffolden
-- [x] Design-System aufsetzen (Light Theme)
-- [x] Hero Section bauen
-- [x] Navigation bauen
-- [x] Platzhalter-Sections mit Content
-- [x] Scroll-Bug fixen
-- [x] GSAP Text-Reveal auf Hero-Headline
-- [x] ScrollTrigger Einblendungen fuer Sections
-- [x] Lenis/ScrollTrigger Bridge gefixt
-- [x] useGSAP Hook Bug gefixt
-- [x] Farbkontraste WCAG AA gefixt
-- [x] focus-visible Styling ergaenzt
-- [x] Leeren animations/index.ts + Ordner entfernt
-- [x] scrollLine Keyframes nach globals.css verschoben
-- [x] Hero-Gradient-Farben aktualisiert
-- [x] Badge-Backgrounds: var(--accent-subtle)
-- [x] page.tsx refactored — Sections in Komponenten, Daten separiert, Tailwind statt Inline
-- [x] Hero-CTA (Primary + Secondary Link)
-- [x] Footer mit Copyright, Impressum, Social-Links
-- [x] Hover-States auf Cards + Buttons
-- [x] Section-H2 Groesse reduziert
-- [x] Grid-Items einzeln animiert
-- [x] About-Text max-width
-- [x] Service-Icon-Box auf --accent-subtle
-- [x] Framer Motion entfernt
+## Erledigt (2026-04-06 Abend-Session 4 — Tuning-Sprint)
+- [x] Navbar Dark-Phase (transparent + weiß beim BigBang-Hero)
+- [x] MagneticButton auf Hero-CTAs + Contact-CTA
+- [x] Services Row Hover (Desktop + Mobile Touch)
+- [x] ContactSection Text + MagneticButton
+- [x] Favicon SVG (`/public/favicon.svg`, in layout.tsx)
+- [x] Hero.tsx + HeroAnimations.tsx gelöscht
+- [x] Inhalte geschärft (Services, Hero-Subline, Work, Bridge, About)
+- [x] OG Image SVG + OpenGraph-Metadata in layout.tsx
+- [x] Page Transitions "Ink Bleed" implementiert (TransitionProvider, TransitionLink, PageTransitionOverlay)
+- [x] prefers-reduced-motion in TransitionProvider
+- [x] Custom Cursor Fix — kein Upscaling mehr
+
+## Erledigt (2026-04-06 Abend-Session 3)
+- [x] Framer Motion neu installiert
+- [x] Grid: Infinite-Grid mit Spotlight-Reveal
+- [x] Smart Navbar: hide/show on scroll (GSAP)
+- [x] MagneticButton.tsx: Proximity-basiert
+- [x] Word-Split-Reveal für Section-Headlines
+
+## Erledigt (2026-04-06 Tag-Session)
+- [x] GitHub Repo + Vercel deployed: nullpunkt.cc live
+- [x] DNS gefixt
+- [x] Redesign umgesetzt
+- [x] GSAP Visibility-Bug gefixt
+- [x] Impressum + Datenschutz Seiten (inkl. Metadata)
+- [x] SEO Metadata Homepage + Subpages
+- [x] BigBangHero.tsx: Urknall-Effekt
 
 ## Quellen
 - QA-Findings: `qa-findings.md`
 - Design-Review: `design-review.md`
-- Architektur-Review: `architektur-review.md` (Workspace-Root)
-- Animation-Research: `research-animation-stack.md` (Workspace-Root)
-- Auros-Analyse: Im Agency-Vault archiviert
+- Vault: Markenidentität, Domain-Entscheidung, Agentur-Name

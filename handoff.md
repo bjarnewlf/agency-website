@@ -1,60 +1,67 @@
 # Handoff — Agency Website
 
-## Zuletzt geaendert: 2026-04-05 (Redesign v2 HTML-Konzept + Archivierung)
+## Zuletzt geaendert: 2026-04-06 (BigBang Mobile — Canvas-Explosion)
 
 ## Was wurde gemacht
 
-### Redesign Konzept v2 — Auros-inspiriert (2026-04-05)
+### BigBang Mobile — Canvas-basierte Explosion (2026-04-06, Session nach Crash)
 
-**Datei:** `C:\Users\claas\claude-workspace\agency-website-redesign-v2.html`
+Kompletter Umbau der Mobile-Animation auf HTML5 Canvas. Designer-Spec erarbeitet, dann Developer implementiert.
 
-Claas wollte ein HTML-Redesign-Konzept basierend auf der Auros-Website (godly.website/website/auros-215). Die HTML-Konzepte haben sich als besserer Workflow bewaehrt als direkte Implementierung in Next.js.
+**Geaendert:** `src/components/BigBangHero.tsx`
 
-Standalone HTML-Konzept (kein Framework, kein Build-Step). Einfach im Browser oeffnen.
+- `BigBangCanvas`-Klasse — reines Canvas-Rendering, kein DOM-Partikel-Overhead
+- 4 Partikel-Typen: Core Burst (60), Plasma Streams (80), Stellar Debris (40), Micro-Sparks (30) = 210 gesamt
+- Kosmische Farbpalette: core-white, plasma-indigo #6366F1, plasma-violet #8B5CF6, nova-magenta #EC4899, stellar-cyan #22D3EE, corona-amber #F59E0B
+- 3 Shockwaves auf Canvas (weiss, violett, indigo) mit korrekten Farben + Blur-Werten
+- Phasen-Timing via negativen age-Werten (Partikel starten mit -delay)
+- Headline Blur-to-Sharp (filter blur(8px) → blur(0px)) bei 1600ms nach Tap
+- Idle Pulse via easeSineInOut, alles Canvas
+- ResizeObserver + devicePixelRatio-Support
+- Low-End-Detection: hardwareConcurrency <= 4 oder deviceMemory <= 2 → halbe Partikelzahl
+- prefers-reduced-motion: nur Idle Pulse + direkter Fade
+- Desktop-ScrollTrigger-Pfad unveraendert
+- Alte DOM-Elemente (.bb-flash, .bb-shockwaves, .bb-particles, .bb-ring-*) entfernt
 
-**Umgesetzte Elemente (alle 10 aus dem Briefing):**
-1. Canvas-Hero-Animation — animierte Orbs (Radial-Gradients) + Partikel-Feld, JS Canvas API
-2. Gradient-Sweep Button — `background-size: 280%`, `background-position` Shift, 600ms ease
-3. CSS Marquee — 2 Reihen (links / reverse), `translateX` Keyframes, 10s linear infinite
-4. Bento-Grid Stats — 3x2 Grid, Feature-Cell spannt 2 Reihen, Dark/Light-Kontrast
-5. Fluid Typography — alle Font-Sizes via `clamp()`, kein Media-Query fuer Schriftgroessen
-6. Glassmorphism Nav — `backdrop-filter: blur(20px)`, scrolled-State via JS
-7. Gradient-Text Headlines — `background-clip: text` auf Section-Titles und Hero
-8. Scroll-Reveal — IntersectionObserver, gestaffelte Delays 0.1s–0.6s
-9. Card Hover-Effekte — `translateY(-8px)`, Border-Color, Shadow, 300ms transitions
-10. Custom Cursor — Dot + Ring, Lag-Effekt via RAF, Hover-States auf Interaktionselementen
+**Commit:** `1b0159d` — gepusht, Vercel deployt automatisch
+**tsc:** clean
+**npm run build:** Compiled successfully
 
-**Zusaetzlich:**
-- 3D-Tilt auf Project-Cards (mousemove rotateX/Y, max 4deg)
-- About-Section mit Visual, Badge, Principles-Liste
-- Vollstaendige Nav + Footer (dark)
-- Alle SVG-Icons inline, kein Image-Tag
+---
 
-**Claas' Feedback:**
-- Grundsaetzlich sehr gut ("sieht schon sehr gut aus")
-- Hero-Canvas "schimmert" zu stark / ist "bisschen crazy" — beim naechsten Schritt die Animation daempfen (weniger Orbs, geringere Opacity, langsamere Bewegung)
+### BigBang Mobile — Pulse Idle + Tap-to-Start (2026-04-06)
 
-### Fruehere Arbeiten (zusammengefasst)
+Mobile-Branch in `BigBangHero.tsx` umgebaut: statt direktem Timeline-Autostart jetzt Pulse-Idle + manueller Tap-Trigger.
 
-- Light Theme Design-System aufgesetzt (Indigo-Akzent #6366F1)
-- Hero, Navigation, alle Sections implementiert (Next.js)
-- GSAP + Lenis Integration gefixt
-- WCAG-Kontrast-Fixes, Hover-States, Typografie-Tuning
-- page.tsx in Komponenten refactored, Daten separiert
-- Zwei HTML-Konzepte erstellt: `agency-website-plan.html` (Dark) + `agency-website-plan-light.html` (Light)
+**Geaendert:** `src/components/BigBangHero.tsx`
+
+- 3 neue Refs: `isMobileRef`, `animationStartedRef`, `pulseRef`
+- `handleTap()` ausserhalb `useGSAP` — prueft Guard, killt Pulse, startet BigBang-Timeline
+- Mobile-Branch in `useGSAP` setzt `isMobileRef.current`, startet Pulse-Loop
+- Container-div erhaelt `onTouchStart={handleTap}`
+- Desktop-Pfad unveraendert (ScrollTrigger + Pin)
+
+---
+
+### Page Transitions — Ink Bleed Panel Wipe (2026-04-06)
+
+Zweischichtiger Panel-Wipe zwischen allen Routen implementiert.
+
+**Neue Dateien:**
+- `src/components/TransitionProvider.tsx`
+- `src/components/PageTransitionOverlay.tsx`
+- `src/components/TransitionLink.tsx`
+
+---
 
 ## Offene Punkte
-- Hero-Canvas-Animation daempfen (Claas-Feedback: zu viel Schimmern)
-- Focus-visible Styling im HTML-Konzept fehlt
-- Mobile Nav-Hamburger im HTML-Konzept nicht implementiert
-- `prefers-reduced-motion` Guard fuer Canvas-Animation einbauen
-- Agentur-Name festlegen (ueberall noch "Studio")
-- Impressum + Datenschutz Seiten
-- Echte Inhalte (Services, Case Studies, About-Texte)
+- [ ] Page Transitions auf nullpunkt.cc visuell testen (nach Deploy)
+- [ ] Contact-Formular — Formspree/Resend
+- [ ] SEO Meta Tags — pro Seite
 
 ## Naechster Schritt
-Wenn Claas zufrieden ist mit dem gedaempften HTML-Konzept → Elemente schrittweise in die Next.js-Website uebertragen. Canvas-Hero und Bento-Grid zuerst.
+Handy-Test der neuen Canvas-Animation auf nullpunkt.cc (Vercel deployt gerade). Dann VetApp.
 
 ## Referenz-Dateien
-- HTML-Konzepte: `agency-website-plan.html`, `agency-website-plan-light.html`, `agency-website-redesign-v2.html` (alle im claude-workspace Root)
-- Inspiration: https://godly.website/website/auros-215 (Auros)
+- HTML-Konzepte: `agency-website-plan.html`, `agency-website-plan-light.html`, `agency-website-redesign-v2.html`
+- Designer Spec BigBang Mobile: Session 2026-04-06

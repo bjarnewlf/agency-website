@@ -29,32 +29,48 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://nullpunkt.cc'),
-  title: 'Nullpunkt — Digitale Produkte',
-  description: 'Digitale Produkte. Design und Engineering aus einer Hand.',
+  title: {
+    default: 'nullpunkt — KI-Agentur für digitale Produkte',
+    template: '%s — nullpunkt',
+  },
+  description:
+    'nullpunkt ist eine KI-Agentur aus Flensburg. Wir bauen digitale Produkte, KI-Automatisierungen und MVPs — von der Idee bis zum Launch.',
   alternates: {
-    canonical: '/',
+    canonical: 'https://nullpunkt.cc',
   },
   icons: {
     icon: '/favicon.svg',
   },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+    },
+  },
   openGraph: {
-    title: 'Nullpunkt — Digitale Produkte',
-    description: 'Digitale Produkte. Design und Engineering aus einer Hand.',
+    siteName: 'nullpunkt',
+    locale: 'de_DE',
     type: 'website',
     url: 'https://nullpunkt.cc',
+    title: 'nullpunkt — KI-Agentur für digitale Produkte',
+    description:
+      'nullpunkt ist eine KI-Agentur aus Flensburg. Wir bauen digitale Produkte, KI-Automatisierungen und MVPs — von der Idee bis zum Launch.',
     images: [
       {
         url: 'https://nullpunkt.cc/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'Nullpunkt — Wo Ideen Masse gewinnen.',
+        alt: 'nullpunkt — Wo Ideen Masse gewinnen.',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Nullpunkt — Digitale Produkte',
-    description: 'Digitale Produkte. Design und Engineering aus einer Hand.',
+    title: 'nullpunkt — KI-Agentur für digitale Produkte',
+    description:
+      'nullpunkt ist eine KI-Agentur aus Flensburg. Wir bauen digitale Produkte, KI-Automatisierungen und MVPs — von der Idee bis zum Launch.',
     images: ['https://nullpunkt.cc/og-image.png'],
   },
 }

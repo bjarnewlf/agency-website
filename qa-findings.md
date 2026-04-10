@@ -1,136 +1,126 @@
 # QA Findings — Agency Website
 
-**Datum:** 2026-04-05
-**Pruefumfang:** Vollstaendiger Code-Review — page.tsx, Hero.tsx, HeroAnimations.tsx, ScrollAnimations.tsx, Navigation.tsx, LenisProvider.tsx, layout.tsx, globals.css, useGSAP.ts, useActiveSection.ts, useLenis.ts, animations/index.ts
-**Type-Check:** Bestanden (0 Fehler)
+**Datum:** 2026-04-05 (Update, zweiter Durchlauf)
+**Pruefumfang:** Vollstaendiger Code-Review aller src/-Dateien: layout.tsx, page.tsx, globals.css, alle Komponenten, alle Hooks, data/content.ts, lib/utils.ts
+**Type-Check:** Bestanden (0 Fehler, npx tsc --noEmit)
 
 ---
 
-## Findings (nach Schwere sortiert)
+## Status vorheriger Findings (erster Durchlauf)
+
+| ID | Problem | Status |
+|----|---------|--------|
+| F1 | HeroAnimations animiert ohne vorherigen GSAP-Set | BEHOBEN — gsap.set() ist jetzt vorhanden (Z. 18 + Z. 34) |
+| F2 | ScrollTrigger nicht explizit in ScrollAnimations registriert | BEHOBEN — registerPlugin() in ScrollAnimations.tsx Z. 7 |
+| F3 | Lenis nicht mit ScrollTrigger verbunden | BEHOBEN — lenis.on('scroll', ScrollTrigger.update) in useLenis.ts Z. 19 |
+| F4 | data-animate Elemente bleiben opacity:0 (Folge von F3) | BEHOBEN (Folge von F3-Fix) |
+| F5 | useGSAP containerRef nie gebunden | OFFEN |
+| F6 | gsap.context() mit null als Scope-Parameter | OFFEN |
+| F7 | framer-motion installiert aber ungenutzt | BEHOBEN — nicht mehr in package.json |
+| F8 | animations/index.ts leer und nicht importiert | BEHOBEN — Verzeichnis nicht mehr vorhanden |
+| F9 | RAF-Loop in StrictMode problematisch | OFFEN (kein Production-Bug) |
+| F10 | lang="de" aber Inhalte auf Englisch | OFFEN |
 
 ---
 
-### F1 — HeroAnimations animiert von `translateY(100%)` ohne vorherigen Set-State — Flash-Risiko
+## Aktuelle Findings (nach Schwere sortiert)
 
-**Schwere:** Kritisch
-**Was:** `HeroAnimations.tsx` Zeile 18 ruft direkt `gsap.to(text, { y: '0%' })` auf, ohne vorher `gsap.set(text, { y: '100%' })` zu setzen. Der Initialzustand liegt ausschliesslich im CSS (`globals.css` Zeile 96–98: `[data-reveal-text] { transform: translateY(100%) }`). Das funktioniert nur, wenn das CSS vor GSAP greift. In React mit Server-Side Rendering kann GSAP nach Hydration kurz einen Frame rendern, in dem GSAP den CSS-Zustand nicht kennt und von `y: 0` nach `y: 0` animiert — Text ist sofort sichtbar statt animiert.
-**Wo:** `/src/components/HeroAnimations.tsx`, Zeile 18
-**Warum kritisch:** Der Text-Reveal-Effekt — das zentrale visuelle Element der Hero-Section — funktioniert nicht zuverlaessig. Besonders auf schnellen Verbindungen oder nach Hard-Refresh.
-**Fix:** Vor dem `gsap.to()` ein `gsap.set()` hinzufuegen:
+---
+
+### F-A — `useLenis` verbindet Lenis per Event-Listener statt im RAF-Callback — suboptimal
+
+**Schwere:** Mittel
+**Was:** `useLenis.ts` Z. 19 verwendet `lenis.on('scroll', ScrollTrigger.update)`. Die empfohlene Methode (laut Lenis-Dokumentation und GSAP-Integration-Guide) ist es, `ScrollTrigger.update()` im RAF-Callback aufzurufen — direkt nach `lenis.raf(time)`. Der Event-Listener-Ansatz funktioniert prinzipiell, aber der Aufruf-Zeitpunkt ist vom Event-System abhaengig, nicht synchron mit dem RAF-Frame. Das kann bei schnellem Scrollen zu einem Frame-Delay fuehren, in dem ScrollTrigger noch den alten Scroll-Stand hat.
+**Wo:** `/src/lib/hooks/useLenis.ts`, Zeile 19 + 23–26
+**Fix:**
 ```ts
-gsap.set(text, { y: '100%' })
-gsap.to(text, { y: '0%', duration: 0.8, ease: 'power3.out', delay: delaySec })
-```
-
----
-
-### F2 — ScrollAnimations registriert ScrollTrigger nicht — Plugin fehlt
-
-**Schwere:** Kritisch
-**Was:** `ScrollAnimations.tsx` importiert `ScrollTrigger` aus `gsap/ScrollTrigger` und nutzt es in der `scrollTrigger`-Option. `gsap.registerPlugin(ScrollTrigger)` wird jedoch nur in `useGSAP.ts` aufgerufen (Zeile 8). `ScrollAnimations.tsx` importiert `useGSAP` und verlasst sich darauf, dass das Plugin bereits registriert ist — das stimmt nur wenn `useGSAP` zuerst importiert wird. Die Registration in `useGSAP.ts` ist ein Nebeneffekt des Imports, nicht explizit. Wenn die Import-Reihenfolge sich aendert oder das Modul isoliert getestet wird, bricht das stumm.
-**Wo:** `/src/components/ScrollAnimations.tsx`, Zeile 1–6
-**Warum kritisch:** ScrollTrigger-Animationen schiessen nie an, wenn das Plugin zum Zeitpunkt des `gsap.to()`-Aufrufs nicht registriert ist — GSAP ignoriert unbekannte Plugin-Optionen ohne Fehler.
-**Fix:** `gsap.registerPlugin(ScrollTrigger)` direkt in `ScrollAnimations.tsx` hinzufuegen (doppelte Registration ist in GSAP kein Problem).
-
----
-
-### F3 — Lenis nicht mit ScrollTrigger verbunden — ScrollTrigger.update() fehlt
-
-**Schwere:** Kritisch
-**Was:** `useLenis.ts` initialisiert Lenis mit einem eigenen RAF-Loop. Lenis uebernimmt das native Scroll-Verhalten und leitet scroll-Events um. ScrollTrigger (in `ScrollAnimations.tsx`) lauscht jedoch auf native Scroll-Events des Browsers. Ohne explizite Verbindung weiss ScrollTrigger nicht von Lenis' virtueller Scroll-Position. Die Folge: ScrollTrigger-Trigger-Punkte stimmen nicht mit der tatsaechlichen Scroll-Position ueberein oder feuern gar nicht.
-**Wo:** `/src/lib/hooks/useLenis.ts`, Zeilen 19–26
-**Warum kritisch:** Alle vier Scroll-Animationen (Work, Services, About, Contact) koennen stumm versagen — Elemente bleiben permanent auf `opacity: 0` (Initialzustand aus globals.css). Das ist "was fehlt".
-**Fix:** Im Lenis RAF-Callback `ScrollTrigger.update()` aufrufen:
-```ts
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-
 function raf(time: number) {
   lenis.raf(time)
   ScrollTrigger.update()
   rafId = requestAnimationFrame(raf)
 }
+// lenis.on('scroll', ScrollTrigger.update) entfernen
 ```
 
 ---
 
-### F4 — `[data-animate]` Elemente bleiben bei opacity:0 wenn ScrollTrigger nicht feuert
-
-**Schwere:** Kritisch (Folge von F3)
-**Was:** `globals.css` Zeile 105–108 setzt alle `[data-animate]`-Elemente auf `opacity: 0; transform: translateY(40px)`. Das betrifft alle Section-Ueberschriften, -Texte und -Karten in Work, Services, About und Contact (mind. 20 Elemente). Wenn ScrollTrigger aufgrund von F3 nicht feuert, sind diese Elemente permanent unsichtbar. Der User sieht leere Sections — die wahrscheinlichste Ursache fuer Claas' Gefuehl "da fehlt etwas".
-**Wo:** `/src/app/globals.css`, Zeile 105–108; alle `data-animate`-Attribute in `/src/app/page.tsx`
-**Fix:** F3 beheben. Als Fallback-Sicherung: CSS `transition` auf die Elemente setzen damit sie als CSS-Fallback sichtbar bleiben wenn JS versagt — oder `prefers-reduced-motion` respektieren und Animationen dort nicht setzen.
-
----
-
-### F5 — `useGSAP` uebergibt `containerRef` als Context-Root, nutzt ihn aber nie
+### F-B — `useGSAP` containerRef wird nie gebunden — globaler GSAP-Context
 
 **Schwere:** Mittel
-**Was:** `useGSAP.ts` erstellt einen `containerRef` (Zeile 14), uebergibt ihn an `gsap.context()` als zweiten Parameter (Zeile 17) und gibt ihn zurueck (Zeile 27). Beide Aufrufer — `HeroAnimations.tsx` und `ScrollAnimations.tsx` — ignorieren den Rueckgabewert komplett. Ohne gebundenen Container arbeitet `gsap.context()` im globalen Scope. Das bedeutet: `ctx.revert()` beim Cleanup reverts alle GSAP-Animationen im gesamten Dokument, nicht nur die der Komponente. Bei zwei gleichzeitig aktiven useGSAP-Instanzen (HeroAnimations + ScrollAnimations) bricht der Cleanup des einen den anderen.
-**Wo:** `/src/lib/hooks/useGSAP.ts`, Zeilen 14, 17, 27; `/src/components/HeroAnimations.tsx` Zeile 7; `/src/components/ScrollAnimations.tsx` Zeile 8
-**Fix:** Entweder den `containerRef` in den aufrufenden Komponenten an ein DOM-Element binden (`const ref = useGSAP(...); return <div ref={ref}>...</div>`) — oder den `containerRef` aus `useGSAP` entfernen und `gsap.context()` ohne Container aufrufen, dafuer aber Cleanup-Scope explizit managen.
+**Was:** `useGSAP.ts` erstellt `containerRef` (Z. 14), uebergibt ihn als zweiten Parameter an `gsap.context()` (Z. 17-19) und gibt ihn zurueck (Z. 27). Beide Aufrufer — `HeroAnimations.tsx` und `ScrollAnimations.tsx` — ignorieren den Rueckgabewert. `containerRef.current` ist immer `null`. Der Ausdruck `containerRef.current || undefined` wird zu `undefined`, also arbeitet `gsap.context()` im globalen Scope.
+
+Konsequenz: `ctx.revert()` im Cleanup reverted alle GSAP-Animationen im gesamten Dokument. Mit zwei gleichzeitig aktiven `useGSAP`-Instanzen (HeroAnimations + ScrollAnimations) zerstoert der Cleanup der einen Komponente die Animationen der anderen. In React StrictMode (Development) tritt das zuverlaessig auf.
+**Wo:** `/src/lib/hooks/useGSAP.ts`, Z. 14-27; `/src/components/HeroAnimations.tsx` Z. 7; `/src/components/ScrollAnimations.tsx` Z. 10
+**Fix-Option A (sauber):** Den `containerRef` in den aufrufenden Komponenten an ein Wrapper-Element binden:
+```tsx
+// HeroAnimations.tsx
+const containerRef = useGSAP(() => { ... }, [])
+return <div ref={containerRef as React.RefObject<HTMLDivElement>} style={{display:'none'}} />
+```
+**Fix-Option B (pragmatisch):** `containerRef` aus `useGSAP` entfernen, `gsap.context()` ohne zweiten Parameter nutzen und Scope-Isolation ueber den Callback sicherstellen.
 
 ---
 
-### F6 — `gsap.context()` mit `containerRef.current = null` ist kein gueltiger Scope
+### F-C — Projektkarten klickbar gemacht (cursor-pointer), aber kein Link — Dead Interaction
 
 **Schwere:** Mittel
-**Was:** `containerRef` ist beim ersten Render `null` (Zeile 14: `useRef<HTMLElement | null>(null)`). `gsap.context(callback, null)` ist in GSAP nicht dokumentiert und verhalt sich wie `gsap.context(callback)` — also globaler Scope. Das ist nicht zwingend ein Bug, aber die API-Nutzung ist falsch und der Code kommuniziert eine Absicht (scoped context), die nie umgesetzt wird.
-**Wo:** `/src/lib/hooks/useGSAP.ts`, Zeile 17
-**Fix:** Entweder Container korrekt binden (siehe F5) oder den zweiten Parameter weglassen.
+**Was:** `WorkSection.tsx` Z. 72 setzt `cursor-pointer` auf die `<article>`-Elemente. Es gibt weder ein `onClick`-Handler noch einen `<a>`-Tag noch `role="button"`. Fuer den User sieht es aus wie ein klickbares Element — er klickt, nichts passiert. Zusaetzlich fehlt damit die Tastaturnavigation (Tab-Focus, Enter-Taste) komplett.
+**Wo:** `/src/components/WorkSection.tsx`, Z. 72
+**Fix:** Entweder `cursor-pointer` entfernen, bis Links vorhanden sind — oder jeden `<article>` in einen `<a href="/work/[slug]">` wrappen.
 
 ---
 
-### F7 — `framer-motion` installiert aber nirgendwo genutzt
+### F-D — Array-Index als React-Key in Listen — instabile Keys
 
 **Schwere:** Niedrig
-**Was:** `package.json` Zeile 8 listet `framer-motion: ^12.38.0` als Dependency. Kein einziger Import in den geprueften Dateien nutzt Framer Motion. Die Library ist ~40KB gzip und landet im Bundle obwohl GSAP verwendet wird.
-**Wo:** `/c/Users/claas/claude-workspace/agency-website/package.json`, Zeile 8
-**Fix:** `npm uninstall framer-motion` — es sei denn, zukuenftige Komponenten sind geplant.
+**Was:** `WorkSection.tsx` Z. 69, `ServicesSection.tsx` Z. 50, `AboutSection.tsx` Z. 48 verwenden `key={i}` (Array-Index). Bei Listen die sich in Reihenfolge oder Inhalt aendern koennen, fuehrt das zu inkorrektem Re-Rendering und potentiellen Animation-Glitches (GSAP haelt refs auf DOM-Elemente — falsche Reconciliation bricht das).
+**Wo:** Drei Stellen (WorkSection Z. 69, ServicesSection Z. 50, AboutSection Z. 48)
+**Fix:** Natuerlichen eindeutigen Key verwenden:
+- WorkSection: `key={project.title}`
+- ServicesSection: `key={service.title}`
+- AboutSection: `key={stat.label}`
 
 ---
 
-### F8 — `animations/index.ts` ist leer und wird nirgendwo importiert
+### F-E — Footer-Links zu Impressum und Datenschutz zeigen auf `#` — rechtlich riskant
+
+**Schwere:** Niedrig (im aktuellen Zustand) — Mittel wenn die Seite live geht
+**Was:** `Footer.tsx` Z. 36, 43, 82, 88 verwenden `href="#"` fuer Impressum und Datenschutz. Eine deutsche Website ohne Impressum und Datenschutzerklaerung (DSGVO) ist rechtswidrig. Das ist kein Code-Bug, aber ein Deployment-Blocker.
+**Wo:** `/src/components/Footer.tsx`, Z. 36, 43, 82, 88
+**Fix:** Eigene Seiten `/impressum` und `/datenschutz` erstellen und verlinken.
+
+---
+
+### F-F — `lang="de"` im HTML aber Hero-Headline auf Englisch
 
 **Schwere:** Niedrig
-**Was:** `/src/components/animations/index.ts` enthaelt nur einen Kommentar und `export {}`. Kein Import zeigt auf diesen Pfad. Das File ist toter Code.
-**Wo:** `/src/components/animations/index.ts`
-**Fix:** Loeschen oder mit echten Animation-Utilities befuellen sobald refactored wird.
+**Was:** `layout.tsx` Z. 35 setzt `lang="de"`. Die Hero-Headline lautet "We craft digital experiences." — Englisch. Screen-Reader verwenden `lang` fuer die Aussprache. Der Text wird auf Deutsch-Phonetik vorgelesen.
+**Wo:** `/src/app/layout.tsx`, Z. 35; `/src/components/Hero.tsx`, Z. 97-123
+**Fix:** `lang` auf `"en"` setzen oder die Headline einsprachig halten. Fuer gemischte Sprachen: `lang`-Attribut auf dem jeweiligen Element setzen.
 
 ---
 
-### F9 — RAF-Cleanup in useLenis cancelt nicht zuverlaessig
+### F-G — `scrollLine` CSS-Animation: transform-origin in Keyframes nicht zuverlaessig
 
 **Schwere:** Niedrig
-**Was:** Die `raf`-Funktion in `useLenis.ts` aktualisiert `rafId` in jedem Frame (Zeile 21: `rafId = requestAnimationFrame(raf)`). Das ist korrekt — der Cleanup (Zeile 28: `cancelAnimationFrame(rafId)`) cancelt den zuletzt gespeicherten Frame. Funktioniert im Normalfall. Im React StrictMode (Development) wird der Effect zweimal ausgefuehrt: zwei Lenis-Instanzen, zwei RAF-Loops, nur einer wird gecancelt. Resultiert in doppeltem Lenis-Scroll im Dev-Modus.
-**Wo:** `/src/lib/hooks/useLenis.ts`, Zeilen 19–28
-**Fix:** Kein akuter Bug in Production. In Strict Mode bemerken: ein Warnsignal, kein Crash.
+**Was:** `globals.css` Z. 148-152 definiert `@keyframes scrollLine` mit wechselndem `transform-origin` (top bei 0–50%, bottom bei 51–100%). Das Wechseln von `transform-origin` mitten in einer Animation ist in alten Safari-Versionen (< 15.4) und einigen Chromium-Versionen buggy — der Uebergang bei 50%/51% kann zu einem Sprung fuehren statt einem fliessenden Uebergang.
+**Wo:** `/src/app/globals.css`, Z. 147-152
+**Fix:** Alternative mit zwei Pseudo-Elementen oder einer clip-path-Animation verwenden. Oder als Known Issue mit niedriger Prioritaet dokumentieren, da der Scroll-Hint nur dekorativ ist.
 
 ---
 
-### F10 — `lang="de"` im HTML-Element, Inhalte auf Englisch
-
-**Schwere:** Niedrig
-**Was:** `layout.tsx` Zeile 35 setzt `lang="de"`. Alle Texte in `page.tsx` und `Hero.tsx` sind auf Englisch ("We craft digital experiences", "Selected Work", etc.). Screen-Reader und SEO-Crawler werten das als Englisch auf Deutsch-deklarierter Seite.
-**Wo:** `/src/app/layout.tsx`, Zeile 35
-**Fix:** `lang="en"` setzen oder Texte ins Deutsche uebersetzen.
-
----
-
-## Zusammenfassung
+## Zusammenfassung — Aktueller Stand
 
 | ID | Problem | Schwere |
 |----|---------|---------|
-| F1 | HeroAnimations animiert ohne vorherigen GSAP-Set — Flash-Risiko | Kritisch |
-| F2 | ScrollTrigger-Plugin nicht explizit in ScrollAnimations registriert | Kritisch |
-| F3 | Lenis nicht mit ScrollTrigger verbunden — ScrollTrigger.update() fehlt | Kritisch |
-| F4 | Alle data-animate Elemente bleiben opacity:0 (Folge von F3) | Kritisch |
-| F5 | useGSAP containerRef nie gebunden — globaler statt scoped Context | Mittel |
-| F6 | gsap.context() mit null als Scope-Parameter | Mittel |
-| F7 | framer-motion installiert aber ungenutzt | Niedrig |
-| F8 | animations/index.ts leer und nicht importiert | Niedrig |
-| F9 | RAF-Loop in StrictMode problematisch | Niedrig |
-| F10 | lang="de" aber Inhalte auf Englisch | Niedrig |
+| F-A | Lenis/ScrollTrigger Sync via Event statt RAF — Frame-Delay | Mittel |
+| F-B | useGSAP containerRef nie gebunden — globaler GSAP-Context | Mittel |
+| F-C | Projektkarten cursor-pointer ohne Link/Handler | Mittel |
+| F-D | Array-Index als React-Key in drei Komponenten | Niedrig |
+| F-E | Impressum/Datenschutz-Links zeigen auf # | Niedrig (Blocker vor Launch) |
+| F-F | lang="de" bei englischer Hero-Headline | Niedrig |
+| F-G | transform-origin-Wechsel in Keyframe-Animation | Niedrig |
 
-**Hauptursache fuer "da fehlt etwas":** F3 + F4. Lenis und ScrollTrigger sind nicht verbunden. Alle section-Inhalte (Work, Services, About, Contact) starten mit `opacity: 0` und bleiben es, weil ScrollTrigger nie feuert. Die Sections sind im DOM — aber unsichtbar.
+**Keine kritischen Findings mehr.** Die vier kritischen Issues des ersten Durchlaufs wurden behoben.
 
-**Naechster Schritt:** Developer behebt F3 (ScrollTrigger.update() in Lenis RAF) und F1 (gsap.set vor gsap.to in HeroAnimations). F2 als Absicherung dazu.
+**Prioritaet vor Launch:** F-C (Dead Interaction) und F-E (Rechtliches) angehen. F-A und F-B sind technische Schulden, die bei komplexeren Animationen schmerzhaft werden.

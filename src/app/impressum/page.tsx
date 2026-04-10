@@ -4,10 +4,14 @@ import { Footer } from '@/components/Footer'
 import { TransitionLink } from '@/components/TransitionLink'
 
 export const metadata: Metadata = {
-  title: 'Impressum — Nullpunkt',
-  description: 'Impressum und rechtliche Angaben zu Nullpunkt.',
+  title: 'Impressum',
+  description: 'Impressum und rechtliche Angaben zu nullpunkt.',
   alternates: {
-    canonical: '/impressum',
+    canonical: 'https://nullpunkt.cc/impressum',
+  },
+  robots: {
+    index: false,
+    follow: false,
   },
 }
 
