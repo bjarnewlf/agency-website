@@ -49,9 +49,11 @@ export function ContactSection() {
     <section
       id="contact"
       aria-label="Contact"
+      data-act="4"
       className="section-padding border-t border-[var(--border)] px-6"
-      style={{ backgroundColor: '#F0EFFF' }}
+      style={{ position: 'relative', overflow: 'hidden' }}
     >
+      <span className="contact-zero" aria-hidden="true">0.</span>
       <div className="mx-auto" style={{ maxWidth: '680px' }}>
         {/* Headline */}
         <div className="text-center mb-12">
@@ -61,7 +63,7 @@ export function ContactSection() {
               fontFamily: 'var(--font-syne)',
               fontSize: 'clamp(3rem, 7vw, 4rem)',
               fontWeight: 800,
-              color: '#0A0A0F',
+              color: 'var(--color-text-primary)',
               letterSpacing: '-0.03em',
               lineHeight: '0.92',
               marginBottom: '1.25rem',
@@ -72,11 +74,8 @@ export function ContactSection() {
 
           <p
             data-animate
-            style={{
-              fontFamily: 'var(--font-inter)',
-              fontSize: '1.25rem',
-              color: 'var(--text-secondary)',
-            }}
+            className="text-body"
+            style={{ fontSize: '1.25rem' }}
           >
             Schreib uns — wir melden uns innerhalb von 24h.
           </p>
@@ -98,13 +97,13 @@ export function ContactSection() {
                 fontFamily: 'var(--font-syne)',
                 fontSize: '1.5rem',
                 fontWeight: 700,
-                color: '#0A0A0F',
+                color: 'var(--color-text-primary)',
                 marginBottom: '0.5rem',
               }}
             >
               Nachricht angekommen.
             </p>
-            <p style={{ fontFamily: 'var(--font-inter)', color: 'var(--text-secondary)' }}>
+            <p className="text-body">
               Wir melden uns bald bei dir.
             </p>
           </div>
@@ -115,13 +114,8 @@ export function ContactSection() {
               <div className="flex flex-col gap-2">
                 <label
                   htmlFor="contact-name"
-                  style={{
-                    fontFamily: 'var(--font-jetbrains-mono)',
-                    fontSize: '11px',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.12em',
-                    color: 'var(--text-secondary)',
-                  }}
+                  className="text-label"
+                  style={{ color: 'var(--text-secondary)' }}
                 >
                   Name
                 </label>
@@ -139,7 +133,7 @@ export function ContactSection() {
                     padding: '0.875rem 1rem',
                     fontFamily: 'var(--font-inter)',
                     fontSize: '1rem',
-                    color: '#0A0A0F',
+                    color: 'var(--color-text-primary)',
                     width: '100%',
                     transition: 'border-color 0.2s, box-shadow 0.2s',
                     outline: 'none',
@@ -159,13 +153,8 @@ export function ContactSection() {
               <div className="flex flex-col gap-2">
                 <label
                   htmlFor="contact-email"
-                  style={{
-                    fontFamily: 'var(--font-jetbrains-mono)',
-                    fontSize: '11px',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.12em',
-                    color: 'var(--text-secondary)',
-                  }}
+                  className="text-label"
+                  style={{ color: 'var(--text-secondary)' }}
                 >
                   E-Mail
                 </label>
@@ -183,7 +172,7 @@ export function ContactSection() {
                     padding: '0.875rem 1rem',
                     fontFamily: 'var(--font-inter)',
                     fontSize: '1rem',
-                    color: '#0A0A0F',
+                    color: 'var(--color-text-primary)',
                     width: '100%',
                     transition: 'border-color 0.2s, box-shadow 0.2s',
                     outline: 'none',
@@ -203,13 +192,8 @@ export function ContactSection() {
               <div className="flex flex-col gap-2">
                 <label
                   htmlFor="contact-message"
-                  style={{
-                    fontFamily: 'var(--font-jetbrains-mono)',
-                    fontSize: '11px',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.12em',
-                    color: 'var(--text-secondary)',
-                  }}
+                  className="text-label"
+                  style={{ color: 'var(--text-secondary)' }}
                 >
                   Nachricht
                 </label>
@@ -227,7 +211,7 @@ export function ContactSection() {
                     padding: '0.875rem 1rem',
                     fontFamily: 'var(--font-inter)',
                     fontSize: '1rem',
-                    color: '#0A0A0F',
+                    color: 'var(--color-text-primary)',
                     width: '100%',
                     resize: 'vertical',
                     transition: 'border-color 0.2s, box-shadow 0.2s',
@@ -270,7 +254,7 @@ export function ContactSection() {
                     disabled={formState === 'submitting'}
                     className="inline-flex items-center font-semibold text-white rounded-lg px-8 py-4 transition-all duration-200 hover:opacity-90 hover:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed"
                     style={{
-                      backgroundColor: '#6366F1',
+                      backgroundColor: 'var(--color-accent-light)',
                       boxShadow: 'var(--shadow-md)',
                       fontFamily: 'var(--font-syne)',
                       fontSize: '1rem',
@@ -282,9 +266,8 @@ export function ContactSection() {
 
                 <a
                   href={`mailto:${contactEmail}`}
-                  className="transition-colors duration-200 hover:text-[var(--text-primary)]"
+                  className="text-mono transition-colors duration-200 hover:text-[var(--text-primary)]"
                   style={{
-                    fontFamily: 'var(--font-jetbrains-mono)',
                     fontSize: '13px',
                     color: 'var(--text-secondary)',
                     letterSpacing: '0.04em',

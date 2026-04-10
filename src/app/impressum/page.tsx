@@ -6,6 +6,9 @@ import { TransitionLink } from '@/components/TransitionLink'
 export const metadata: Metadata = {
   title: 'Impressum — Nullpunkt',
   description: 'Impressum und rechtliche Angaben zu Nullpunkt.',
+  alternates: {
+    canonical: '/impressum',
+  },
 }
 
 export default function ImpressumPage() {

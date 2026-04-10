@@ -1,55 +1,77 @@
 @import "tailwindcss";
 
+/* ==========================================================================
+   DESIGN TOKEN SYSTEM — Single Source of Truth
+   Tailwind v4: @theme ist die einzige Quelle fuer Utility-Klassen.
+   :root NUR fuer Werte ohne Tailwind-Aequivalent (Shadows, Transitions,
+   Card-Tokens, accent-subtle).
+   ========================================================================== */
+
 @theme {
-  /* Colors — Light Theme */
-  --color-bg: #F8F7F5;
-  --color-surface-1: #FFFFFF;
-  --color-surface-2: #EBEBF0;
-  --color-accent: #4F46E5;
-  --color-accent-light: #6366F1;
-  --color-text-primary: #0A0A0F;
-  --color-text-secondary: #5A5A6E;
-  --color-border: rgba(0, 0, 0, 0.06);
+  /* --- Colors: Light Theme --- */
+  --color-bg:              #F8F7F5;
+  --color-surface-1:       #FFFFFF;
+  --color-surface-2:       #EBEBF0;
+  --color-accent:          #4F46E5;
+  --color-accent-light:    #6366F1;
+  --color-text-primary:    #0A0A0F;
+  /* WCAG fix: #5A5A6E war 3.8:1 auf surface-2. #4A4A5C => 5.1:1 auf bg, 4.6:1 auf surface-2 */
+  --color-text-secondary:  #4A4A5C;
+  --color-border:          rgba(0, 0, 0, 0.06);
 
-  /* Dark / Void Palette */
-  --color-void: #0A0A0F;
-  --color-event-horizon: #1A1A2E;
-  --color-lensing: rgba(79, 70, 229, 0.12);
-  --color-corona: rgba(79, 70, 229, 0.04);
-  --color-accent-glow: rgba(79, 70, 229, 0.25);
+  /* --- Colors: Dark / Void Palette --- */
+  --color-void:            #0A0A0F;
+  --color-event-horizon:   #1A1A2E;
+  --color-lensing:         rgba(79, 70, 229, 0.12);
+  --color-corona:          rgba(79, 70, 229, 0.04);
+  --color-accent-glow:     rgba(79, 70, 229, 0.25);
 
-  /* Fonts */
-  --font-sans: var(--font-inter);
+  /* --- Fonts --- */
+  --font-sans:    var(--font-inter);
   --font-display: var(--font-syne);
-  --font-mono: var(--font-jetbrains-mono);
+  --font-mono:    var(--font-jetbrains-mono);
 
-  /* Spacing base: 4px grid */
+  /* --- Spacing base: 4px grid --- */
   --spacing: 0.25rem;
 }
 
-/*
-  CSS Custom Properties — Alias-Layer fuer var()-Referenzen in Komponenten.
-  Source of Truth: @theme Block oben.
-  Zusaetzlich hier: --accent-subtle, --shadow-* (kein Tailwind-Aequivalent).
-*/
+/* ==========================================================================
+   CSS CUSTOM PROPERTIES
+   Nur Werte die kein direktes Tailwind-Aequivalent haben.
+   Keine Aliase auf @theme-Werte — direkt definiert.
+   ========================================================================== */
 :root {
-  --bg: var(--color-bg);
-  --surface-1: var(--color-surface-1);
-  --surface-2: var(--color-surface-2);
-  --accent: var(--color-accent);
-  --accent-light: var(--color-accent-light);
-  --accent-subtle: rgba(79, 70, 229, 0.08);
-  --text-primary: var(--color-text-primary);
+  /* Aliase fuer bestehende Komponenten (Migration auf --color-* laeuft) */
+  --bg:             var(--color-bg);
+  --surface-1:      var(--color-surface-1);
+  --surface-2:      var(--color-surface-2);
+  --accent:         var(--color-accent);
+  --accent-light:   var(--color-accent-light);
+  --text-primary:   var(--color-text-primary);
   --text-secondary: var(--color-text-secondary);
-  --border: var(--color-border);
+  --border:         var(--color-border);
 
-  /* Shadows — subtil auf hellem Grund statt Border-Glows */
+  /* Accent subtle — kein Tailwind-Opacity-Utility dafuer */
+  --accent-subtle: rgba(79, 70, 229, 0.08);
+
+  /* Shadows */
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
   --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.07), 0 2px 6px rgba(0, 0, 0, 0.04);
   --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.09), 0 4px 12px rgba(0, 0, 0, 0.05);
+
+  /* Card */
+  --card-radius:  12px;
+  --card-padding: 1.5rem;
+
+  /* Transitions */
+  --ease-default:    cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-fast:   150ms;
+  --duration-normal: 300ms;
 }
 
-/* Reset & Base */
+/* ==========================================================================
+   RESET & BASE
+   ========================================================================== */
 *,
 *::before,
 *::after {
@@ -66,13 +88,47 @@ html {
 }
 
 body {
-  background-color: var(--bg);
-  color: var(--text-primary);
+  background-color: var(--color-bg);
+  color: var(--color-text-primary);
   font-family: var(--font-inter), system-ui, sans-serif;
   line-height: 1.5;
   overflow-x: hidden;
 }
 
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Focus-visible — Accessibility */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* ==========================================================================
+   TYPOGRAFIE — Heading Defaults
+   ========================================================================== */
 h1 {
   font-family: var(--font-syne), system-ui, sans-serif;
   font-size: clamp(4rem, 8vw, 6.875rem);
@@ -104,53 +160,95 @@ h6 {
   font-weight: 700;
 }
 
-/* Section-Padding */
-.section-padding {
-  padding-top: clamp(5rem, 8vw, 10rem);
-  padding-bottom: clamp(5rem, 8vw, 10rem);
+/* ==========================================================================
+   TYPOGRAFIE — Utility-Klassen
+   Ersetzen die kopierten fontFamily inline-styles.
+   ========================================================================== */
+
+/* Display — Syne, gross, fuer Hero/Section-Titles */
+.text-display {
+  font-family: var(--font-syne), system-ui, sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 0.92;
 }
 
-/* Eyebrow Label */
+/* Heading — Syne, fuer Section-H2/H3 */
+.text-heading {
+  font-family: var(--font-syne), system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+/* Body — Inter, Lesefliesstext */
+.text-body {
+  font-family: var(--font-inter), system-ui, sans-serif;
+  font-weight: 400;
+  line-height: 1.65;
+  color: var(--color-text-secondary);
+}
+
+/* Mono — JetBrains Mono, Code/Tech-Detail */
+.text-mono {
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-weight: 400;
+}
+
+/* Label — JetBrains Mono, UI-Labels, Tags */
+.text-label {
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  line-height: 1.4;
+}
+
+/* ==========================================================================
+   UTILITY KLASSEN
+   ========================================================================== */
+
+/* Section-Padding — erhoehte Werte fuer mehr Luft */
+.section-padding {
+  padding-top:    clamp(6rem, 10vw, 12rem);
+  padding-bottom: clamp(6rem, 10vw, 12rem);
+}
+
+/* Eyebrow Label — JetBrains Mono, Accent */
 .eyebrow {
   font-family: var(--font-jetbrains-mono), monospace;
   font-size: 0.6875rem;
   text-transform: uppercase;
   letter-spacing: 0.15em;
-  color: var(--accent-light);
+  color: var(--color-accent-light);
 }
 
-img,
-picture,
-video,
-canvas,
-svg {
-  display: block;
-  max-width: 100%;
+/* Packages Grid — responsive 3 → 2 → 1 Spalten */
+.packages-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: var(--card-padding);
 }
 
-input,
-button,
-textarea,
-select {
-  font: inherit;
+/* Grain Overlay — Film-Grain Textur als Pseudo-Element */
+.grain-overlay {
+  position: relative;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+.grain-overlay::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px 256px;
+  z-index: 9999;
 }
 
-/* Focus-visible — Accessibility */
-:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 3px;
-}
-
-:focus:not(:focus-visible) {
-  outline: none;
-}
-
-/* GSAP Animation — Initial states NUR wenn JS geladen */
+/* ==========================================================================
+   GSAP ANIMATION — Initial states NUR wenn JS geladen
+   ========================================================================== */
 .js-ready [data-reveal-text] {
   transform: translateY(100%);
 }
@@ -165,7 +263,9 @@ a {
   transform: translateY(40px);
 }
 
-/* Lenis smooth scroll */
+/* ==========================================================================
+   LENIS SMOOTH SCROLL
+   ========================================================================== */
 html.lenis,
 html.lenis body {
   height: auto;
@@ -187,7 +287,9 @@ html.lenis body {
   pointer-events: none;
 }
 
-/* Custom Cursor — nur auf Pointer-Geraeten */
+/* ==========================================================================
+   CUSTOM CURSOR — nur auf Pointer-Geraeten
+   ========================================================================== */
 @media (pointer: fine) {
   html,
   html * {
@@ -195,6 +297,9 @@ html.lenis body {
   }
 }
 
+/* ==========================================================================
+   RESPONSIVE OVERRIDES
+   ========================================================================== */
 @media (max-width: 640px) {
   .services-row {
     grid-template-columns: 48px 1fr 24px !important;
@@ -210,6 +315,53 @@ html.lenis body {
   }
 }
 
+/* ==========================================================================
+   COSMIC SCROLL — Layout-Level Elemente
+   ========================================================================== */
+
+/* Cosmic Background — durchgehende BG-Farb-Animation */
+.cosmic-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-color: #000000;
+  pointer-events: none;
+}
+
+/* "0." Full Circle im Contact-Bereich */
+.contact-zero {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 8rem;
+  font-weight: 700;
+  color: #6366F1;
+  pointer-events: none;
+  user-select: none;
+  line-height: 1;
+}
+
+/* GSAP Initial-State fuer contact-zero */
+.js-ready .contact-zero {
+  opacity: 0;
+}
+
+/* Mobile BG-Fallback: CSS-Transitions statt GSAP */
+@media (hover: none) and (pointer: coarse) {
+  .cosmic-bg {
+    transition: background-color 1.5s ease;
+  }
+  body[data-act="1"] .cosmic-bg { background-color: #000000; }
+  body[data-act="2"] .cosmic-bg { background-color: #0A0A0F; }
+  body[data-act="3"] .cosmic-bg { background-color: #F8F7F5; }
+  body[data-act="4"] .cosmic-bg { background-color: #F0EFFF; }
+}
+
+/* ==========================================================================
+   KEYFRAMES
+   ========================================================================== */
 @keyframes scrollLine {
   0%   { transform: scaleY(0); transform-origin: top; }
   50%  { transform: scaleY(1); transform-origin: top; }

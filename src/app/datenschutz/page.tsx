@@ -6,6 +6,9 @@ import { TransitionLink } from '@/components/TransitionLink'
 export const metadata: Metadata = {
   title: 'Datenschutz — Nullpunkt',
   description: 'Datenschutzerklärung von Nullpunkt.',
+  alternates: {
+    canonical: '/datenschutz',
+  },
 }
 
 const bodyStyle = {

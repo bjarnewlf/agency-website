@@ -1,8 +1,9 @@
 export function BridgeSection() {
   return (
     <div
+      id="bridge"
+      data-act="2"
       className="px-6"
-      style={{ backgroundColor: 'var(--bg)' }}
     >
       <div
         className="mx-auto py-16"

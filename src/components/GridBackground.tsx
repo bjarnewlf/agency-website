@@ -93,11 +93,11 @@ export function GridBackground() {
   )
 
   if (isTouch !== false) {
-    return <div className="fixed inset-0 z-0 pointer-events-none" style={CSS_FALLBACK} />
+    return <div id="grid-background" className="fixed inset-0 z-0 pointer-events-none" style={{ ...CSS_FALLBACK, opacity: 0 }} />
   }
 
   return (
-    <div className="fixed inset-0 z-0 pointer-events-none" aria-hidden="true">
+    <div id="grid-background" className="fixed inset-0 z-0 pointer-events-none" style={{ opacity: 0 }} aria-hidden="true">
       {/* Basis-Grid — sehr schwach, überall sichtbar */}
       <div className="absolute inset-0" style={{ opacity: 0.055 }}>
         <GridSVG offsetX={offsetX} offsetY={offsetY} patternId="grid-base" />

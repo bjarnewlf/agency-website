@@ -20,7 +20,10 @@ export function BigBangHero() {
     pulseRef.current?.kill()
 
     const tl = gsap.timeline()
-    tl.to('.bb-bg', { backgroundColor: '#F8F7F5', duration: 10 }, 0)
+    tl.to('.bb-bg', { backgroundColor: '#0A0A0F', duration: 8 }, 0)
+    tl.to('.bb-bg', { opacity: 0, duration: 2, onComplete: () => {
+      document.body.dataset.act = '2'
+    } }, 8)
     tl.to('.bb-singularity', { scale: 0, opacity: 0, duration: 1.5, ease: 'power2.in' }, 0)
     tl.fromTo('.bb-burst', { scale: 0, opacity: 0 }, { scale: 6, opacity: 1, duration: 3.5, ease: 'power2.out' }, 0)
     tl.to('.bb-burst', { opacity: 0, duration: 3 }, 3)
@@ -55,9 +58,14 @@ export function BigBangHero() {
     })
 
     tl.to('.bb-bg', {
-      backgroundColor: '#F8F7F5',
-      duration: 10,
+      backgroundColor: '#0A0A0F',
+      duration: 8,
     }, 0)
+
+    tl.to('.bb-bg', {
+      opacity: 0,
+      duration: 2,
+    }, 8)
 
     tl.to('.bb-singularity', {
       scale: 0,
@@ -106,7 +114,7 @@ export function BigBangHero() {
     <div
       ref={containerRef}
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
-      style={{ backgroundColor: '#000000' }}
+      style={{ backgroundColor: 'transparent' }}
       aria-label="Hero"
       onTouchStart={handleTap}
     >
@@ -114,6 +122,7 @@ export function BigBangHero() {
         className="bb-bg absolute inset-0"
         style={{ backgroundColor: '#000000' }}
       />
+
 
       <div
         className="bb-burst absolute pointer-events-none"
@@ -172,9 +181,9 @@ export function BigBangHero() {
             opacity: 0,
           }}
         >
-          <span style={{ display: 'block', color: '#0A0A0F' }}>Wo Ideen</span>
+          <span style={{ display: 'block', color: 'rgba(255,255,255,0.92)' }}>Wo Ideen</span>
           <span style={{ display: 'block', color: '#6366F1' }}>Masse</span>
-          <span style={{ display: 'block', color: '#0A0A0F' }}>gewinnen.</span>
+          <span style={{ display: 'block', color: 'rgba(255,255,255,0.92)' }}>gewinnen.</span>
         </h1>
 
         <p
@@ -182,7 +191,7 @@ export function BigBangHero() {
           style={{
             fontFamily: 'var(--font-inter)',
             fontSize: '1.125rem',
-            color: 'var(--text-secondary)',
+            color: 'rgba(255,255,255,0.6)',
             lineHeight: '1.7',
             maxWidth: '420px',
             opacity: 0,
@@ -212,7 +221,7 @@ export function BigBangHero() {
             <a
               href="#contact"
               className="font-medium transition-colors duration-200 hover:text-[var(--text-primary)]"
-              style={{ color: 'var(--text-secondary)' }}
+              style={{ color: 'rgba(255,255,255,0.5)' }}
             >
               Projekt starten →
             </a>

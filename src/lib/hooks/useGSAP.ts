@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, type DependencyList } from 'react'
+import { useEffect, type DependencyList, type RefObject } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
@@ -9,12 +9,13 @@ gsap.registerPlugin(ScrollTrigger)
 
 export function useGSAP(
   callback: () => void,
-  deps: DependencyList = []
+  deps: DependencyList = [],
+  containerRef?: RefObject<HTMLElement | null>
 ) {
   useEffect(() => {
     const ctx = gsap.context(() => {
       callback()
-    })
+    }, containerRef?.current || undefined)
 
     return () => {
       ctx.revert()

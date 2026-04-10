@@ -6,7 +6,6 @@ export function Footer() {
   return (
     <footer
       style={{
-        backgroundColor: 'var(--bg)',
         borderTop: '1px solid var(--border)',
       }}
     >

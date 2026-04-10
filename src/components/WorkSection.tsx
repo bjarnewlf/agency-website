@@ -1,22 +1,18 @@
+import { SectionHeader } from '@/components/SectionHeader'
+
 export function WorkSection() {
   return (
     <section
       id="work"
+      data-act="3"
       aria-label="Work"
       className="section-padding border-t border-[var(--border)]"
-      style={{ backgroundColor: 'var(--bg)', paddingLeft: '1.5rem', paddingRight: '1.5rem' }}
+      style={{ paddingLeft: '1.5rem', paddingRight: '1.5rem' }}
     >
-      <div className="mx-auto" style={{ maxWidth: '1200px' }}>
+      <div className="mx-auto" style={{ maxWidth: '1200px', perspective: '1200px' }}>
         {/* Section Header */}
         <div className="flex items-end justify-between mb-12 flex-wrap gap-4">
-          <div>
-            <p className="eyebrow mb-4" data-animate>
-              REFERENZEN
-            </p>
-            <h2 data-split-headline>
-              In Arbeit.
-            </h2>
-          </div>
+          <SectionHeader eyebrow="REFERENZEN" headline="In Arbeit." />
           <a
             data-animate
             href="#contact"
@@ -75,11 +71,9 @@ export function WorkSection() {
             {/* Mittlere Spalte: Content */}
             <div style={{ padding: '0 2rem' }}>
               <h3
+                className="text-display"
                 style={{
-                  fontFamily: 'var(--font-syne)',
                   fontSize: 'clamp(2rem, 4vw, 3rem)',
-                  fontWeight: 800,
-                  letterSpacing: '-0.04em',
                   color: 'var(--text-primary)',
                   lineHeight: 1.1,
                   marginBottom: '1rem',
@@ -88,11 +82,8 @@ export function WorkSection() {
                 Kein Platz<br />für Alibi.
               </h3>
               <p
+                className="text-body"
                 style={{
-                  fontFamily: 'var(--font-inter)',
-                  fontSize: '1rem',
-                  lineHeight: 1.7,
-                  color: 'var(--text-secondary)',
                   marginTop: '1rem',
                   maxWidth: '360px',
                 }}
@@ -105,10 +96,9 @@ export function WorkSection() {
             {/* Rechte Spalte: Jahr */}
             <div className="flex flex-col items-end justify-center">
               <span
+                className="text-heading"
                 style={{
-                  fontFamily: 'var(--font-syne)',
                   fontSize: '5rem',
-                  fontWeight: 700,
                   color: 'var(--surface-2)',
                   lineHeight: 1,
                   letterSpacing: '-0.03em',
@@ -117,8 +107,8 @@ export function WorkSection() {
                 2026
               </span>
               <span
+                className="text-mono"
                 style={{
-                  fontFamily: 'var(--font-jetbrains-mono)',
                   fontSize: '0.75rem',
                   color: 'var(--accent)',
                   marginTop: '0.5rem',
@@ -136,11 +126,9 @@ export function WorkSection() {
             style={{ padding: '40px 32px' }}
           >
             <h3
+              className="text-display"
               style={{
-                fontFamily: 'var(--font-syne)',
                 fontSize: 'clamp(2rem, 8vw, 2.5rem)',
-                fontWeight: 800,
-                letterSpacing: '-0.04em',
                 color: 'var(--text-primary)',
                 lineHeight: 1.1,
               }}
@@ -148,13 +136,8 @@ export function WorkSection() {
               Kein Platz<br />für Alibi.
             </h3>
             <p
-              style={{
-                fontFamily: 'var(--font-inter)',
-                fontSize: '1rem',
-                lineHeight: 1.7,
-                color: 'var(--text-secondary)',
-                marginTop: '1rem',
-              }}
+              className="text-body"
+              style={{ marginTop: '1rem' }}
             >
               Erste Projekte in Entwicklung. Case Studies folgen,
               wenn sie fertig sind — nicht vorher.

@@ -1,15 +1,16 @@
 'use client'
 
 import { services } from '@/data/content'
+import { SectionHeader } from '@/components/SectionHeader'
 
 function highlightRow(row: HTMLElement) {
-  row.style.background = 'rgba(99,102,241,0.03)'
+  row.style.background = 'var(--accent-subtle)'
   const num = row.querySelector<HTMLElement>('.svc-num')
   const title = row.querySelector<HTMLElement>('.svc-title')
   const arrow = row.querySelector<HTMLElement>('.svc-arrow')
   if (num) num.style.color = 'rgba(99,102,241,0.45)'
-  if (title) title.style.color = '#6366F1'
-  if (arrow) { arrow.style.color = 'rgba(99,102,241,1)'; arrow.style.transform = 'translateX(4px)' }
+  if (title) title.style.color = 'var(--color-accent-light)'
+  if (arrow) { arrow.style.color = 'var(--color-accent-light)'; arrow.style.transform = 'translateX(4px)' }
 }
 
 function resetRow(row: HTMLElement) {
@@ -26,19 +27,14 @@ export function ServicesSection() {
   return (
     <section
       id="services"
+      data-act="2"
       aria-label="Services"
       className="section-padding border-t border-[var(--border)] px-6"
-      style={{ backgroundColor: 'var(--surface-1)' }}
     >
       <div className="mx-auto" style={{ maxWidth: '1200px' }}>
         {/* Section Header */}
         <div className="mb-16">
-          <p className="eyebrow mb-4" data-animate>
-            Leistungen
-          </p>
-          <h2 data-split-headline>
-            Was wir bauen.
-          </h2>
+          <SectionHeader eyebrow="Leistungen" headline="Was wir bauen." />
         </div>
 
         {/* Service Rows */}
@@ -68,14 +64,10 @@ export function ServicesSection() {
               >
                 {/* Dekorative Ziffer */}
                 <span
-                  className="svc-num"
+                  className="svc-num text-display"
                   aria-hidden="true"
                   style={{
-                    fontFamily: 'var(--font-syne)',
                     fontSize: '80px',
-                    fontWeight: 800,
-                    letterSpacing: '-0.04em',
-                    lineHeight: 1,
                     color: 'rgba(99, 102, 241, 0.15)',
                     userSelect: 'none',
                     transition: 'color 0.25s ease',
@@ -87,11 +79,9 @@ export function ServicesSection() {
                 {/* Service Name + Beschreibung */}
                 <div>
                   <h3
-                    className="svc-title"
+                    className="svc-title text-heading"
                     style={{
-                      fontFamily: 'var(--font-syne)',
                       fontSize: '28px',
-                      fontWeight: 700,
                       color: 'var(--text-primary)',
                       marginBottom: '0.375rem',
                       transition: 'color 0.25s ease',
@@ -99,14 +89,7 @@ export function ServicesSection() {
                   >
                     {service.title}
                   </h3>
-                  <p
-                    style={{
-                      fontFamily: 'var(--font-inter)',
-                      fontSize: '1rem',
-                      color: 'var(--text-secondary)',
-                      lineHeight: '1.6',
-                    }}
-                  >
+                  <p className="text-body">
                     {service.text}
                   </p>
                 </div>
@@ -117,10 +100,10 @@ export function ServicesSection() {
                     {service.tags.map((tag) => (
                       <span
                         key={tag}
+                        className="text-mono"
                         style={{
-                          fontFamily: 'var(--font-jetbrains-mono)',
                           fontSize: '12px',
-                          color: '#6366F1',
+                          color: 'var(--color-accent-light)',
                           letterSpacing: '0.04em',
                         }}
                       >
