@@ -39,6 +39,15 @@ export function useTransition() {
 
 const delay = (ms: number) => new Promise<void>((res) => setTimeout(res, ms))
 
+function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T> {
+  return Promise.race([
+    promise,
+    new Promise<T>((_, reject) =>
+      setTimeout(() => reject(new Error(`Animation timeout after ${ms}ms`)), ms)
+    ),
+  ])
+}
+
 function prefersReducedMotion(): boolean {
   if (typeof window === 'undefined') return false
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -188,6 +197,14 @@ export function TransitionProvider({ children }: { children: ReactNode }) {
     }
   }, [])
 
+  // ── Safety-Reset: pointerEvents nie dauerhaft blockiert ───────────────────
+
+  useEffect(() => {
+    if (!isTransitioning) {
+      document.body.style.pointerEvents = 'auto'
+    }
+  }, [isTransitioning])
+
   // ── triggerTransition ──────────────────────────────────────────────────────
 
   const triggerTransition = useCallback(
@@ -214,7 +231,7 @@ export function TransitionProvider({ children }: { children: ReactNode }) {
         lenisRef.current?.stop()
 
         // Exit-Animation
-        await exitAnimation()
+        await withTimeout(exitAnimation(), 2000)
 
         // ScrollTrigger killen
         ScrollTrigger.getAll().forEach((st) => st.kill())
@@ -226,7 +243,7 @@ export function TransitionProvider({ children }: { children: ReactNode }) {
         await delay(150)
 
         // Enter-Animation
-        await enterAnimation()
+        await withTimeout(enterAnimation(), 2000)
 
         // Lenis + ScrollTrigger
         lenisRef.current?.scrollTo(0, { immediate: true })
