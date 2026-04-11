@@ -213,6 +213,13 @@ h6 {
   padding-bottom: clamp(6rem, 10vw, 12rem);
 }
 
+@media (max-width: 640px) {
+  .section-padding {
+    padding-top:    clamp(4rem, 8vw, 6rem);
+    padding-bottom: clamp(4rem, 8vw, 6rem);
+  }
+}
+
 /* Eyebrow Label — JetBrains Mono, Accent */
 .eyebrow {
   font-family: var(--font-jetbrains-mono), monospace;
@@ -225,7 +232,7 @@ h6 {
 /* Packages Grid — responsive 3 → 2 → 1 Spalten */
 .packages-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
   gap: var(--card-padding);
 }
 
@@ -313,6 +320,26 @@ html.lenis body {
   .svc-title {
     font-size: 19px !important;
   }
+
+  /* Hero CTAs — Stack auf Mobile, Touch-Target */
+  .bb-cta-row {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0.875rem !important;
+  }
+  .bb-cta-row a {
+    min-height: 44px;
+    display: inline-flex !important;
+    align-items: center;
+  }
+
+  /* Contact-Inputs — Touch-Target min 44px */
+  input,
+  textarea,
+  select {
+    min-height: 44px;
+  }
+
 }
 
 /* ==========================================================================

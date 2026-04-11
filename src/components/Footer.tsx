@@ -67,7 +67,6 @@ export function Footer() {
 
         {/* Domain */}
         <span
-          className="hidden sm:block"
           style={{
             fontFamily: 'var(--font-jetbrains-mono)',
             fontSize: '13px',

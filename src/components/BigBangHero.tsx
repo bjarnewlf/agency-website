@@ -201,7 +201,7 @@ export function BigBangHero() {
         </p>
 
         <div
-          className="bb-sub flex items-center gap-6"
+          className="bb-sub bb-cta-row flex items-center gap-6"
           style={{ opacity: 0 }}
         >
           <MagneticButton>

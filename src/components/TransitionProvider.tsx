@@ -200,35 +200,47 @@ export function TransitionProvider({ children }: { children: ReactNode }) {
         return
       }
 
+      // Panels fehlen → direkt navigieren ohne Animation
+      if (!voidPanelRef.current || !accentPanelRef.current) {
+        router.push(href, { scroll: true })
+        return
+      }
+
       setIsTransitioning(true)
       document.body.style.pointerEvents = 'none'
 
-      // Lenis stoppen
-      lenisRef.current?.stop()
+      try {
+        // Lenis stoppen
+        lenisRef.current?.stop()
 
-      // Exit-Animation
-      await exitAnimation()
+        // Exit-Animation
+        await exitAnimation()
 
-      // ScrollTrigger killen
-      ScrollTrigger.getAll().forEach((st) => st.kill())
+        // ScrollTrigger killen
+        ScrollTrigger.getAll().forEach((st) => st.kill())
 
-      // Navigation
-      router.push(href, { scroll: false })
+        // Navigation
+        router.push(href, { scroll: false })
 
-      // Neue Seite rendern lassen
-      await delay(150)
+        // Neue Seite rendern lassen
+        await delay(150)
 
-      // Enter-Animation
-      await enterAnimation()
+        // Enter-Animation
+        await enterAnimation()
 
-      // Lenis + ScrollTrigger
-      lenisRef.current?.scrollTo(0, { immediate: true })
-      lenisRef.current?.start()
-      ScrollTrigger.refresh()
+        // Lenis + ScrollTrigger
+        lenisRef.current?.scrollTo(0, { immediate: true })
+        lenisRef.current?.start()
+        ScrollTrigger.refresh()
 
-      document.body.style.pointerEvents = 'auto'
-      setIsTransitioning(false)
-      setTransitionCount((c) => c + 1)
+        setTransitionCount((c) => c + 1)
+      } catch (err) {
+        console.error('[TransitionProvider] Animation fehlgeschlagen, navigiere direkt:', err)
+        router.push(href, { scroll: true })
+      } finally {
+        document.body.style.pointerEvents = 'auto'
+        setIsTransitioning(false)
+      }
     },
     [isTransitioning, router, exitAnimation, enterAnimation],
   )
