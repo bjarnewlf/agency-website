@@ -1,6 +1,6 @@
 'use client'
 
-import { TransitionLink } from '@/components/TransitionLink'
+import Link from 'next/link'
 
 export function Footer() {
   return (
@@ -49,20 +49,20 @@ export function Footer() {
           >
             Kontakt
           </a>
-          <TransitionLink
+          <Link
             href="/impressum"
             className="text-sm transition-colors duration-200 hover:text-[var(--text-primary)]"
             style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-inter)' }}
           >
             Impressum
-          </TransitionLink>
-          <TransitionLink
+          </Link>
+          <Link
             href="/datenschutz"
             className="text-sm transition-colors duration-200 hover:text-[var(--text-primary)]"
             style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-inter)' }}
           >
             Datenschutz
-          </TransitionLink>
+          </Link>
         </nav>
 
         {/* Domain */}
